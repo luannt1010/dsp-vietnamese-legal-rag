@@ -1,6 +1,6 @@
 # Hợp đồng dữ liệu và interface dùng chung
 
-Tài liệu này cụ thể hóa mục 4 của [kế hoạch kỹ thuật](../vietnamese_law_rag_technical_spec.md).
+Tài liệu này cụ thể hóa mục 4 của [kế hoạch kỹ thuật](vietnamese_law_rag_technical_spec.md).
 Schema nằm trong `core/schemas/`, abstract class nằm trong `core/interfaces/`.
 Mỗi thành viên import từ `core`, kế thừa ABC và triển khai logic trong module
 được phân công. Không sao chép rồi sửa schema riêng trong `src/`.
