@@ -1,0 +1,12 @@
+data_pipeline:
+  # Relative paths resolve against the directory containing configs/.
+  raw_dir: data/raw
+  processed_dir: data/processed
+  chunks_dir: data/chunks
+  indexing_batch_size: 100
+  chunking:
+    strategy: hierarchical
+    # Pin a tokenizer before ingestion; sizes below are tokens, not characters.
+    tokenizer_model: null
+    target_tokens: 512
+    overlap_tokens: 64

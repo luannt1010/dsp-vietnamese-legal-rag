@@ -1,0 +1,13 @@
+embedding:
+  # Choose together; never silently switch the model used by an existing index.
+  provider: null
+  model: null
+  revision: null
+  dimension: null
+  normalize: true
+  batch_size: 32
+  device: auto
+  timeout_s: 30
+  # Additional attempts after the initial call, subject to pipeline deadline.
+  max_retries: 2
+  # API key is supplied only through RAG__EMBEDDING__API_KEY.

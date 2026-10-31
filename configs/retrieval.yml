@@ -1,0 +1,30 @@
+# Initial experiment values; tune using the shared evaluation dataset.
+retrieval:
+  use_bm25: true
+  use_vector: true
+  use_graph: false
+  use_rerank: true
+  top_k: 5
+  candidate_k: 20
+  # Hard bounds for router decisions and evaluator overrides.
+  max_top_k: 20
+  max_candidate_k: 100
+  timeout_s: 10
+  bm25:
+    k1: 1.2
+    b: 0.75
+    # Baseline only; replace after evaluating Vietnamese tokenization.
+    tokenizer: whitespace
+    lowercase: true
+  rrf:
+    rank_constant: 60
+  reranker:
+    # Team must select a cross-encoder before enabling real adapters.
+    model: null
+    revision: null
+    batch_size: 16
+    max_input_tokens: 512
+    device: auto
+  graph:
+    max_depth: 2
+    max_nodes: 100
