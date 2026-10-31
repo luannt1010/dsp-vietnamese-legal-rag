@@ -144,7 +144,8 @@ class LLMRoleSettings(ConfigModel):
 
 
 class LLMSettings(ConfigModel):
-    provider: Literal["local", "openai", "gemini"] | None = None
+    provider: Literal["local", "openai", "gemini", "ollama"] | None = None
+    base_url: NonEmptyString | None = None
     api_key: SecretStr | None = None
     timeout_s: PositiveFloat = 30.0
     max_retries: NonNegativeInt = 2

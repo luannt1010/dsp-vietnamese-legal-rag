@@ -1,6 +1,5 @@
-llm:
+provider: ollama
   # local, openai or gemini; select after benchmarking.
-  provider: null
   timeout_s: 30
   max_retries: 2
   retry_backoff_s: 1
@@ -18,7 +17,7 @@ llm:
     max_output_tokens: 768
     prompt_version: v1
   answer_generator:
-    model: null
+    model: qwen2.5:7b
     context_window_tokens: null
     temperature: 0
     max_output_tokens: 2048
