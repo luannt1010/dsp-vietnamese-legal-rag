@@ -1,6 +1,10 @@
 """Common runtime failures; schema validation uses pydantic.ValidationError."""
 
 
+class ConfigurationError(ValueError):
+    """Configuration could not be loaded or is not ready for real adapters."""
+
+
 class RAGError(Exception):
     """Base exception for recoverable pipeline/service failures."""
 
