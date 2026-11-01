@@ -1,0 +1,272 @@
+[
+  {
+    "source": "Điều 1.1.LQ.1",
+    "target": "Điều 1.12.LQ.11",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.12.LQ.11. Biện pháp, chế độ cảnh vệ đối với người giữ chức vụ, chức danh cấp cao của Đảng Cộng sản Việt Nam, Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam, Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam ; Điều 1."
+  },
+  {
+    "source": "Điều 1.1.LQ.1",
+    "target": "Điều 1.11.LQ.1",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.12.LQ.11. Biện pháp, chế độ cảnh vệ đối với người giữ chức vụ, chức danh cấp cao của Đảng Cộng sản Việt Nam, Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam, Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam ; Điều 1."
+  },
+  {
+    "source": "Điều 1.1.LQ.1",
+    "target": "Điều 1.6.LQ.16",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.12.LQ.11. Biện pháp, chế độ cảnh vệ đối với người giữ chức vụ, chức danh cấp cao của Đảng Cộng sản Việt Nam, Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam, Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam ; Điều 1."
+  },
+  {
+    "source": "Điều 1.1.TL.2.1",
+    "target": "Điều 41.5.TT.2.17",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 41.5.TT.2.17. Khóa cập nhật kiến thức cho hướng dẫn viên du lịch nội địa và hướng dẫn viên du lịch quốc tế )"
+  },
+  {
+    "source": "Điều 1.1.LQ.6",
+    "target": "Điều 39.16.LQ.3",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 39.16.LQ.3. Vị trí, chức năng của lực lượng tham gia bảo vệ an ninh, trật tự ở cơ sở ; Điều 39.2.PL.5. Xây dựng lực lượng Công an xã )"
+  },
+  {
+    "source": "Điều 1.1.LQ.6",
+    "target": "Điều 39.2.PL.5",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 39.16.LQ.3. Vị trí, chức năng của lực lượng tham gia bảo vệ an ninh, trật tự ở cơ sở ; Điều 39.2.PL.5. Xây dựng lực lượng Công an xã )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.2.9",
+    "target": "Điều 1.1.TL.1.6",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TL.1.6. Lề lối làm việc, mối quan hệ công tác của bảo vệ dân phố )"
+  },
+  {
+    "source": "Điều 1.1.TL.1.6",
+    "target": "Điều 1.1.NĐ.2.9",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.NĐ.2.9. Lề lối làm việc của Bảo vệ dân phố ; Điều 1.1.NĐ.2.10. Mối quan hệ công tác của Bảo vệ dân phố )"
+  },
+  {
+    "source": "Điều 1.1.TL.1.6",
+    "target": "Điều 1.1.NĐ.2.10",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.NĐ.2.9. Lề lối làm việc của Bảo vệ dân phố ; Điều 1.1.NĐ.2.10. Mối quan hệ công tác của Bảo vệ dân phố )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.2.10",
+    "target": "Điều 1.1.TL.1.6",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TL.1.6. Lề lối làm việc, mối quan hệ công tác của bảo vệ dân phố )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.5.11",
+    "target": "Điều 1.1.NĐ.5.7",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.NĐ.5.7. Trách nhiệm của người đứng đầu cơ quan, doanh nghiệp và cán bộ, công nhân viên trong cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TL.1.7",
+    "target": "Điều 17",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 17. Điều kiện xác nhận liệt sĩ ; Điều 27. Điều kiện xác nhận của Nghị định 31/2013/NĐ-CP Hướng dẫn Pháp lệnh ưu đãi người có công với cách mạng ban hành ngày 09/04/2013 )"
+  },
+  {
+    "source": "Điều 1.1.TL.1.7",
+    "target": "Điều 27",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 17. Điều kiện xác nhận liệt sĩ ; Điều 27. Điều kiện xác nhận của Nghị định 31/2013/NĐ-CP Hướng dẫn Pháp lệnh ưu đãi người có công với cách mạng ban hành ngày 09/04/2013 )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.3.4",
+    "target": "Điều 32",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 32. Bảo đảm kinh phí và cơ sở vật chất phục vụ hoạt động của Công an nhân dân của Luật 73/2014/QH13 Công an nhân dân ban hành ngày 27/11/2014 )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.3.5",
+    "target": "Điều 28.6.LQ.5",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 28.6.LQ.5. Điều kiện trưng mua, trưng dụng tài sản )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.3.7",
+    "target": "Điều 5",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 5. của Pháp lệnh 30/2000/PL-UBTVQH10 Bảo vệ bí mật Nhà nước ban hành ngày 28/12/2000 )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.3.11",
+    "target": "Điều 12",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 12. Nghiên cứu, chế tạo, sản xuất, sửa chữa vũ khí ; Điều 29. Nghiên cứu, chế tạo, sản xuất, sửa chữa công cụ hỗ trợ ; Điều 32. Nhập khẩu, xuất khẩu, kinh doanh công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Qu"
+  },
+  {
+    "source": "Điều 1.1.NĐ.3.11",
+    "target": "Điều 29",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 12. Nghiên cứu, chế tạo, sản xuất, sửa chữa vũ khí ; Điều 29. Nghiên cứu, chế tạo, sản xuất, sửa chữa công cụ hỗ trợ ; Điều 32. Nhập khẩu, xuất khẩu, kinh doanh công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Qu"
+  },
+  {
+    "source": "Điều 1.1.NĐ.3.11",
+    "target": "Điều 32",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 12. Nghiên cứu, chế tạo, sản xuất, sửa chữa vũ khí ; Điều 29. Nghiên cứu, chế tạo, sản xuất, sửa chữa công cụ hỗ trợ ; Điều 32. Nhập khẩu, xuất khẩu, kinh doanh công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Qu"
+  },
+  {
+    "source": "Điều 1.1.NĐ.3.12",
+    "target": "Điều 11",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 11. Giao nộp, tiếp nhận và xử lý vũ khí, vật liệu nổ, công cụ hỗ của Pháp lệnh 16/2011/UBTVQH12 Quản lý, sử dụng vũ khí, vật liệu nổ và công cụ hỗ trợ ban hành ngày 30/06/2011 )"
+  },
+  {
+    "source": "Điều 1.1.TT.1.8",
+    "target": "Điều 33",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 33. Sử dụng công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Quản lý, sử dụng vũ khí, vật liệu nổ và công cụ hỗ trợ ban hành ngày 30/06/2011 ; Điều 16. Quản lý, sử dụng vũ khí thô sơ ; Điều 24. Quản lý, sử dụng c"
+  },
+  {
+    "source": "Điều 1.1.TT.1.8",
+    "target": "Điều 16",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 33. Sử dụng công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Quản lý, sử dụng vũ khí, vật liệu nổ và công cụ hỗ trợ ban hành ngày 30/06/2011 ; Điều 16. Quản lý, sử dụng vũ khí thô sơ ; Điều 24. Quản lý, sử dụng c"
+  },
+  {
+    "source": "Điều 1.1.TT.1.8",
+    "target": "Điều 24",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 33. Sử dụng công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Quản lý, sử dụng vũ khí, vật liệu nổ và công cụ hỗ trợ ban hành ngày 30/06/2011 ; Điều 16. Quản lý, sử dụng vũ khí thô sơ ; Điều 24. Quản lý, sử dụng c"
+  },
+  {
+    "source": "Điều 1.1.TT.1.8",
+    "target": "Điều 12",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 33. Sử dụng công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Quản lý, sử dụng vũ khí, vật liệu nổ và công cụ hỗ trợ ban hành ngày 30/06/2011 ; Điều 16. Quản lý, sử dụng vũ khí thô sơ ; Điều 24. Quản lý, sử dụng c"
+  },
+  {
+    "source": "Điều 1.1.TT.1.8",
+    "target": "Điều 18",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 33. Sử dụng công cụ hỗ trợ của Pháp lệnh 16/2011/UBTVQH12 Quản lý, sử dụng vũ khí, vật liệu nổ và công cụ hỗ trợ ban hành ngày 30/06/2011 ; Điều 16. Quản lý, sử dụng vũ khí thô sơ ; Điều 24. Quản lý, sử dụng c"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.5",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.6",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.7",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.8",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.9",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.10",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.11",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.12",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.4",
+    "target": "Điều 1.1.TT.2.13",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.5. Sao hiệu ; Điều 1.1.TT.2.6. Cấp hiệu ; Điều 1.1.TT.2.7. Phù hiệu ; Điều 1.1.TT.2.8. Biển hiệu ; Điều 1.1.TT.2.9. Ký hiệu ; Điều 1.1.TT.2.10. Mũ ; Điều 1.1.TT.2.11. Quần áo xuân hè ; Điều 1.1.TT.2.1"
+  },
+  {
+    "source": "Điều 1.1.TT.2.5",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.6",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.7",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.8",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.9",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.10",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.11",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.12",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.TT.2.13",
+    "target": "Điều 1.1.TT.2.4",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 1.1.TT.2.4. Quy định về mẫu trang phục của lực lượng bảo vệ cơ quan, doanh nghiệp )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.1.4",
+    "target": "Điều 9",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 9. Quyền, nghĩa vụ của người bị thiệt hại của Luật 35/2009/QH12 Trách nhiệm bồi thường của Nhà nước ban hành ngày 18/06/2009 )"
+  },
+  {
+    "source": "Điều 1.1.NĐ.1.5",
+    "target": "Điều 8",
+    "type": "RELATED_TO",
+    "evidence": "(Điều này có nội dung liên quan đến Điều 8. Nhiệm vụ, quyền hạn của cơ quan có trách nhiệm bồi thường của Luật 35/2009/QH12 Trách nhiệm bồi thường của Nhà nước ban hành ngày 18/06/2009 )"
+  }
+]
