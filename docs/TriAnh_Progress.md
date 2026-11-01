@@ -21,8 +21,12 @@ luật thật và chưa tích hợp với retriever/orchestrator thật.
   phân loại ban đầu và extraction không suy diễn metadata.
 - `prompts/retrieval_evaluator/v1.txt`: tiêu chí relevance/sufficiency,
   quy tắc feedback action và giới hạn vai trò evaluator.
-- `src/evaluation/metrics.py`: các metric cơ bản Recall@k, Reciprocal Rank và
-  nDCG@k với kiểm tra input, loại trùng chunk trong thứ hạng.
+- `src/evaluation/metrics.py`: metrics retrieval gồm Precision@k, Recall@k,
+  Average Precision/MAP, Reciprocal Rank/MRR, Hit@k, nDCG@k; context precision
+  và recall dựa trên reference IDs; faithfulness, answer relevancy và factual
+  correctness tổng hợp các nhãn/similarity judgments có sẵn.
+- JSON output của LLM từ chối `NaN`, `Infinity`, `-Infinity`; lỗi decoder như
+  integer vượt giới hạn được bọc thành `LLMError` và giữ nguyên nguyên nhân.
 - Unit tests cho hai module và metric, sử dụng `BaseLLM` giả để không cần API
   key hoặc dịch vụ ngoài.
 - Cả hai module nhận `prompt_version` khi khởi tạo; mặc định dùng `v1`, khớp
@@ -69,9 +73,10 @@ evaluator = RetrievalEvaluator(
 3. Với retrieval không rỗng nhưng thiếu căn cứ, evaluator có thể đề xuất
    `refine_query`, `change_strategy` hoặc `stop`; orchestrator phải kiểm tra
    `max_iterations` và validate strategy sau khi merge.
-4. Các metric hiện dùng relevance nhị phân, phù hợp benchmark ban đầu; nếu nhóm
-   cần đánh giá độ liên quan theo mức độ hoặc theo câu trả lời, cần chốt nhãn
-   và metric bổ sung.
+4. Các metric theo stage chỉ tổng hợp ID, nhãn claim hoặc similarity scores
+   đã được gán/tính từ bên ngoài; không tự làm LLM claim extraction,
+   entailment hoặc embedding. Định nghĩa tham khảo Ragas:
+   https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/
 
 ## Kiểm thử
 

@@ -1,8 +1,10 @@
+import sys
 import unittest
 
 from core.exceptions import LLMError
 from core.interfaces import BaseLLM
 from core.schemas import QueryRequest
+from src.prompting import parse_json_object
 from src.query_understanding import QueryAnalyzer
 
 
@@ -50,6 +52,36 @@ class QueryAnalyzerTests(unittest.TestCase):
             QueryAnalyzer(FakeLLM("[]")).analyze(
                 QueryRequest(query="Câu hỏi pháp luật?")
             )
+
+    def test_non_finite_json_numbers_raise_llm_error(self) -> None:
+        for value in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(value=value):
+                response = (
+                    '{"rewritten_query":"query","intent":"legal_lookup",'
+                    f'"metadata":{{"score":{value}}}}}'
+                )
+                with self.assertRaises(LLMError) as raised:
+                    QueryAnalyzer(FakeLLM(response)).analyze(
+                        QueryRequest(query="Câu hỏi pháp luật?")
+                    )
+                self.assertIsInstance(raised.exception.__cause__, ValueError)
+
+    @unittest.skipUnless(
+        hasattr(sys, "get_int_max_str_digits")
+        and sys.get_int_max_str_digits() > 0,
+        "Python integer string conversion limit is unavailable or disabled",
+    )
+    def test_oversized_integer_raises_llm_error_with_decoder_cause(self) -> None:
+        digit_limit = sys.get_int_max_str_digits()
+        oversized_integer = "9" * (digit_limit + 1)
+
+        with self.assertRaises(LLMError) as raised:
+            parse_json_object(
+                f'{{"value":{oversized_integer}}}',
+                module_name="Query analyzer",
+            )
+
+        self.assertIsInstance(raised.exception.__cause__, ValueError)
 
 
 if __name__ == "__main__":

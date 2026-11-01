@@ -9,6 +9,10 @@ from core.exceptions import LLMError
 _PROMPT_DIRECTORY = Path(__file__).resolve().parents[1] / "prompts"
 
 
+def _reject_non_finite_constant(value: str) -> None:
+    raise ValueError(f"Non-finite JSON number is not allowed: {value}")
+
+
 def load_prompt(module_name: str, version: str) -> str:
     """Load a versioned prompt from the repository's prompts directory."""
     if not version or Path(version).name != version:
@@ -26,8 +30,8 @@ def load_prompt(module_name: str, version: str) -> str:
 def parse_json_object(response: str, *, module_name: str) -> dict:
     """Parse a provider response that must be one JSON object."""
     try:
-        value = json.loads(response)
-    except (json.JSONDecodeError, TypeError) as exc:
+        value = json.loads(response, parse_constant=_reject_non_finite_constant)
+    except (TypeError, ValueError) as exc:
         raise LLMError(f"{module_name} returned invalid JSON") from exc
     if not isinstance(value, dict):
         raise LLMError(f"{module_name} response must be a JSON object")
