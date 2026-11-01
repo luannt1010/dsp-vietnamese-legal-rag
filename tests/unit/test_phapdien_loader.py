@@ -37,7 +37,7 @@ class TestPhapDienLoader(unittest.TestCase):
         self.assertEqual(metadata.issued_date, "2004-12-03")
         self.assertEqual(metadata.effective_date, "2005-07-01")
         self.assertIn("Quốc Hội", metadata.issuing_authority or "")
-        self.assertEqual(metadata.status, "active")
+        self.assertEqual(metadata.status, "unknown")
 
     def test_extract_relations(self) -> None:
         relations = self.loader.extract_relations_from_row(self.sample_row)

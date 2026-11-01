@@ -53,7 +53,7 @@ Bộ luật này có hiệu lực thi hành từ ngày 01 tháng 01 năm 2021.
         self.assertIn("Quốc Hội", metadata.issuing_authority or "")
         self.assertEqual(metadata.issued_date, "2019-11-20")
         self.assertEqual(metadata.effective_date, "2021-01-01")
-        self.assertEqual(metadata.status, "active")
+        self.assertEqual(metadata.status, "unknown")
 
     def test_legal_parser_full_document(self) -> None:
         doc = self.parser.parse(self.sample_law_text)

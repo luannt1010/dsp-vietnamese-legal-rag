@@ -12,7 +12,7 @@
       "issued_date": "2004-12-03",
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -38,10 +38,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -70,7 +70,7 @@
       "issued_date": "2006-01-25",
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -99,7 +99,7 @@
       "issued_date": "2006-04-17",
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -128,7 +128,7 @@
       "issued_date": "2006-10-27",
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -154,10 +154,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -186,7 +186,7 @@
       "issued_date": "2011-05-18",
       "effective_date": "2011-07-10",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -212,10 +212,10 @@
       "document_number": "35/2011/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2011-07-10",
+      "issued_date": null,
       "effective_date": "2011-07-10",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -244,7 +244,7 @@
       "issued_date": "2013-01-09",
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -270,10 +270,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -302,7 +302,7 @@
       "issued_date": "2014-01-21",
       "effective_date": "2014-03-08",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -328,10 +328,10 @@
       "document_number": "06/2014/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2014-03-08",
+      "issued_date": null,
       "effective_date": "2014-03-08",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -360,7 +360,7 @@
       "issued_date": "2007-03-01",
       "effective_date": "2007-04-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -389,7 +389,7 @@
       "issued_date": "2014-10-16",
       "effective_date": "2014-12-06",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -415,10 +415,10 @@
       "document_number": "46/2014/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2014-12-06",
+      "issued_date": null,
       "effective_date": "2014-12-06",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -447,7 +447,7 @@
       "issued_date": "2016-02-06",
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -473,10 +473,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -505,7 +505,7 @@
       "issued_date": "2016-05-04",
       "effective_date": "2016-06-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -531,10 +531,10 @@
       "document_number": "02/2016/TTLT-BVHTTDL-BCA",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-06-25",
+      "issued_date": null,
       "effective_date": "2016-06-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -563,7 +563,7 @@
       "issued_date": "2016-06-20",
       "effective_date": "2016-08-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -589,10 +589,10 @@
       "document_number": "85/2016/TTLT-BTC-BCA",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-08-05",
+      "issued_date": null,
       "effective_date": "2016-08-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -618,10 +618,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -647,10 +647,10 @@
       "document_number": "16/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-02-22",
+      "issued_date": null,
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -676,10 +676,10 @@
       "document_number": "35/2011/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2011-07-10",
+      "issued_date": null,
       "effective_date": "2011-07-10",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -705,10 +705,10 @@
       "document_number": "06/2014/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2014-03-08",
+      "issued_date": null,
       "effective_date": "2014-03-08",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -734,10 +734,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -763,10 +763,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -792,10 +792,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -821,10 +821,10 @@
       "document_number": "35/2011/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2011-07-10",
+      "issued_date": null,
       "effective_date": "2011-07-10",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -850,10 +850,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -879,10 +879,10 @@
       "document_number": "06/2014/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2014-03-08",
+      "issued_date": null,
       "effective_date": "2014-03-08",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -908,10 +908,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -937,10 +937,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -966,10 +966,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -995,10 +995,10 @@
       "document_number": "02/2007/TTLT-BCA-BLĐTBXH-BTC",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2007-04-25",
+      "issued_date": null,
       "effective_date": "2007-04-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1024,10 +1024,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1053,10 +1053,10 @@
       "document_number": "02/2007/TTLT-BCA-BLĐTBXH-BTC",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2007-04-25",
+      "issued_date": null,
       "effective_date": "2007-04-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1082,10 +1082,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1111,10 +1111,10 @@
       "document_number": "02/2007/TTLT-BCA-BLĐTBXH-BTC",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2007-04-25",
+      "issued_date": null,
       "effective_date": "2007-04-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1140,10 +1140,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1169,10 +1169,10 @@
       "document_number": "02/2007/TTLT-BCA-BLĐTBXH-BTC",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2007-04-25",
+      "issued_date": null,
       "effective_date": "2007-04-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1198,10 +1198,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1227,10 +1227,10 @@
       "document_number": "02/2007/TTLT-BCA-BLĐTBXH-BTC",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2007-04-25",
+      "issued_date": null,
       "effective_date": "2007-04-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1256,10 +1256,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1285,10 +1285,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1314,10 +1314,10 @@
       "document_number": "46/2014/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2014-12-06",
+      "issued_date": null,
       "effective_date": "2014-12-06",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1343,10 +1343,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1372,10 +1372,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1401,10 +1401,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1430,10 +1430,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1459,10 +1459,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1488,10 +1488,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1517,10 +1517,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1546,10 +1546,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1575,10 +1575,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1604,10 +1604,10 @@
       "document_number": "02/2007/TTLT-BCA-BLĐTBXH-BTC",
       "document_type": "Thông Tư Liên Tịch",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2007-04-25",
+      "issued_date": null,
       "effective_date": "2007-04-25",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1633,10 +1633,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1662,10 +1662,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1691,10 +1691,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1720,10 +1720,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1749,10 +1749,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1778,10 +1778,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1807,10 +1807,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1836,10 +1836,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1865,10 +1865,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1894,10 +1894,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1923,10 +1923,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1952,10 +1952,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -1981,10 +1981,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2010,10 +2010,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2039,10 +2039,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2068,10 +2068,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2097,10 +2097,10 @@
       "document_number": "127/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-11-27",
+      "issued_date": null,
       "effective_date": "2006-11-27",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2126,10 +2126,10 @@
       "document_number": "35/2011/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2011-07-10",
+      "issued_date": null,
       "effective_date": "2011-07-10",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2155,10 +2155,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2184,10 +2184,10 @@
       "document_number": "46/2014/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2014-12-06",
+      "issued_date": null,
       "effective_date": "2014-12-06",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2213,10 +2213,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2242,10 +2242,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2271,10 +2271,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2300,10 +2300,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2329,10 +2329,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2358,10 +2358,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2387,10 +2387,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2416,10 +2416,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2445,10 +2445,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2474,10 +2474,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2503,10 +2503,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2532,10 +2532,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2561,10 +2561,10 @@
       "document_number": "06/2013/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2013-03-01",
+      "issued_date": null,
       "effective_date": "2013-03-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2590,10 +2590,10 @@
       "document_number": "08/2016/TT-BCA",
       "document_type": "Thông Tư",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2016-04-05",
+      "issued_date": null,
       "effective_date": "2016-04-05",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2619,10 +2619,10 @@
       "document_number": "06/2014/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2014-03-08",
+      "issued_date": null,
       "effective_date": "2014-03-08",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2648,10 +2648,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2677,10 +2677,10 @@
       "document_number": "38/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-05-15",
+      "issued_date": null,
       "effective_date": "2006-05-15",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2706,10 +2706,10 @@
       "document_number": "32/2004/QH11",
       "document_type": "Luật",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2005-07-01",
+      "issued_date": null,
       "effective_date": "2005-07-01",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2735,10 +2735,10 @@
       "document_number": "16/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-02-22",
+      "issued_date": null,
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2764,10 +2764,10 @@
       "document_number": "16/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-02-22",
+      "issued_date": null,
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2793,10 +2793,10 @@
       "document_number": "16/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-02-22",
+      "issued_date": null,
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2822,10 +2822,10 @@
       "document_number": "16/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-02-22",
+      "issued_date": null,
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2851,10 +2851,10 @@
       "document_number": "16/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-02-22",
+      "issued_date": null,
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],
@@ -2880,10 +2880,10 @@
       "document_number": "16/2006/NĐ-CP",
       "document_type": "Nghị Định",
       "issuing_authority": "Nhà nước Việt Nam",
-      "issued_date": "2006-02-22",
+      "issued_date": null,
       "effective_date": "2006-02-22",
       "expiry_date": null,
-      "status": "active",
+      "status": "unknown",
       "legal_domain": [
         "An_ninh_quoc_gia"
       ],

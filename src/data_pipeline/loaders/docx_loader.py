@@ -19,18 +19,32 @@ class DocxLoader(BaseDocumentLoader):
             document = docx.Document(str(path))
             elements: list[str] = []
 
-            # Extract paragraphs
-            for paragraph in document.paragraphs:
-                text = paragraph.text.strip()
-                if text:
-                    elements.append(text)
-
-            # Extract tables if any (commonly used in decrees and annexes)
-            for table in document.tables:
-                for row in table.rows:
-                    row_cells = [cell.text.strip() for cell in row.cells if cell.text.strip()]
-                    if row_cells:
-                        elements.append(" | ".join(row_cells))
+            # Extract paragraphs and tables in document order
+            if hasattr(document, "iter_inner_content"):
+                for item in document.iter_inner_content():
+                    if isinstance(item, docx.text.paragraph.Paragraph):
+                        text = item.text.strip()
+                        if text:
+                            elements.append(text)
+                    elif isinstance(item, docx.table.Table):
+                        for row in item.rows:
+                            row_cells = [cell.text.strip() for cell in row.cells if cell.text.strip()]
+                            if row_cells:
+                                elements.append(" | ".join(row_cells))
+            else:
+                # Fallback for earlier python-docx versions
+                for child in document.element.body:
+                    if child.tag.endswith("p"):
+                        p = docx.text.paragraph.Paragraph(child, document)
+                        text = p.text.strip()
+                        if text:
+                            elements.append(text)
+                    elif child.tag.endswith("tbl"):
+                        tbl = docx.table.Table(child, document)
+                        for row in tbl.rows:
+                            row_cells = [cell.text.strip() for cell in row.cells if cell.text.strip()]
+                            if row_cells:
+                                elements.append(" | ".join(row_cells))
 
             full_text = "\n".join(elements).strip()
             if not full_text:

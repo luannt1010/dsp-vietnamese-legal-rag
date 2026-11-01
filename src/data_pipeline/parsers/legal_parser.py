@@ -49,8 +49,9 @@ class LegalDocumentParser:
     SECTION_PATTERN = re.compile(
         r"^(Mục\s+\d+)[\.:\s\-—]*(.*)$", re.IGNORECASE
     )
+    # Support letter suffix in Article (e.g., "Điều 1a", "Điều 12b")
     ARTICLE_PATTERN = re.compile(
-        r"^(Điều\s+\d+)[\.:\s\-—]*(.*)$", re.IGNORECASE
+        r"^(Điều\s+\d+[a-zđA-ZĐ]*)[\.:\s\-—]*(.*)$", re.IGNORECASE
     )
     CLAUSE_PATTERN = re.compile(
         r"^(\d+)[\.\)]\s+(.*)$"
@@ -73,6 +74,7 @@ class LegalDocumentParser:
         current_section: str | None = None
         current_article: ParsedArticle | None = None
         current_clause: ParsedClause | None = None
+        current_point: ParsedPoint | None = None
 
         articles: list[ParsedArticle] = []
         chapters: list[str] = []
@@ -85,6 +87,9 @@ class LegalDocumentParser:
                 chap_title = chap_match.group(2).strip()
                 current_chapter = f"{chap_num}: {chap_title}" if chap_title else chap_num
                 chapters.append(current_chapter)
+                current_article = None
+                current_clause = None
+                current_point = None
                 continue
 
             # Check Section
@@ -95,17 +100,18 @@ class LegalDocumentParser:
                 current_section = f"{sec_num}: {sec_title}" if sec_title else sec_num
                 continue
 
-            # Check Article
+            # Check Article (preserves letter suffix, e.g. "1a", "12b")
             art_match = self.ARTICLE_PATTERN.match(line)
             if art_match:
                 art_num_str = art_match.group(1).strip()
                 art_title = art_match.group(2).strip()
-                num_only = re.search(r"\d+", art_num_str).group(0)
+                num_match = re.search(r"\d+[a-zđA-ZĐ]*", art_num_str, re.IGNORECASE)
+                art_num = num_match.group(0).lower() if num_match else "unknown"
 
-                art_id = f"{metadata.document_id}_DIEU_{num_only}"
+                art_id = f"{metadata.document_id}_DIEU_{art_num.upper()}"
                 current_article = ParsedArticle(
                     article_id=art_id,
-                    number=num_only,
+                    number=art_num,
                     title=f"{art_num_str}: {art_title}" if art_title else art_num_str,
                     content="",
                     chapter=current_chapter,
@@ -114,6 +120,7 @@ class LegalDocumentParser:
                 )
                 articles.append(current_article)
                 current_clause = None
+                current_point = None
                 continue
 
             # If we are inside an Article, check Clauses and Points
@@ -133,6 +140,7 @@ class LegalDocumentParser:
                         points=[],
                     )
                     current_article.clauses.append(current_clause)
+                    current_point = None
                     # Append to article overall content
                     current_article.content = (current_article.content + "\n" + line).strip()
                     continue
@@ -153,7 +161,9 @@ class LegalDocumentParser:
                     continue
 
                 else:
-                    # Additional continuation text for current clause or article
+                    # Additional continuation text: preserve in point, clause and article
+                    if current_point:
+                        current_point.content = (current_point.content + " " + line).strip()
                     if current_clause:
                         current_clause.content = (current_clause.content + " " + line).strip()
                     current_article.content = (current_article.content + "\n" + line).strip()

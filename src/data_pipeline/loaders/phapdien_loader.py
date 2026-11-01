@@ -13,7 +13,7 @@ import urllib.request
 
 from core.schemas.document import LegalChunk, LegalDocument, LegalMetadata
 from src.data_pipeline import DataPipelineError
-from src.data_pipeline.parsers.metadata_extractor import normalize_id
+from src.data_pipeline.parsers.metadata_extractor import normalize_id, validate_iso_date
 
 
 class PhapDienLoader:
@@ -31,7 +31,7 @@ class PhapDienLoader:
         re.IGNORECASE,
     )
     ISSUED_DATE_PATTERN = re.compile(
-        r"ngày\s+(\d{1,2})/(\d{1,2})/(\d{4})", re.IGNORECASE
+        r"(?:ban hành\s+)?ngày\s+(\d{1,2})/(\d{1,2})/(\d{4})", re.IGNORECASE
     )
     EFF_DATE_PATTERN = re.compile(
         r"có hiệu lực(?:\s+thi hành)?(?:\s+kể)?(?:\s+từ)?\s+ngày\s+(\d{1,2})/(\d{1,2})/(\d{4})",
@@ -94,28 +94,37 @@ class PhapDienLoader:
         type_match = self.DOC_TYPE_PATTERN.search(source_note)
         doc_type = type_match.group(1).title() if type_match else "Pháp điển"
 
-        # 3. Dates
-        issued_date = None
-        issued_match = self.ISSUED_DATE_PATTERN.search(source_note)
-        if issued_match:
-            d, m, y = issued_match.groups()
-            issued_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
-
+        # 3. Effective Date (extract first to isolate from issued date)
         effective_date = None
         eff_match = self.EFF_DATE_PATTERN.search(source_note)
+        eff_span = None
         if eff_match:
             d, m, y = eff_match.groups()
-            effective_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+            effective_date = validate_iso_date(int(y), int(m), int(d))
+            eff_span = eff_match.span()
 
-        # 4. Authority
+        # 4. Issued Date (exclude effective date span so effective date is not mistaken for issued date)
+        text_for_issued = (
+            (source_note[: eff_span[0]] + " " + source_note[eff_span[1] :])
+            if eff_span
+            else source_note
+        )
+        issued_date = None
+        issued_match = self.ISSUED_DATE_PATTERN.search(text_for_issued)
+        if issued_match:
+            d, m, y = issued_match.groups()
+            issued_date = validate_iso_date(int(y), int(m), int(d))
+
+        # 5. Authority
         auth_match = self.AUTHORITY_PATTERN.search(source_note)
         authority = auth_match.group(1).strip().title() if auth_match else "Nhà nước Việt Nam"
 
-        # 5. Title
+        # 6. Title
         title = f"{doc_type} số {doc_number}"
         if subject:
             title += f" về {subject}"
 
+        # 7. Status: do not speculate 'active' simply because dates exist; keep 'unknown'
         return LegalMetadata(
             document_id=document_id,
             title=title,
@@ -125,7 +134,7 @@ class PhapDienLoader:
             issued_date=issued_date,
             effective_date=effective_date,
             expiry_date=None,
-            status="active" if (effective_date or issued_date) else "unknown",
+            status="unknown",
             legal_domain=[normalize_id(subject)] if subject else [],
             amended_by=[],
             replaced_by=[],

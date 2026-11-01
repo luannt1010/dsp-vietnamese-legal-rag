@@ -1,5 +1,7 @@
 """Legal Metadata Extractor using Vietnamese administrative legal regex patterns."""
 
+import datetime
+import hashlib
 import re
 import unicodedata
 from core.schemas.document import LegalMetadata
@@ -14,6 +16,17 @@ def normalize_id(text: str) -> str:
     # Replace non-alphanumeric with underscore
     slug = re.sub(r"[^a-zA-Z0-9]+", "_", no_diacritics).strip("_")
     return slug
+
+
+def validate_iso_date(y: int, m: int, d: int) -> str | None:
+    """Validate calendar date and return ISO YYYY-MM-DD or None if invalid."""
+    try:
+        dt = datetime.date(y, m, d)
+        if 1945 <= dt.year <= 2100:
+            return dt.isoformat()
+        return None
+    except (ValueError, OverflowError):
+        return None
 
 
 class LegalMetadataExtractor:
@@ -56,7 +69,7 @@ class LegalMetadataExtractor:
         Returns:
             LegalMetadata object conforming to project schema.
         """
-        # Read the first ~2500 characters which usually contain the official header
+        # Read the first ~3000 characters which usually contain the official header
         header_text = text[:3000]
 
         # 1. Document Type
@@ -67,33 +80,49 @@ class LegalMetadataExtractor:
         number_match = self.DOC_NUMBER_PATTERN.search(header_text)
         if number_match:
             doc_number = number_match.group(1).strip()
+            document_id = normalize_id(doc_number)
         else:
             # Fallback if "Số: ..." is not explicitly marked
             sub_match = re.search(r"\b([0-9]+/[0-9]{4}/[A-ZĐ0-9\-_]+)\b", header_text)
-            doc_number = sub_match.group(1) if sub_match else "UNKNOWN_NUMBER"
+            if sub_match:
+                doc_number = sub_match.group(1)
+                document_id = normalize_id(doc_number)
+            else:
+                # Generate deterministic, distinct ID based on content to prevent collisions across different unnumbered docs
+                content_sample = (fallback_title or "") + "\n" + text[:1000]
+                digest = hashlib.sha256(content_sample.encode("utf-8")).hexdigest()[:10]
+                document_id = f"doc_unknown_{digest}"
+                doc_number = f"UNKNOWN_{digest}"
 
-        # 3. Document ID (slugified document number or fallback)
-        document_id = normalize_id(doc_number) if doc_number != "UNKNOWN_NUMBER" else "doc_unknown"
-
-        # 4. Authority
+        # 3. Authority
         authority_match = self.AUTHORITY_PATTERN.search(header_text)
         issuing_authority = authority_match.group(1).title() if authority_match else None
 
-        # 5. Issued Date
-        issued_date = None
-        issued_match = self.ISSUED_DATE_PATTERN.search(header_text)
-        if issued_match:
-            d, m, y = issued_match.groups()
-            issued_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
-
-        # 6. Effective Date (may be in header or closing provisions)
+        # 4. Effective Date (search full text as it often appears in closing provisions)
         effective_date = None
         eff_match = self.EFFECTIVE_DATE_PATTERN.search(text)
+        eff_span_header = None
         if eff_match:
             d, m, y = eff_match.groups()
-            effective_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+            effective_date = validate_iso_date(int(y), int(m), int(d))
+            # If the effective date appeared in the header, record its span to exclude from issued date search
+            eff_header_match = self.EFFECTIVE_DATE_PATTERN.search(header_text)
+            if eff_header_match:
+                eff_span_header = eff_header_match.span()
 
-        # 7. Document Title
+        # 5. Issued Date (exclude effective date span so effective date is not mistaken for issued date)
+        text_for_issued = (
+            (header_text[: eff_span_header[0]] + " " + header_text[eff_span_header[1] :])
+            if eff_span_header
+            else header_text
+        )
+        issued_date = None
+        issued_match = self.ISSUED_DATE_PATTERN.search(text_for_issued)
+        if issued_match:
+            d, m, y = issued_match.groups()
+            issued_date = validate_iso_date(int(y), int(m), int(d))
+
+        # 6. Document Title
         title = fallback_title or ""
         if not title:
             # Search for title right after document type
@@ -110,6 +139,7 @@ class LegalMetadataExtractor:
         # Clean title of common uppercase boilerplate
         title = re.sub(r"^(CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM|Độc lập - Tự do - Hạnh phúc)\s*", "", title).strip()
 
+        # 7. Status: do not guess 'active' merely because a date exists; keep 'unknown' without verified authority
         return LegalMetadata(
             document_id=document_id,
             title=title if title else f"Văn bản {doc_number}",
@@ -119,7 +149,7 @@ class LegalMetadataExtractor:
             issued_date=issued_date,
             effective_date=effective_date,
             expiry_date=None,
-            status="active" if (effective_date or issued_date) else "unknown",
+            status="unknown",
             legal_domain=[],
             amended_by=[],
             replaced_by=[],
