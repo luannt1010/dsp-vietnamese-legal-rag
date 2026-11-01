@@ -27,6 +27,15 @@ luật thật và chưa tích hợp với retriever/orchestrator thật.
   correctness tổng hợp các nhãn/similarity judgments có sẵn.
 - JSON output của LLM từ chối `NaN`, `Infinity`, `-Infinity`; lỗi decoder như
   integer vượt giới hạn được bọc thành `LLMError` và giữ nguyên nguyên nhân.
+- Đã xử lý các góp ý review của tech lead trong commit `61d5fee`
+  (`fix: validate LLM JSON and add RAG metrics`):
+  - Thêm `parse_constant` để từ chối các giá trị số không hữu hạn trong JSON.
+  - Bắt `ValueError` từ decoder và giữ nguyên nguyên nhân với
+    `raise LLMError(...) from exc`.
+  - Bổ sung regression tests cho `NaN`, `Infinity`, `-Infinity` và integer
+    vượt giới hạn chuyển đổi của Python.
+  - Bổ sung Precision@k, Average Precision/MAP, MRR, Hit@k, context precision,
+    context recall, faithfulness, answer relevancy và factual correctness.
 - Unit tests cho hai module và metric, sử dụng `BaseLLM` giả để không cần API
   key hoặc dịch vụ ngoài.
 - Cả hai module nhận `prompt_version` khi khởi tạo; mặc định dùng `v1`, khớp
@@ -78,9 +87,18 @@ evaluator = RetrievalEvaluator(
    entailment hoặc embedding. Định nghĩa tham khảo Ragas:
    https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/
 
+## Trạng thái branch và pull request
+
+- Feature branch: `feature/query-understanding-evaluation`.
+- Fix review đã được push trong commit `61d5fee`.
+- Pull request hiện tại: [#2](https://github.com/luannt1010/dsp-vietnamese-legal-rag/pull/2).
+   Commit fix và cập nhật báo cáo được push lên cùng branch nên cập nhật PR này;
+   không tạo PR trùng lặp.
+
 ## Kiểm thử
 
-Các bài test được viết theo `unittest`; đã chạy thành công 12 tests:
+Các bài test được viết theo `unittest`; sau khi sửa góp ý đã chạy thành công
+19 tests:
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
