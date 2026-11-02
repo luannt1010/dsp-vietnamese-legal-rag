@@ -1,5 +1,6 @@
 import importlib
-from core.config.settings import Settings
+from core.config.settings import Settings  # Re-export for external usage
+from core.config.loader import load_settings
 from core.exceptions import ConfigurationError
 
 # Mapping provider name -> module path and class name
@@ -15,7 +16,8 @@ def get_llm_instance():
     Raises:
         ConfigurationError: If provider is unknown or required configuration is missing.
     """
-    settings = Settings()
+    # Load full configuration using the project's loader rather than constructing Settings directly
+    settings = load_settings()
     provider = getattr(settings.llm, "provider", None)
     if not provider:
         raise ConfigurationError("LLM provider not configured in Settings.llm.provider")

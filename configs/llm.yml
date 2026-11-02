@@ -1,9 +1,9 @@
-provider: ollama
-  # local, openai or gemini; select after benchmarking.
+llm:
+  provider: ollama
+  base_url: null
   timeout_s: 30
   max_retries: 2
   retry_backoff_s: 1
-  # API key is supplied only through RAG__LLM__API_KEY.
   query_analyzer:
     model: null
     context_window_tokens: null

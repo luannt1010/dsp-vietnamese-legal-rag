@@ -26,7 +26,8 @@ class DummySettings:
 
 def test_get_llm_instance_ollama(monkeypatch):
     # Patch Settings so the factory sees the dummy configuration
-    monkeypatch.setattr("src.llm.factory.Settings", lambda: DummySettings())
+    # Patch the loader to return dummy settings
+    monkeypatch.setattr("src.llm.factory.load_settings", lambda: DummySettings())
     from src.llm.factory import get_llm_instance
     llm = get_llm_instance()
     # Import the class to compare types
@@ -34,7 +35,8 @@ def test_get_llm_instance_ollama(monkeypatch):
     assert isinstance(llm, OllamaCls)
 
 def test_get_llm_instance_unknown_provider(monkeypatch):
-    monkeypatch.setattr("src.llm.factory.Settings", lambda: type("S", (), {"llm": DummyBadSettings()}))
+    # Patch the loader to return a settings object with an unknown provider
+    monkeypatch.setattr("src.llm.factory.load_settings", lambda: type("S", (), {"llm": DummyBadSettings()}))
     from src.llm.factory import get_llm_instance
     with pytest.raises(ConfigurationError, match="Unsupported LLM provider"):
         get_llm_instance()

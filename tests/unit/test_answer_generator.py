@@ -10,6 +10,7 @@ from core.exceptions import LLMError
 from src.generation.answer_generator import AnswerGenerator
 from core.schemas.answer import AnswerGenerationRequest, LegalAnswer, LegalCitation
 from core.schemas.context import LegalContext
+from core.schemas.retrieval import RetrievedChunk
 
 # Helper dummy LLM
 class DummyLLM:
@@ -23,7 +24,16 @@ def make_request():
     context = LegalContext(
         query="What is the law?",
         context_text="some context",
-        chunks=[],
+        chunks=[
+            RetrievedChunk(
+                chunk_id="c1",
+                document_id="doc1",
+                content="evidence text",
+                score=1.0,
+                retrieval_method="test",
+                metadata={}
+            )
+        ],
         cited_document_ids=[],
     )
     return AnswerGenerationRequest(context=context, query="Explain law")

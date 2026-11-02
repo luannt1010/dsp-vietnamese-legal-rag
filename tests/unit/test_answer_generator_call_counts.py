@@ -12,14 +12,25 @@ from core.exceptions import LLMError
 from src.generation.answer_generator import AnswerGenerator
 from core.schemas.answer import AnswerGenerationRequest, LegalAnswer
 from core.schemas.context import LegalContext
+from core.schemas.retrieval import RetrievedChunk
 
 
 def make_valid_request() -> AnswerGenerationRequest:
-    """Create a minimal valid AnswerGenerationRequest used by the tests."""
+    """Create a minimal valid AnswerGenerationRequest used by the tests.
+    Includes a non-empty evidence chunk to satisfy the evidence gate.
+    """
+    chunk = RetrievedChunk(
+        chunk_id="c1",
+        document_id="doc1",
+        content="evidence text",
+        score=1.0,
+        retrieval_method="test",
+        metadata={}
+    )
     context = LegalContext(
         query="dummy query",
         context_text="some context",
-        chunks=[],
+        chunks=[chunk],
         cited_document_ids=[],
     )
     return AnswerGenerationRequest(context=context, query="Explain law")

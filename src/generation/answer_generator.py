@@ -43,10 +43,22 @@ class AnswerGenerator(BaseAnswerGenerator):
         5. Parse the JSON output.
         6. Validate the parsed dict against the ``LegalAnswer`` Pydantic model.
         """
-        # 1️⃣ Ensure a legal context is present
-        if not request.context or not request.context.model_dump():
-            from core.exceptions import InsufficientEvidenceError
+        # 1️⃣ Ensure a legal context is present and contains sufficient evidence
+        from core.exceptions import InsufficientEvidenceError
+        if not request.context:
             raise InsufficientEvidenceError("No legal context provided for answer generation.")
+        # Validate context_text is non‑empty
+        if not request.context.context_text or not str(request.context.context_text).strip():
+            raise InsufficientEvidenceError("Context text is empty or whitespace.")
+        # Validate there is at least one evidence chunk
+        if not request.context.chunks:
+            raise InsufficientEvidenceError("No evidence chunks provided.")
+        # Validate at least one chunk has non‑empty content
+        if not any(chunk.content and str(chunk.content).strip() for chunk in request.context.chunks):
+            raise InsufficientEvidenceError("All evidence chunks are empty or whitespace.")
+
+
+
 
         # 2️⃣ Load prompts
         system_prompt = self._load_prompt(self.system_prompt_path)

@@ -11,6 +11,7 @@ from unittest.mock import MagicMock
 from src.generation.answer_generator import AnswerGenerator
 from core.schemas.answer import AnswerGenerationRequest
 from core.schemas.context import LegalContext
+from core.schemas.retrieval import RetrievedChunk
 from core.exceptions import InsufficientEvidenceError, LLMError
 
 
@@ -26,12 +27,20 @@ class DummyLLM:
 
 def make_minimal_context() -> LegalContext:
     """Build a minimal but valid `LegalContext` for testing.
-    The values are arbitrary – they just need to satisfy the pydantic schema.
+    Includes a non‑empty evidence chunk to satisfy the evidence gate.
     """
+    chunk = RetrievedChunk(
+        chunk_id="c1",
+        document_id="doc1",
+        content="evidence text",
+        score=1.0,
+        retrieval_method="test",
+        metadata={}
+    )
     return LegalContext(
         query="dummy query",
         context_text="some context",
-        chunks=[],
+        chunks=[chunk],
         cited_document_ids=[],
     )
 
