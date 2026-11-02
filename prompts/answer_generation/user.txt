@@ -9,6 +9,7 @@ Instructions:
 2. Base your answer strictly on the provided Legal Context.
 3. Cite relevant legal provisions using the information available in the context.
 4. Do not invent legal articles, document names, article numbers, quotations, or citations.
+4a. Only cite items that exist in the provided Legal Context. If a citation cannot be verified, omit it and note insufficient evidence if needed.
 5. If the provided context is insufficient to answer the question, clearly state that the available evidence is insufficient.
 6. Distinguish information explicitly stated in the legal context from any interpretation.
 7. Keep the answer concise, clear, and legally precise.

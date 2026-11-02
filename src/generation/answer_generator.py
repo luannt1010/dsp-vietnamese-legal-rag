@@ -33,22 +33,44 @@ class AnswerGenerator(BaseAnswerGenerator):
         return template.format(legal_context=context_json, question=request.query)
 
     def generate(self, request: AnswerGenerationRequest) -> LegalAnswer:
-        # Validate context presence
+        """Generate a legal answer from the supplied request.
+
+        Steps:
+        1. Validate that a non‑empty ``LegalContext`` is provided.
+        2. Load system and user prompts and compose the full prompt.
+        3. Call the injected LLM.
+        4. Guard against empty or whitespace‑only responses.
+        5. Parse the JSON output.
+        6. Validate the parsed dict against the ``LegalAnswer`` Pydantic model.
+        """
+        # 1️⃣ Ensure a legal context is present
         if not request.context or not request.context.model_dump():
             from core.exceptions import InsufficientEvidenceError
             raise InsufficientEvidenceError("No legal context provided for answer generation.")
-        # Load system and user prompts
+
+        # 2️⃣ Load prompts
         system_prompt = self._load_prompt(self.system_prompt_path)
         user_prompt = self._render_user_prompt(request)
-        # Concatenate prompts according to the LLM provider contract.
         full_prompt = f"{system_prompt}\n\n{user_prompt}"
-        # Call the underlying LLM. Any LLMError is propagated as defined by the interface.
+
+        # 3️⃣ Generate raw output via the LLM abstraction
         raw_output = self.llm.generate(full_prompt)
-        # The LLM is expected to emit a JSON representation of ``LegalAnswer``.
+
+        # 4️⃣ Guard against empty / whitespace‑only responses
+        if raw_output is None or not str(raw_output).strip():
+            from core.exceptions import LLMError
+            raise LLMError("Empty response received from LLM.")
+
+        # 5️⃣ Parse JSON output
         try:
             answer_dict = json.loads(raw_output)
+        except json.JSONDecodeError as exc:
+            from core.exceptions import LLMError
+            raise LLMError(f"Failed to decode LLM JSON output: {exc}") from exc
+
+        # 6️⃣ Validate against LegalAnswer schema
+        try:
             return LegalAnswer(**answer_dict)
         except Exception as exc:
-            # Distinguish JSON decode errors from Pydantic validation errors
             from core.exceptions import LLMError
-            raise LLMError(f"Failed to parse LLM output as LegalAnswer: {exc}")
+            raise LLMError(f"Invalid LegalAnswer structure: {exc}") from exc

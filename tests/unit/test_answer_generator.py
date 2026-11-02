@@ -5,6 +5,7 @@ We mock the LLM to avoid network calls and verify that generate() parses JSON in
 import json
 from unittest.mock import MagicMock
 import pytest
+from core.exceptions import LLMError
 
 from src.generation.answer_generator import AnswerGenerator
 from core.schemas.answer import AnswerGenerationRequest, LegalAnswer, LegalCitation
@@ -57,5 +58,7 @@ def test_generate_invalid_json(monkeypatch):
     llm = DummyLLM("not a json")
     gen = AnswerGenerator(llm)
     request = make_request()
-    with pytest.raises(Exception):
+    with pytest.raises(LLMError) as exc_info:
         gen.generate(request)
+    # Verify original JSONDecodeError is preserved as __cause__
+    assert isinstance(exc_info.value.__cause__, json.JSONDecodeError)

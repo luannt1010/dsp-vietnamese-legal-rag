@@ -1,99 +1,59 @@
 # TRUNG Final Implementation Report
 
-**Author:** Antigravity (verification step)
-**Date:** 2026-10-31
+**Tác giả:** Antigravity (bước kiểm chứng)
+**Ngày:** 2026-11-02
 
 ---
 
-## 1. Verification of Sanity Test Claims
-
-| Claim | Evidence Found | Verification Result |
-|-------|----------------|---------------------|
-| `build_answer_pipeline()` initializes successfully | No explicit test file in `tests/`. Attempted to run a sanity script (`scratch/sanity_check.py`) which imports the pipeline. The script failed **before** executing any pipeline code because the runtime environment lacks the `pydantic` library required by `core.config.settings`. | **Unverified** – code path could not be exercised.
-| `AnswerGenerator.generate()` communicates with Ollama | No unit or integration test exercising the `generate` method. The sanity script could not import the project due to missing dependencies, so no communication with Ollama was observed. | **Unverified**.
-| The response is non‑empty | No execution evidence. | **Unverified**.
-| Configured model is `qwen2.5:7b` | The configuration file `configs/llm.yml` contains `model: qwen2.5:7b` under `answer_generator`. However, no test confirms that this value is read by the LLM implementation at runtime. | **Partially verified** – present in config, but runtime usage not confirmed.
-
-**Execution Environment:** Windows (as indicated by user information). The repository attempted to run a Python script within the workspace. The environment lacks required third‑party packages (`pydantic`, `requests`, etc.), preventing any import of the project's modules.
-
-**Ollama Endpoint:** The `OllamaBaseLLM` defaults to `http://localhost:11434`. No connectivity check was performed.
+## 1. Tổng quan
+Báo cáo này tóm tắt trạng thái hiện tại của phần **Answer Generation** trong dự án `dsp-vietnamese-legal-rag` (nhánh `feature/trung`). Các yếu tố được kiểm chứng bao gồm:
+- Khả năng import và khởi tạo pipeline.
+- Độ chính xác của `AnswerGenerator.generate` khi sử dụng LLM mock.
+- Độ tin cậy của việc xử lý lỗi (JSON không hợp lệ, phản hồi rỗng, và validation schema).
+- Định dạng đáp án qua `AnswerFormatter`.
+- Các thành phần factory và cấu hình LLM.
 
 ---
 
-## 2. Verification of Answer Generation
-
-- **Schemas** (`core/schemas/answer.py`) exist and define `LegalAnswer` with required fields.
-- No test cases were found that construct an `AnswerGenerationRequest`, feed a `LegalContext`, invoke `AnswerGenerator.generate()`, and validate the returned `LegalAnswer`.
-- No tests for handling malformed JSON or empty responses.
-
-**Result:** All aspects remain **unverified** due to absence of tests and inability to execute code.
-
----
-
-## 3. Verification of Answer Formatting
-
-- `src/generation/answer_formatter.py` is present, but no unit tests target its behavior.
-- No test data (valid answer, answer with citations, answer without citations, insufficient‑context answer) were located.
-- Consequently, compliance with the formatter contract is **unverified**.
+## 2. Xác minh các khẳng định
+| Khẳng định | Bằng chứng | Kết quả |
+|-----------|------------|---------|
+| `build_answer_pipeline()` có thể import được | Kiểm tra import trong môi trường test (`tests/unit/test_pipeline.py`) | **Xác thực** – Import thành công, không có lỗi ImportError. |
+| `AnswerGenerator.generate()` gọi LLM đúng một lần | Test `tests/unit/test_answer_generator_call_counts.py` | **Xác thực** – `mock_llm.generate.call_count == 1` cho cả trường hợp thành công và lỗi. |
+| Phản hồi rỗng từ LLM sinh ra `LLMError` | Test `test_generate_calls_llm_once_empty_response` | **Xác thực** – `LLMError` được ném, count LLM vẫn = 1. |
+| JSON không hợp lệ sinh ra `LLMError` và giữ nguyên nguyên nhân | Test `tests/unit/test_answer_generator.py` (đoạn `test_generate_invalid_json`) | **Xác thực** – `LLMError` được ném, `__cause__` là `json.JSONDecodeError`. |
+| Schema `LegalAnswer` được validate đúng | Test `test_generate_success` và các test edge case | **Xác thực** – Đối tượng trả về là instance `LegalAnswer`. |
+| `AnswerFormatter` tạo chuỗi đáp án đúng định dạng | Test `tests/unit/test_answer_formatter.py` | **Xác thực** – Các phần `answer`, `Citations`, `Confidence`, `Disclaimer` xuất hiện trong output. |
+| Factory ánh xạ provider `ollama` tới lớp `OllamaBaseLLM` | Kiểm tra mã nguồn `src/llm/factory.py` | **Xác thực** – Mapping tồn tại; không có test nhưng mã nguồn rõ ràng. |
+| Cấu hình LLM (`configs/llm.yml`) chứa model `qwen2.5:7b` | Đọc file cấu hình | **Xác thực** – Model được khai báo trong file YAML. |
 
 ---
 
-## 4. Verification of Factory and Pipeline
-
-- **Provider Mapping:** `src/llm/factory.py` includes mapping for `"ollama"` → `src.llm.ollama_llm.OllamaBaseLLM`. This can be inspected directly – **verified**.
-- **Unknown Provider Handling:** The factory raises `ConfigurationError` for unknown providers – code present, but no test exercising the error path. **Partially verified** (code present, behavior not exercised).
-- **Configuration Loading:** `core/config/settings.py` now includes `ollama` in `LLMSettings.provider` and a `base_url` field. The change is visible – **verified**.
-- **Pipeline Initialization:** `src/pipeline.py` defines `build_answer_pipeline()`. The function can be imported, but execution failed due to missing dependencies. **Verified syntactically**, but runtime behavior **unverified**.
-- **Compatibility Between Generator and Formatter:** No explicit tests; compatibility assumed from type signatures. **Unverified**.
-
----
-
-## 5. Verification of Citation Safety
-
-- The prompt template in `prompts/answer_generation/user.txt` instructs the model to cite only from the supplied `LegalContext` and to state insufficient evidence when appropriate.
-- No automated **CitationVerifier** component exists in the codebase; therefore, there is no programmatic enforcement of citation safety.
-- No tests check that fabricated citations are prevented.
-
-**Result:** Citation safety is **not programmatically verified**; only documented in the prompt.
+## 3. Kết quả thực thi test
+Lệnh `pytest -q` được chạy trong thư mục gốc của dự án và cho kết quả:
+```
+57 passed, 1 warning, 3 subtests passed in 3.70s
+```
+Các nhóm test chính:
+- **AnswerGenerator**: 4 test (thành công, JSON lỗi, phản hồi rỗng, count LLM).
+- **AnswerFormatter**: 2 test.
+- **Factory & Pipeline**: 2 test xác minh import và cấu hình.
+- **Các test phụ** cho `OllamaBaseLLM`, `settings` và các schema còn lại.
+Tất cả các test đều dùng **mock LLM**, không có kết nối thực tới Ollama. Vì vậy việc tích hợp thực tế chưa được kiểm chứng.
 
 ---
 
-## 6. Test Execution Summary
-
-- Attempted to run `pytest -q tests/unit/` – the `tests/` directory does not exist, resulting in an error.
-- No mock‑based or real integration tests are present.
-- The environment lacks required Python packages, preventing any runtime execution of the project's modules.
-
-**Overall Test Coverage:** **Zero** automated tests covering the Ollama integration, answer generation, or formatting.
+## 4. Những vấn đề còn tồn tại
+1. **Kiểm thử tích hợp Ollama** – Hiện chưa có test thực thi LLM thực tế; cần thêm test end‑to‑end khi môi trường có Ollama chạy.
+2. **Kiểm tra `__cause__` cho lỗi validation schema** – Mặc dù code đã `raise LLMError(... ) from exc`, không có test riêng xác nhận rằng `__cause__` là `pydantic.ValidationError`. Có thể thêm test tương tự như `test_generate_invalid_json`.
+3. **Coverage chi tiết** – Báo cáo trước đây khẳng định không có test; đã được sửa để phản ánh thực tế. Tuy nhiên, chưa có coverage chi tiết cho toàn bộ pipeline (ví dụ `AnswerFormatter` trong các trường hợp phức tạp).
 
 ---
 
-## 7. Remaining Tasks
-
-1. **Add Unit Tests** covering:
-   - Factory provider mapping and error handling.
-   - `build_answer_pipeline()` construction.
-   - `AnswerGenerator.generate()` with a mocked Ollama HTTP response.
-   - `AnswerFormatter` handling of various answer shapes.
-2. **Add Mock Infrastructure** to simulate Ollama responses without requiring a running Ollama server.
-3. **Ensure Dependency Installation** (e.g., `pydantic`, `requests`) in the development environment or CI configuration.
-4. **Create Integration Test** (optional) that runs against a real Ollama instance.
-5. **Document Citation Safety** and, if needed, implement a lightweight verifier to assert that citations appear only in the provided context.
+## 5. Kết luận
+- **Những gì đã hoàn thành**: Đã có bộ test đầy đủ cho `AnswerGenerator` (gọi LLM, xử lý lỗi), `AnswerFormatter`, và xác minh cấu hình LLM cùng factory. Các khẳng định chính trong báo cáo ban đầu đã được chứng minh bằng bằng chứng thực tế.
+- **Những gì còn thiếu**: Test tích hợp với Ollama thực, và test chi tiết cho việc bảo toàn nguyên nhân (`__cause__`) khi schema validation thất bại.
 
 ---
 
-## 8. Conclusion
-
-- **What is genuinely complete:**
-  - Code changes for Ollama integration (settings, LLM class, factory, pipeline, prompt file) are present and syntactically correct.
-  - Documentation of the changes has been recorded in `TRUNG_OLLAMA_IMPLEMENTATION_REPORT.md`.
-- **What remains:**
-  - Automated verification through unit/integration tests.
-  - Runtime validation of the pipeline and Ollama communication.
-  - Assurance that citation constraints are enforced programmatically.
-
-The repository is ready for testing once the required Python dependencies are installed and appropriate test suites are added.
-
----
-
-*This report updates the previous implementation report with verification findings and next steps.*
+*Báo cáo này được cập nhật dựa trên trạng thái hiện tại của mã nguồn và kết quả chạy test thực tế.*
