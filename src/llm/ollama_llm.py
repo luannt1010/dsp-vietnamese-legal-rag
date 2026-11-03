@@ -1,100 +1,74 @@
-import json
-import time
-from typing import Any, Dict
+"""Role-specific Ollama adapter using the shared deadline-aware HTTP client."""
 
-import requests
-from requests.exceptions import RequestException
+from collections.abc import Callable
+
 from core.config.settings import Settings
-
-from core.exceptions import LLMError
-from core.interfaces.base_llm import BaseLLM
+from core.exceptions import ConfigurationError, LLMError, LLMContextWindowError, LLMOutputTruncatedError
+from core.interfaces import BaseLLM
+from src.infrastructure.ollama_client import OllamaClient
 
 
 class OllamaBaseLLM(BaseLLM):
-    """Concrete LLM implementation for Ollama local models.
-    Accepts optional Settings injection for easier testing.
+    def __init__(
+        self, settings: Settings | None = None, *, role: str = "answer_generator",
+        token_counter: Callable[[str], int] | None = None, response_schema: dict | None = None,
+    ) -> None:
+        settings = settings or Settings()
+        config = settings.llm
+        if config.provider != "ollama":
+            raise LLMError("OllamaBaseLLM instantiated with non-ollama provider")
+        if role not in {"query_analyzer", "retrieval_evaluator", "answer_generator", "citation_verifier"}:
+            raise ConfigurationError(f"unsupported LLM role: {role}")
+        self.role = getattr(config, role)
+        if not self.role.model:
+            raise ConfigurationError(f"llm.{role}.model is required")
+        self.base_url = config.base_url or "http://localhost:11434"
+        self.model = self.role.model
+        self.timeout = config.timeout_s
+        self.max_retries = config.max_retries
+        self.backoff = config.retry_backoff_s
+        self.token_counter = token_counter
+        self.response_schema = response_schema
+        self.keep_alive = getattr(config, "keep_alive", "1m")
+        self.think = getattr(config, "think", False)
+        self.client = OllamaClient(
+            self.base_url, timeout_s=self.timeout, max_retries=self.max_retries, backoff_s=self.backoff,
+        )
 
-    It posts to ``http://localhost:11434/api/generate`` (or a custom base URL from
-    ``Settings.llm``) with the model name and prompt. Retries, timeouts and back‑off
-    respect the values defined in ``configs/llm.yml`` under the ``llm`` section.
-    """
-
-    def __init__(self, settings: Settings | None = None) -> None:
-        # Allow injection of Settings for testing; default to a Settings instance
-        if settings is None:
-            settings = Settings()
-        llm_cfg = settings.llm
-        if llm_cfg.provider != "ollama":
-            raise LLMError("OllamaBaseLLM instantiated with non‑ollama provider")
-
-        # Ollama base URL – default as per spec
-        self.base_url: str = llm_cfg.base_url or "http://localhost:11434"
-        self.model: str = llm_cfg.answer_generator.model  # Expected to be set (e.g., qwen2.5:7b)
-        self.timeout: float = llm_cfg.timeout_s
-        self.max_retries: int = llm_cfg.max_retries
-        self.backoff: float = llm_cfg.retry_backoff_s
-        # Generation settings
-        self.temperature: float | None = getattr(llm_cfg.answer_generator, "temperature", None)
-        self.max_output_tokens: int | None = getattr(llm_cfg.answer_generator, "max_output_tokens", None)
-        self._timeout: float = self.timeout
-
-    def _post(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        url = f"{self.base_url.rstrip('/')}/api/generate"
-        try:
-            # Use provided timeout (may be per‑attempt remaining time)
-            response = requests.post(url, json=payload, timeout=self._timeout)
-            response.raise_for_status()
-            return response.json()
-        except Exception as exc:
-            # Catch any exception (including RequestException) and wrap as LLMError
-            raise LLMError(f"Ollama request failed: {exc}") from exc
+    def _post(self, payload: dict) -> dict:
+        return self.client.post("/api/chat", payload)
 
     def generate(self, prompt: str) -> str:
-        # Prepare payload according to Ollama API spec
-        # Build options dict with only non-None values
-        _options = {}
-        if self.temperature is not None:
-            _options["temperature"] = self.temperature
-        if self.max_output_tokens is not None:
-            _options["num_predict"] = self.max_output_tokens
-        payload = {
-            "model": self.model,
-            "prompt": prompt,
-            "stream": False,
-            **({"options": _options} if _options else {}),
+        if not isinstance(prompt, str) or not prompt.strip():
+            raise ValueError("LLM prompt must not be blank")
+        window = getattr(self.role, "context_window_tokens", None)
+        output = getattr(self.role, "max_output_tokens", 2048)
+        if self.token_counter is not None:
+            count = self.token_counter(prompt)
+            if type(count) is not int or count <= 0:
+                raise LLMError("token_counter must return a positive integer")
+            overhead = getattr(self.role, "prompt_overhead_tokens", 128)
+            if window is not None and count + overhead + output > window:
+                raise LLMContextWindowError(
+                    f"LLM prompt ({count}) + template overhead ({overhead}) + output ({output}) "
+                    f"exceed the model context window ({window})"
+                )
+        options = {
+            "temperature": getattr(self.role, "temperature", 0), "num_predict": output,
+            # A model's default novelty penalties can alter verbatim quotations.
+            "presence_penalty": 0, "repeat_penalty": 1.0,
         }
-        # Fresh deadline for this generate call
-        deadline = time.monotonic() + self.timeout
-        attempt = 0
-        while True:
-            # Compute remaining time for this attempt
-            remaining = deadline - time.monotonic()
-            if remaining <= 0:
-                raise LLMError("Ollama generate deadline exceeded")
-            # Use remaining time as request timeout
-            self._timeout = remaining
-            try:
-                # Perform the request
-                result = self._post(payload)
-            except LLMError:
-                # Network or request failure – retry according to policy
-                attempt += 1
-                if attempt > self.max_retries:
-                    raise
-                backoff = min(self.backoff, deadline - time.monotonic())
-                if backoff > 0:
-                    time.sleep(backoff)
-                continue
-            except Exception as exc:
-                # Unexpected exception – also retry
-                attempt += 1
-                if attempt > self.max_retries:
-                    raise LLMError(f"Unexpected error during generate: {exc}")
-                backoff = min(self.backoff, deadline - time.monotonic())
-                if backoff > 0:
-                    time.sleep(backoff)
-                continue
-            # Successful request – validate protocol fields
-            if "response" not in result:
-                raise LLMError("Ollama response missing 'response' field")
-            return result["response"].strip()
+        if window is not None:
+            options["num_ctx"] = window
+        result = self._post({
+            "model": self.model, "messages": [{"role": "user", "content": prompt}], "stream": False,
+            "format": self.response_schema or "json", "options": options,
+            "think": self.think, "keep_alive": self.keep_alive,
+        })
+        if isinstance(result, dict) and result.get("done_reason") == "length":
+            raise LLMOutputTruncatedError(f"Ollama output was truncated at the configured token limit ({output})")
+        message = result.get("message") if isinstance(result, dict) else None
+        response = message.get("content") if isinstance(message, dict) else None
+        if not isinstance(response, str) or not response.strip():
+            raise LLMError("Ollama response missing 'message.content' string or containing empty output")
+        return response.strip()

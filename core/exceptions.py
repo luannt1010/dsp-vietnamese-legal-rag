@@ -21,6 +21,14 @@ class LLMError(RAGError):
     """An LLM call failed or its structured output could not be validated."""
 
 
+class LLMContextWindowError(LLMError):
+    """The complete prompt and reserved output cannot fit the model window."""
+
+
+class LLMOutputTruncatedError(LLMError):
+    """The provider stopped at its output limit before completing the answer."""
+
+
 class InsufficientEvidenceError(RAGError):
     """The available context cannot support answer generation."""
 

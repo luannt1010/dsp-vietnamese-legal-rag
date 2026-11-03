@@ -1,26 +1,13 @@
 """Metadata filtering and source-preserving conversions shared by adapters."""
 
 from collections.abc import Iterable, Mapping
-from math import isfinite
+from math import hypot, isfinite
 
 from pydantic import JsonValue
 
 from core.exceptions import EmbeddingError, RetrievalError
-from core.schemas import LegalChunk, LegalMetadata, RetrievalResult, RetrievedChunk
-
-
-LOCATION_FIELDS = ("chapter", "article", "clause", "point", "parent_id")
-FILTER_FIELDS = frozenset(LegalMetadata.model_fields) | set(LOCATION_FIELDS) | {"source_url"}
-
-
-def validate_filters(filters: Mapping[str, JsonValue]) -> None:
-    """Reject unsupported fields/operators even when the index is empty."""
-    for key, value in filters.items():
-        if key not in FILTER_FIELDS:
-            raise ValueError(f"unsupported metadata filter: {key}")
-        values = value if isinstance(value, list) else [value]
-        if any(isinstance(item, (dict, list)) for item in values):
-            raise ValueError(f"filter {key} only supports scalar equality or a list of scalars")
+from core.filtering import FILTER_FIELDS, LOCATION_FIELDS, validate_filters
+from core.schemas import LegalChunk, RetrievalResult, RetrievedChunk
 
 
 def matches_filters(metadata: Mapping[str, JsonValue], filters: Mapping[str, JsonValue]) -> bool:
@@ -106,3 +93,13 @@ def validate_vector(vector: Iterable[float], dimension: int) -> list[float]:
 def positive_integer(value: int, name: str) -> None:
     if type(value) is not int or value <= 0:
         raise ValueError(f"{name} must be a positive integer")
+
+
+def normalize_vector(vector: list[float]) -> list[float]:
+    """Normalize a validated vector without overflowing its norm."""
+    scale = max(abs(value) for value in vector)
+    if scale == 0:
+        raise EmbeddingError("normalization requires a nonzero embedding")
+    scaled = [value / scale for value in vector]
+    norm = hypot(*scaled)
+    return [value / norm for value in scaled]

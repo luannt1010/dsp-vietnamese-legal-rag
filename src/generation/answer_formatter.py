@@ -19,13 +19,13 @@ class AnswerFormatter:
                 parts = []
 
                 if cit.article:
-                    parts.append(f"Điều {cit.article}")
+                    parts.append(cit.article if cit.article.casefold().startswith("điều ") else f"Điều {cit.article}")
 
                 if cit.clause:
-                    parts.append(f"khoản {cit.clause}")
+                    parts.append(cit.clause if cit.clause.casefold().startswith("khoản ") else f"khoản {cit.clause}")
 
                 if cit.point:
-                    parts.append(f"điểm {cit.point}")
+                    parts.append(cit.point if cit.point.casefold().startswith("điểm ") else f"điểm {cit.point}")
 
                 extra = ", ".join(parts)
 

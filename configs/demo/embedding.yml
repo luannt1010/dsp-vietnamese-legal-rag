@@ -1,0 +1,12 @@
+embedding:
+  provider: ollama
+  base_url: http://127.0.0.1:11434
+  model: bge-m3:latest
+  dimension: 1024
+  normalize: true
+  device: cpu
+  batch_size: 8
+  timeout_s: 90
+  max_retries: 1
+  tokenizer_model: BAAI/bge-m3
+  tokenizer_revision: 5617a9f61b028005a4858fdac845db406aefb181

@@ -9,6 +9,7 @@ from core.schemas.evaluation import (
     RetrievalEvaluationResult,
 )
 from core.schemas.metadata import MetadataFilterRequest, MetadataFilterResult
+from core.schemas.orchestration import PipelineResult, PipelineStatus, RetrievalRound
 from core.schemas.query import QueryAnalysisResult, QueryRequest
 from core.schemas.retrieval import (
     GraphRetrievalRequest,
@@ -24,7 +25,8 @@ __all__ = [
     "AnswerGenerationRequest", "ContextBuilderRequest", "GraphRetrievalRequest",
     "GraphRetrievalResult", "LegalAnswer", "LegalChunk", "LegalCitation",
     "LegalContext", "LegalDocument", "LegalMetadata", "MetadataFilterRequest",
-    "MetadataFilterResult", "NextAction", "QueryAnalysisResult", "QueryRequest",
+    "MetadataFilterResult", "NextAction", "PipelineResult", "PipelineStatus",
+    "QueryAnalysisResult", "QueryRequest", "RetrievalRound",
     "RetrievalEvaluationRequest", "RetrievalEvaluationResult", "RetrievalRequest",
     "RetrievalResult", "RetrievalRouteRequest", "RetrievalStrategy", "RetrievedChunk",
 ]

@@ -6,6 +6,7 @@ and transforms them into project-standard LegalDocument, LegalChunk, and Knowled
 """
 
 import json
+import hashlib
 from pathlib import Path
 import re
 import urllib.parse
@@ -140,6 +141,10 @@ class PhapDienLoader:
             replaced_by=[],
             repealed_by=[],
             related_documents=[],
+            source_url=row.get("source_url") or next((link["href"] for link in row.get("source_links", []) or [] if link.get("href")), None),
+            source_record_id=row.get("record_id"),
+            topic_id=row.get("topic_id"), topic_title=row.get("topic_title_vi"),
+            subject_id=row.get("subject_id"), subject_title=subject or None,
         )
 
     def extract_relations_from_row(self, row: dict) -> list[dict]:
@@ -162,9 +167,10 @@ class PhapDienLoader:
 
         return relations
 
-    def transform_row(self, row: dict) -> tuple[LegalDocument, LegalChunk, list[dict]]:
+    def transform_row(self, row: dict, *, dataset: str | None = None, revision: str | None = None) -> tuple[LegalDocument, LegalChunk, list[dict]]:
         """Transform a raw Phap Dien row into LegalDocument, LegalChunk, and relation dicts."""
         metadata = self.extract_metadata_from_row(row)
+        metadata.source_dataset, metadata.source_revision = dataset, revision
         content_text = row.get("content_text", "") or ""
         article_title = row.get("article_title", "") or ""
         chapter_title = row.get("chapter_title", "") or None
@@ -174,9 +180,16 @@ class PhapDienLoader:
 
         chunk_slug = normalize_id(f"{article_id_raw}")
         chunk_id = f"{metadata.document_id}_{chunk_slug}"
+        if dataset is not None:
+            if not row.get("record_id"):
+                raise DataPipelineError("Hugging Face source row requires record_id")
+            # Display article codes can be reused across subjects. The dataset
+            # record key, namespaced by dataset, identifies this source instead.
+            namespace = hashlib.sha256(dataset.encode()).hexdigest()[:12]
+            chunk_id = f"phapdien:{namespace}:{row['record_id']}"
 
         # Context-enriched content: Prepend hierarchy breadcrumbs so chunk has full standalone semantic context
-        breadcrumb_parts = [p for p in [subject_title, topic_title, chapter_title] if p]
+        breadcrumb_parts = [p for p in [topic_title, subject_title, chapter_title] if p]
         breadcrumb = " > ".join(breadcrumb_parts)
         enriched_content = f"[{breadcrumb}]\n{article_title}\n{content_text}".strip()
 
@@ -200,5 +213,7 @@ class PhapDienLoader:
         )
 
         relations = self.extract_relations_from_row(row)
+        if dataset is not None:
+            relations = [{**edge, "source": chunk_id, "evidence_chunk_ids": [chunk_id]} for edge in relations]
 
         return legal_doc, legal_chunk, relations

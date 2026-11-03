@@ -1,2 +1,6 @@
-# src/generation/__init__.py
-"""Generation package for LLM answer generation and formatting."""
+"""Answer context construction and generation components."""
+
+from src.generation.citation_verifier import CitationVerifier
+from src.generation.context_builder import LegalContextBuilder
+
+__all__ = ["CitationVerifier", "LegalContextBuilder"]

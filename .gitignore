@@ -63,3 +63,7 @@ venv.bak/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local demo credentials, model cache, prepared indexes and traces
+.runtime/
+data/runtime/

@@ -1,90 +1,103 @@
+"""Retries live in the shared transport and consume the parent request budget."""
+
+from unittest.mock import Mock, patch
 
 import pytest
+from requests.exceptions import ConnectionError
 
-from src.llm.ollama_llm import OllamaBaseLLM
 from core.config.settings import Settings
-from core.exceptions import LLMError
+from core.deadline import request_deadline
+from core.exceptions import LLMError, LLMContextWindowError, LLMOutputTruncatedError
+from src.llm.ollama_llm import OllamaBaseLLM
 
 
-def make_settings():
-    settings = Settings()
-
-    role_settings = settings.llm.answer_generator.model_copy(
-        update={"model": "test-model"}
-    )
-
-    llm_settings = settings.llm.model_copy(
-        update={
-            "provider": "ollama",
-            "base_url": "http://localhost:11434",
-            "answer_generator": role_settings,
-            "timeout_s": 0.2,
-            "max_retries": 1,
-            "retry_backoff_s": 0.001,
-        }
-    )
-
-    return settings.model_copy(update={"llm": llm_settings})
+def make_llm():
+    return OllamaBaseLLM(Settings.model_validate({
+        "llm": {
+            "provider": "ollama", "base_url": "http://localhost:11434",
+            "answer_generator": {"model": "test-model"},
+            "timeout_s": 30, "max_retries": 1, "retry_backoff_s": 0.001,
+        },
+    }))
 
 
-call_log = []
+def test_retry_exhausted_raises():
+    with patch("src.infrastructure.ollama_client.requests.post", side_effect=ConnectionError("offline")) as post:
+        with pytest.raises(LLMError):
+            make_llm().generate("prompt")
+    assert post.call_count == 2
 
 
-def mock_post_success(self, payload):
-    call_log.append("success")
-    return {
-        "response": '{"answer": "ok", "citations": [], "confidence": 0.5}'
-    }
+def test_missing_response_no_retry():
+    response = Mock()
+    response.json.return_value = {"other": "missing response"}
+    with patch("src.infrastructure.ollama_client.requests.post", return_value=response) as post:
+        with pytest.raises(LLMError, match="missing 'message.content'"):
+            make_llm().generate("prompt")
+    assert post.call_count == 1
 
 
-def mock_post_fail(self, payload):
-    call_log.append("fail")
-    raise LLMError("Network error")
+def test_successful_retry():
+    response = Mock()
+    response.json.return_value = {"message": {"content": "ok"}}
+    with patch("src.infrastructure.ollama_client.requests.post", side_effect=[ConnectionError("offline"), response]) as post:
+        assert make_llm().generate("prompt") == "ok"
+    assert post.call_count == 2
 
 
-def mock_post_missing(self, payload):
-    call_log.append("missing")
-    return {"other": "no response field"}
+def test_parent_deadline_bounds_http_timeout():
+    clock = [0.0]
+    response = Mock()
+    response.json.return_value = {"message": {"content": "ok"}}
+    with patch("core.deadline.monotonic", side_effect=lambda: clock[0]):
+        with request_deadline(5):
+            clock[0] = 4.0
+            with patch("src.infrastructure.ollama_client.requests.post", return_value=response) as post:
+                assert make_llm().generate("prompt") == "ok"
+            assert post.call_args.kwargs["timeout"] == 1.0
 
 
-def test_retry_exhausted_raises(monkeypatch):
-    call_log.clear()
-    monkeypatch.setattr(OllamaBaseLLM, "_post", mock_post_fail)
-
-    llm = OllamaBaseLLM(settings=make_settings())
-
-    with pytest.raises(LLMError):
-        llm.generate("prompt")
-
-    assert call_log.count("fail") == 2
+def test_context_budget_rejects_before_network_call():
+    llm = make_llm()
+    llm.role = llm.role.model_copy(update={"context_window_tokens": 4096})
+    llm.token_counter = lambda text: 4000
+    with patch("src.infrastructure.ollama_client.requests.post") as post:
+        with pytest.raises(LLMContextWindowError, match="exceed"):
+            llm.generate("prompt")
+    post.assert_not_called()
 
 
-def test_missing_response_no_retry(monkeypatch):
-    call_log.clear()
-    monkeypatch.setattr(OllamaBaseLLM, "_post", mock_post_missing)
-
-    llm = OllamaBaseLLM(settings=make_settings())
-
-    with pytest.raises(LLMError) as exc:
-        llm.generate("prompt")
-
-    assert "missing 'response'" in str(exc.value)
-    assert call_log == ["missing"]
+@pytest.mark.parametrize("content", ['{"answer":"partial', ""])
+def test_truncated_chat_output_is_rejected(content):
+    response = Mock()
+    response.json.return_value = {"message": {"content": content}, "done_reason": "length"}
+    with patch("src.infrastructure.ollama_client.requests.post", return_value=response):
+        with pytest.raises(LLMOutputTruncatedError, match="truncated"):
+            make_llm().generate("prompt")
 
 
-def test_successful_retry(monkeypatch):
-    call_log.clear()
+def test_prompt_and_output_fit_at_exact_window_boundary():
+    llm = make_llm()
+    llm.role = llm.role.model_copy(update={"context_window_tokens": 8192, "max_output_tokens": 2048})
+    llm.token_counter = lambda _: 6016  # 6016 + 128 overhead + 2048 output = 8192.
+    response = Mock()
+    response.json.return_value = {"message": {"content": "ok"}}
+    with patch("src.infrastructure.ollama_client.requests.post", return_value=response) as post:
+        assert llm.generate("prompt") == "ok"
+        assert post.call_args.kwargs["json"]["options"]["num_predict"] == 2048
+        llm.token_counter = lambda _: 6017
+        with pytest.raises(LLMContextWindowError):
+            llm.generate("prompt")
+        post.assert_called_once()
 
-    seq = [mock_post_fail, mock_post_success]
 
-    def side_effect(self, payload):
-        func = seq.pop(0)
-        return func(self, payload)
-
-    monkeypatch.setattr(OllamaBaseLLM, "_post", side_effect)
-
-    llm = OllamaBaseLLM(settings=make_settings())
-    result = llm.generate("prompt")
-
-    assert call_log == ["fail", "success"]
-    assert result.startswith('{"answer"')
+@pytest.mark.parametrize("payload", [
+    {"message": None}, {"message": []}, {"message": {"content": None}},
+    {"message": {"content": 123}}, {"message": {"content": []}}, None,
+])
+def test_malformed_response_is_llm_error(payload):
+    response = Mock()
+    response.json.return_value = payload
+    with patch("src.infrastructure.ollama_client.requests.post", return_value=response):
+        with pytest.raises(LLMError):
+            make_llm().generate("prompt")

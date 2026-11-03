@@ -4,9 +4,24 @@ import json
 from pathlib import Path
 
 from core.exceptions import LLMError
+from core.schemas.retrieval import RetrievedChunk
 
 
 _PROMPT_DIRECTORY = Path(__file__).resolve().parents[1] / "prompts"
+_EVIDENCE_METADATA = (
+    "document_number", "title", "document_type", "article", "clause", "point",
+    "legal_domain", "status", "issued_date", "effective_date", "expiry_date",
+)
+
+
+def source_evidence(chunks: list[RetrievedChunk]) -> list[dict]:
+    """Full legal text and relevant metadata, without transport/index provenance."""
+    return [{
+        "source": number, "chunk_id": chunk.chunk_id, "document_id": chunk.document_id,
+        "content": chunk.content,
+        "metadata": {key: chunk.metadata[key] for key in _EVIDENCE_METADATA
+                     if key in chunk.metadata and chunk.metadata[key] is not None},
+    } for number, chunk in enumerate(chunks, 1)]
 
 
 def _reject_non_finite_constant(value: str) -> None:

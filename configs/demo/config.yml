@@ -1,0 +1,17 @@
+app:
+  environment: development
+api:
+  host: 127.0.0.1
+  port: 8000
+  cors_origins: []
+logging:
+  level: INFO
+  format: text
+  log_query_text: false
+  log_context_text: false
+pipeline:
+  max_iterations: 3
+  timeout_s: 240
+context:
+  max_context_tokens: 4096
+  prompt_reserve_tokens: 1024

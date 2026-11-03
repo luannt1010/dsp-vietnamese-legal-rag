@@ -26,6 +26,15 @@ class LegalMetadata(ContractModel):
     replaced_by: list[str] = Field(default_factory=list)
     repealed_by: list[str] = Field(default_factory=list)
     related_documents: list[str] = Field(default_factory=list)
+    # Article-level provenance survives splitting and retrieval unchanged.
+    source_url: str | None = None
+    source_record_id: str | None = None
+    source_dataset: str | None = None
+    source_revision: str | None = None
+    topic_id: str | None = None
+    topic_title: str | None = None
+    subject_id: str | None = None
+    subject_title: str | None = None
 
 
 class LegalDocument(ContractModel):

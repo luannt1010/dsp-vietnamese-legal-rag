@@ -114,7 +114,7 @@ def load_settings(
         )
         raise ConfigurationError("Invalid configuration: " + errors) from None
     paths = settings.data_pipeline.model_dump()
-    for name in ("raw_dir", "processed_dir", "chunks_dir"):
+    for name in ("raw_dir", "processed_dir", "chunks_dir", "source_chunks_file", "relations_file", "index_dir"):
         if not paths[name].is_absolute():
             paths[name] = (directory.parent / paths[name]).resolve()
     return Settings.model_validate({

@@ -1,0 +1,191 @@
+"""Coordinate the RAG pipeline and feedback loop from specification section 6."""
+
+import logging
+from collections.abc import Callable
+from typing import TypeVar
+
+from pydantic import JsonValue
+
+from core.config.settings import PipelineSettings
+from core.deadline import remaining_timeout, request_deadline
+from core.exceptions import InsufficientEvidenceError, RAGError
+from core.interfaces import (
+    BaseAnswerGenerator, BaseCitationVerifier, BaseEvaluator, BaseLegalContextBuilder,
+    BaseMetadataFilter, BaseQueryAnalyzer, BaseRetrievalRouter,
+)
+from core.schemas import (
+    AnswerGenerationRequest, ContextBuilderRequest, LegalAnswer, LegalContext,
+    MetadataFilterRequest, MetadataFilterResult, PipelineResult, PipelineStatus,
+    QueryAnalysisResult, QueryRequest, RetrievalEvaluationRequest, RetrievalEvaluationResult,
+    RetrievalResult, RetrievalRound, RetrievalRouteRequest, RetrievalStrategy,
+)
+from src.retrieval.service import RetrievalService
+
+
+_logger = logging.getLogger(__name__)
+_T = TypeVar("_T")
+_FALLBACK_MESSAGES = {
+    "insufficient_evidence": "Chưa đủ căn cứ từ các nguồn đã truy xuất để trả lời câu hỏi này.",
+    "failed": "Hệ thống chưa thể hoàn tất việc kiểm tra căn cứ. Vui lòng thử lại sau.",
+    "timed_out": "Đã hết thời gian xử lý trước khi xác minh đầy đủ căn cứ cho câu trả lời.",
+}
+
+
+class RAGPipeline:
+    """Inject modules once; keep query, overrides and history local to each run."""
+
+    def __init__(
+        self, *,
+        query_analyzer: BaseQueryAnalyzer,
+        metadata_filter: BaseMetadataFilter,
+        retrieval_router: BaseRetrievalRouter,
+        retrieval_service: RetrievalService,
+        retrieval_evaluator: BaseEvaluator,
+        context_builder: BaseLegalContextBuilder,
+        answer_generator: BaseAnswerGenerator,
+        citation_verifier: BaseCitationVerifier,
+        settings: PipelineSettings | None = None,
+    ) -> None:
+        self._query_analyzer = query_analyzer
+        self._metadata_filter = metadata_filter
+        self._retrieval_router = retrieval_router
+        self._retrieval_service = retrieval_service
+        self._retrieval_evaluator = retrieval_evaluator
+        self._context_builder = context_builder
+        self._answer_generator = answer_generator
+        self._citation_verifier = citation_verifier
+        self._settings = settings or PipelineSettings()
+
+    def run(self, request: QueryRequest) -> LegalAnswer:
+        """Return the verified answer, or an explicit fallback with no citations."""
+        return self.run_with_trace(request).answer
+
+    def run_with_trace(self, request: QueryRequest) -> PipelineResult:
+        """Keep every round's query, strategy, results and evaluation reason.
+
+        Invalid caller input raises ValidationError. Expected component/runtime
+        failures produce a fallback; programming errors are not silently hidden.
+        """
+        request = QueryRequest.model_validate(request.model_dump())
+        rounds: list[RetrievalRound] = []
+        analysis = None
+        filters: dict[str, JsonValue] = {}
+        stage = "analysis"
+        with request_deadline(self._settings.timeout_s):
+            try:
+                analysis = QueryAnalysisResult.model_validate(
+                    _call(self._query_analyzer.analyze, request).model_dump(),
+                )
+                stage = "metadata_filtering"
+                filters = MetadataFilterResult.model_validate(_call(
+                    self._metadata_filter.build_filters,
+                    MetadataFilterRequest(metadata=analysis.metadata),
+                ).model_dump()).filters
+                current_query = analysis.rewritten_query
+                overrides: dict[str, JsonValue] = {}
+
+                for iteration in range(self._settings.max_iterations):
+                    # Return through the router on every feedback round. Partial
+                    # overrides persist; a later override replaces only its keys.
+                    stage = "routing"
+                    routed = _call(self._retrieval_router.route, RetrievalRouteRequest(
+                        query=current_query, intent=analysis.intent,
+                        filters=filters, entities=analysis.entities,
+                    ))
+                    strategy = self._retrieval_service.settings.validate_strategy(
+                        RetrievalStrategy.model_validate({**routed.model_dump(), **overrides}),
+                    )
+                    record = RetrievalRound(
+                        iteration=iteration, query=current_query,
+                        strategy=strategy.model_copy(deep=True),
+                    )
+                    rounds.append(record)
+
+                    stage = "retrieval"
+                    with request_deadline(self._retrieval_service.settings.timeout_s):
+                        retrieved = RetrievalResult.model_validate(_call(
+                            self._retrieval_service.retrieve,
+                            query=current_query, filters=filters, strategy=strategy,
+                            entities=analysis.entities,
+                        ).model_dump())
+                    record.retrieval_result = retrieved.model_copy(deep=True)
+
+                    stage = "evaluation"
+                    evaluation = RetrievalEvaluationResult.model_validate(_call(
+                        self._retrieval_evaluator.evaluate,
+                        RetrievalEvaluationRequest(
+                            original_query=request.query, current_query=current_query,
+                            retrieval_result=retrieved.model_copy(deep=True),
+                            iteration=iteration, max_iterations=self._settings.max_iterations,
+                        ),
+                    ).model_dump())
+                    record.evaluation = evaluation.model_copy(deep=True)
+
+                    # An empty retrieval can never authorize generation, even if
+                    # a custom evaluator incorrectly calls it sufficient.
+                    if evaluation.is_relevant and evaluation.is_sufficient:
+                        if retrieved.results:
+                            break
+                        return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters)
+                    if evaluation.next_action == "stop" or iteration == self._settings.max_iterations - 1:
+                        return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters)
+                    if evaluation.next_action == "refine_query":
+                        current_query = evaluation.refined_query or current_query
+                    elif evaluation.next_action == "change_strategy":
+                        overrides.update(evaluation.strategy_override)
+
+                stage = "context"
+                context = LegalContext.model_validate(_call(
+                    self._context_builder.build,
+                    ContextBuilderRequest(retrieval_result=retrieved, original_query=request.query),
+                ).model_dump())
+                if not context.chunks or not context.context_text.strip():
+                    raise InsufficientEvidenceError("context contains no usable evidence")
+
+                stage = "generation"
+                answer = LegalAnswer.model_validate(_call(
+                    self._answer_generator.generate,
+                    AnswerGenerationRequest(context=context.model_copy(deep=True), query=request.query),
+                ).model_dump())
+                stage = "verification"
+                verified = LegalAnswer.model_validate(_call(
+                    self._citation_verifier.verify, answer, context,
+                ).model_dump())
+                return PipelineResult(answer=verified, status="completed", rounds=rounds, query=request.query, analysis=analysis, filters=filters)
+            except (RAGError, ValueError, TimeoutError) as exc:
+                if isinstance(exc, TimeoutError):
+                    status = "timed_out"
+                elif isinstance(exc, InsufficientEvidenceError):
+                    status = "insufficient_evidence"
+                else:
+                    status = "failed"
+                # Do not log query text, source content, credentials or raw
+                # provider error messages. Detailed history is explicitly returned.
+                _logger.warning("rag_pipeline_failed stage=%s error_type=%s", stage, type(exc).__name__)
+                _logger.debug("rag_pipeline_failure_details", exc_info=True)
+                return _fallback(status, rounds, stage=stage, error_type=type(exc).__name__, query=request.query, analysis=analysis, filters=filters)
+
+
+def _call(operation: Callable[..., _T], *args, **kwargs) -> _T:
+    """Check the shared deadline before and after a synchronous component call."""
+    remaining_timeout()
+    try:
+        return operation(*args, **kwargs)
+    finally:
+        remaining_timeout()
+
+
+def _fallback(
+    status: PipelineStatus, rounds: list[RetrievalRound], *,
+    stage: str | None = None, error_type: str | None = None,
+    analysis: QueryAnalysisResult | None = None, filters: dict[str, JsonValue] | None = None,
+    query: str | None = None,
+) -> PipelineResult:
+    return PipelineResult(
+        answer=LegalAnswer(
+            answer=_FALLBACK_MESSAGES[status], citations=[], confidence=0.0,
+            disclaimer="Chưa có kết luận pháp lý được xác minh cho câu hỏi này.",
+        ),
+        status=status, rounds=rounds, failure_stage=stage, error_type=error_type,
+        query=query, analysis=analysis, filters=filters or {},
+    )

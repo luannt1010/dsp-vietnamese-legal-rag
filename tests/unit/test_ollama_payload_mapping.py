@@ -35,7 +35,7 @@ def mock_post(self, payload):
     global captured_payload
     captured_payload = payload
     return {
-        "response": '{"answer": "ok", "citations": [], "confidence": 0.5}'
+        "message": {"content": '{"answer": "ok", "citations": [], "confidence": 0.5}'}
     }
 
 
@@ -46,7 +46,7 @@ def test_payload_includes_options(monkeypatch):
     result = llm.generate("test prompt")
 
     assert captured_payload["model"] == "test-model"
-    assert captured_payload["prompt"] == "test prompt"
+    assert captured_payload["messages"] == [{"role": "user", "content": "test prompt"}]
 
     options = captured_payload.get("options")
 

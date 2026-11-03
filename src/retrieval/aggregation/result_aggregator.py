@@ -3,6 +3,7 @@
 from collections.abc import Sequence
 
 from pydantic import JsonValue
+from core.filtering import supported_relations
 
 from core.exceptions import RetrievalError
 from core.interfaces.base_reranker import BaseReRanker
@@ -36,9 +37,10 @@ class ResultAggregator:
         candidates = fused[:request.candidate_k]
         if use_rerank and candidates:
             candidates = self._rerank(request, candidates)
+        retained = candidates[:request.top_k]
         return RetrievalResult(
-            query=request.query, results=candidates[:request.top_k],
-            total_candidates=total, relations=relations or [],
+            query=request.query, results=retained, total_candidates=total,
+            relations=list(supported_relations(relations or [], retained)),
         )
 
     def _rerank(self, request: RetrievalRequest, hits: list[RetrievedChunk]) -> list[RetrievedChunk]:

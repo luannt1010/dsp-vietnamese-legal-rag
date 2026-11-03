@@ -17,7 +17,7 @@ class DummyLLM(BaseLLM):
     def generate(self, prompt: str) -> str:
         self.called = True
         self.last_prompt = prompt
-        return '{"answer": "Test answer", "citations": [], "confidence": 0.5}'
+        return '{"answer": "Test answer", "sources": [1]}'
 
 
 def make_context(**kwargs):
@@ -38,7 +38,7 @@ def make_chunk(content: str = "Chunk content"):
         content=content,
         score=1.0,
         retrieval_method="bm25",
-        metadata={},
+        metadata={"document_number": "MOCK-01"},
     )
 
 

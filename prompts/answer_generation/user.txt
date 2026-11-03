@@ -1,15 +1,14 @@
 User Question:
 {question}
 
-Legal Context (JSON):
+Legal Context (JSON string containing source blocks, Metadata and original content):
 {legal_context}
 
 Instructions:
 1. Answer the user's question in Vietnamese.
 2. Base your answer strictly on the provided Legal Context.
-3. Cite relevant legal provisions using the information available in the context.
+3. Select the source block numbers that support your answer in the sources array.
 4. Do not invent legal articles, document names, article numbers, quotations, or citations.
-4a. Only cite items that exist in the provided Legal Context. If a citation cannot be verified, omit it and note insufficient evidence if needed.
 5. If the provided context is insufficient to answer the question, clearly state that the available evidence is insufficient.
 6. Distinguish information explicitly stated in the legal context from any interpretation.
 7. Keep the answer concise, clear, and legally precise.
@@ -17,5 +16,5 @@ Instructions:
 Output Requirements:
 - Return only one valid JSON object.
 - Do not include Markdown code fences or additional explanations outside the JSON.
-- Follow the exact field names, data types, and structure defined by the LegalAnswer schema.
+- Follow the exact field names, data types, and structure defined by the AnswerDraft schema.
 - Do not add fields that are not defined in the schema.

@@ -3,6 +3,7 @@
 from pydantic import JsonValue
 
 from core.config.settings import RetrievalSettings
+from core.filtering import supported_relations
 from core.exceptions import RetrievalError
 from core.interfaces import BaseGraphRetriever, BaseRetriever
 from core.interfaces.base_reranker import BaseReRanker
@@ -75,17 +76,7 @@ class RetrievalService:
             # A relation must not reintroduce documents/evidence excluded by filters.
             allowed_hits = [hit for branch in rankings for hit in branch
                             if matches_filters(hit.metadata, request.filters)]
-            document_ids = {hit.document_id for hit in allowed_hits}
-            chunk_ids = {hit.chunk_id for hit in allowed_hits}
-            relations = [relation for relation in graph.relations if (
-                isinstance(relation.get("source_document_id"), str)
-                and relation["source_document_id"] in document_ids
-                and isinstance(relation.get("target_document_id"), str)
-                and relation["target_document_id"] in document_ids
-                and isinstance(relation.get("evidence_chunk_ids"), list)
-                and all(isinstance(chunk_id, str) and chunk_id in chunk_ids
-                        for chunk_id in relation["evidence_chunk_ids"])
-            )]
+            relations = list(supported_relations(graph.relations, allowed_hits))
         return self.aggregator.aggregate(
             request, rankings, use_rerank=selected.use_rerank, relations=relations,
         )

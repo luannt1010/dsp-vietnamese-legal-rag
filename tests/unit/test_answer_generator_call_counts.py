@@ -25,7 +25,7 @@ def make_valid_request() -> AnswerGenerationRequest:
         content="evidence text",
         score=1.0,
         retrieval_method="test",
-        metadata={}
+        metadata={"document_number": "MOCK-01"}
     )
     context = LegalContext(
         query="dummy query",
@@ -41,9 +41,7 @@ def test_generate_calls_llm_once_success():
     # Prepare a valid LegalAnswer JSON payload
     answer_payload = {
         "answer": "The law is ...",
-        "citations": [],
-        "confidence": 0.99,
-        "disclaimer": None,
+        "sources": [1],
     }
     # Mock LLM with a MagicMock to track calls
     mock_llm = MagicMock()

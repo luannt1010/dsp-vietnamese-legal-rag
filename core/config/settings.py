@@ -66,11 +66,13 @@ class RRFSettings(ConfigModel):
 
 
 class RerankerSettings(ConfigModel):
+    backend: Literal["sentence_transformers", "onnx"] = "sentence_transformers"
     model: NonEmptyString | None = None
     revision: NonEmptyString | None = None
     batch_size: PositiveInt = 16
     max_input_tokens: PositiveInt = 512
     device: Literal["auto", "cpu", "cuda"] = "auto"
+    file_name: NonEmptyString = "onnx/model_quint8_avx2.onnx"
 
 
 class GraphSettings(ConfigModel):
@@ -123,7 +125,8 @@ class RetrievalSettings(ConfigModel):
 
 
 class EmbeddingSettings(ConfigModel):
-    provider: Literal["local", "openai", "gemini"] | None = None
+    provider: Literal["local", "openai", "gemini", "ollama"] | None = None
+    base_url: NonEmptyString = "http://localhost:11434"
     model: NonEmptyString | None = None
     revision: NonEmptyString | None = None
     dimension: PositiveInt | None = None
@@ -132,6 +135,8 @@ class EmbeddingSettings(ConfigModel):
     device: Literal["auto", "cpu", "cuda"] = "auto"
     timeout_s: PositiveFloat = 30.0
     max_retries: NonNegativeInt = 2
+    tokenizer_model: NonEmptyString | None = None
+    tokenizer_revision: NonEmptyString | None = None
     api_key: SecretStr | None = None
 
 
@@ -141,6 +146,9 @@ class LLMRoleSettings(ConfigModel):
     temperature: Annotated[float, Field(ge=0, le=2)] = 0.0
     max_output_tokens: PositiveInt = 2048
     prompt_version: NonEmptyString = "v1"
+    tokenizer_model: NonEmptyString | None = None
+    tokenizer_revision: NonEmptyString | None = None
+    prompt_overhead_tokens: NonNegativeInt = 128
 
 
 class LLMSettings(ConfigModel):
@@ -150,6 +158,8 @@ class LLMSettings(ConfigModel):
     timeout_s: PositiveFloat = 30.0
     max_retries: NonNegativeInt = 2
     retry_backoff_s: PositiveFloat = 1.0
+    keep_alive: NonEmptyString = "1m"
+    think: bool = False
     query_analyzer: LLMRoleSettings = Field(
         default_factory=lambda: LLMRoleSettings(max_output_tokens=512),
     )
@@ -157,9 +167,14 @@ class LLMSettings(ConfigModel):
         default_factory=lambda: LLMRoleSettings(max_output_tokens=768),
     )
     answer_generator: LLMRoleSettings = Field(default_factory=LLMRoleSettings)
+    citation_verifier: LLMRoleSettings = Field(
+        default_factory=lambda: LLMRoleSettings(max_output_tokens=512),
+    )
 
 
 class VectorDatabaseSettings(ConfigModel):
+    backend: Literal["in_memory", "pgvector"] = "in_memory"
+    index_type: Literal["exact", "hnsw", "ivfflat"] = "hnsw"
     host: NonEmptyString = "localhost"
     port: Annotated[int, Field(strict=True, ge=1, le=65535)] = 5432
     database: NonEmptyString = "legal_rag"
@@ -170,9 +185,16 @@ class VectorDatabaseSettings(ConfigModel):
     distance_metric: Literal["cosine", "inner_product", "l2"] = "cosine"
     pool_size: PositiveInt = 5
     connect_timeout_s: PositiveFloat = 5.0
+    ef_search: PositiveInt = 100
+    hnsw_m: PositiveInt = 16
+    ef_construction: PositiveInt = 128
+    ivfflat_lists: PositiveInt = 10
+    ivfflat_probes: PositiveInt = 3
 
 
 class GraphDatabaseSettings(ConfigModel):
+    backend: Literal["in_memory", "neo4j"] = "in_memory"
+    namespace: NonEmptyString = "legal_rag"
     uri: NonEmptyString = "bolt://localhost:7687"
     database: NonEmptyString = "neo4j"
     username: NonEmptyString = "neo4j"
@@ -187,8 +209,9 @@ class DatabaseSettings(ConfigModel):
 
 
 class ChunkingSettings(ConfigModel):
-    strategy: Literal["legal", "hierarchical"] = "hierarchical"
+    strategy: Literal["fixed", "legal", "hierarchical"] = "hierarchical"
     tokenizer_model: NonEmptyString | None = None
+    tokenizer_revision: NonEmptyString | None = None
     target_tokens: PositiveInt = 512
     overlap_tokens: NonNegativeInt = 64
 
@@ -199,11 +222,27 @@ class ChunkingSettings(ConfigModel):
         return self
 
 
+class DataSourceSettings(ConfigModel):
+    type: Literal["json", "huggingface"] = "json"
+    dataset: NonEmptyString = "tmquan/phapdien-moj-gov-vn"
+    config: Literal["documents"] = "documents"
+    split: Literal["train"] = "train"
+    revision: NonEmptyString = "main"
+    topics: tuple[NonEmptyString, ...] = ()
+    subjects: tuple[NonEmptyString, ...] = ()
+    read_batch_size: PositiveInt = 512
+
+
 class DataPipelineSettings(ConfigModel):
+    source: DataSourceSettings = Field(default_factory=DataSourceSettings)
+    auto_prepare: bool = False
     raw_dir: Path = Path("data/raw")
     processed_dir: Path = Path("data/processed")
     chunks_dir: Path = Path("data/chunks")
     indexing_batch_size: PositiveInt = 100
+    source_chunks_file: Path = Path("data/chunks/phapdien_chunks.json")
+    relations_file: Path = Path("data/processed/phapdien_relations.json")
+    index_dir: Path = Path("data/runtime")
     chunking: ChunkingSettings = Field(default_factory=ChunkingSettings)
 
 
@@ -233,7 +272,7 @@ class Settings(ConfigModel):
         )
         if role.context_window_tokens is not None and required > role.context_window_tokens:
             raise ValueError("answer model context window is smaller than configured token budgets")
-        for role in (self.llm.query_analyzer, self.llm.retrieval_evaluator, role):
+        for role in (self.llm.query_analyzer, self.llm.retrieval_evaluator, role, self.llm.citation_verifier):
             if role.context_window_tokens is not None and role.max_output_tokens >= role.context_window_tokens:
                 raise ValueError("max_output_tokens must be less than the model context window")
         return self
@@ -265,7 +304,7 @@ class Settings(ConfigModel):
                 missing.append("llm.provider")
             if self.llm.provider in ("openai", "gemini") and not self.llm.api_key:
                 missing.append("llm.api_key")
-            for name in ("query_analyzer", "retrieval_evaluator", "answer_generator"):
+            for name in ("query_analyzer", "retrieval_evaluator", "answer_generator", "citation_verifier"):
                 role = getattr(self.llm, name)
                 for field in ("model", "context_window_tokens"):
                     if getattr(role, field) is None:

@@ -11,9 +11,10 @@ from core.interfaces.base_metadata_filter import BaseMetadataFilter
 from core.interfaces.base_query_analyzer import BaseQueryAnalyzer
 from core.interfaces.base_retrieval_router import BaseRetrievalRouter
 from core.interfaces.base_retriever import BaseRetriever
+from core.interfaces.base_reranker import BaseReRanker
 
 __all__ = [
     "BaseAnswerGenerator", "BaseCitationVerifier", "BaseEmbedding", "BaseEvaluator",
     "BaseGraphRetriever", "BaseLLM", "BaseLegalContextBuilder", "BaseMetadataFilter",
-    "BaseQueryAnalyzer", "BaseRetrievalRouter", "BaseRetriever",
+    "BaseQueryAnalyzer", "BaseRetrievalRouter", "BaseRetriever", "BaseReRanker",
 ]
