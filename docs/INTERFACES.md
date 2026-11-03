@@ -49,6 +49,12 @@ và output khác nên dùng `BaseGraphRetriever` riêng. Giữ tên method `sear
 như mục 4; `retrieval_service.retrieve` trong pseudo-code mục 6 là tầng điều phối
 cao hơn, chưa phải contract của từng retriever.
 
+Implementation retrieval, cách inject adapter/model và ví dụ chạy local được
+mô tả tại [RETRIEVAL.md](RETRIEVAL.md).
+
+Implementation context, cách inject tokenizer của answer model và quy tắc giữ
+nguồn trong ngân sách được mô tả tại [CONTEXT_BUILDER.md](CONTEXT_BUILDER.md).
+
 Hai ABC phụ trợ trong cây thư mục mục 3 được định nghĩa ở mức tối thiểu:
 
 | ABC | Method / property | Quy ước |
@@ -57,6 +63,7 @@ Hai ABC phụ trợ trong cây thư mục mục 3 được định nghĩa ở m�
 | `BaseEmbedding` | `embed_query(text: str) -> list[float]` | Vector hữu hạn, đúng số chiều |
 | `BaseEmbedding` | `embed_documents(texts: list[str]) -> list[list[float]]` | Giữ số lượng/thứ tự; input `[]` trả `[]` |
 | `BaseLLM` | `generate(prompt: str) -> str` | Adapter trả text; agent/generator parse thành schema của mình |
+| `BaseReRanker` | `rerank(query: QueryAnalysisResult, documents: LegalContext, top_k: int = 5) -> LegalContext` | Giữ nguồn, xếp hạng chunk, dựng lại text và document ID từ các chunk được giữ |
 
 `BaseLLM.generate` khác `BaseAnswerGenerator.generate`: Trung dùng adapter LLM
 bên trong answer generator và phải trả `LegalAnswer`, không trả text thô.
@@ -121,6 +128,11 @@ nguyên bằng document ID và chunk ID; không để LLM tạo URL.
 Verifier còn phải kiểm tra nguồn hỗ trợ nhận định; chỉ có câu trích dẫn xuất
 hiện trong chunk chưa đủ chứng minh toàn bộ câu trả lời đúng.
 
+Implementation `src.generation.CitationVerifier` kiểm tra citation bằng code
+trước, sau đó dùng `BaseLLM` được inject để đánh giá nhận định với các nguồn
+đã khớp. Xem [CITATION_VERIFICATION.md](CITATION_VERIFICATION.md) cho quy tắc,
+prompt và xử lý lỗi.
+
 Không suy ra hiệu lực từ `status` tĩnh. Xác định phạm vi, thời điểm áp dụng và
 quan hệ sửa đổi/thay thế cần logic nghiệp vụ riêng. Cách biểu diễn hiệu lực
 theo từng quy định và graph ontology vẫn cần nhóm chốt theo mục 11.
@@ -146,6 +158,11 @@ Luồng đúng là `analysis.metadata` -> `MetadataFilterRequest` ->
 `MetadataFilterResult.filters` -> router/retriever. Pseudo-code mục 6 đang
 truyền `analysis.metadata` trực tiếp; khi triển khai phải chèn bước filter này.
 
+Implementation `src.preprocessing.MetadataFilter`, ý nghĩa `applied_filters`
+và ví dụ nối với retrieval nằm tại [METADATA_FILTERING.md](METADATA_FILTERING.md).
+`None` là equality với null; số không hữu hạn bị từ chối. Danh sách field và
+validation được dùng chung qua `core/filtering.py` để các tầng không lệch contract.
+
 `GraphRetrievalRequest` trong mục 4.6 chưa có `filters` hay `top_k`. Tầng tích
 hợp phải áp dụng bộ lọc lên kết quả graph trước khi hợp nhất, tránh graph mở
 rộng vượt phạm vi truy vấn. `max_depth` là số cạnh tối đa được duyệt, không phải
@@ -170,6 +187,15 @@ edge và enum quan hệ trước khi triển khai graph schema.
 `continue` là retrieval thêm một vòng. Evaluator không gọi retriever.
 Orchestrator phải dừng tại `max_iterations` kể cả evaluator vẫn đề xuất retry.
 Kết quả không có hit không được đánh giá là đủ căn cứ.
+
+`src.orchestration.RAGPipeline` triển khai luồng này; `run(QueryRequest)` trả
+`LegalAnswer`, `run_with_trace(QueryRequest)` trả `PipelineResult` cùng lịch sử
+`RetrievalRound` riêng từng request. Xem [ORCHESTRATION.md](ORCHESTRATION.md)
+cho factory, fallback và cách adapter dùng deadline chung.
+
+`PipelineResult` bổ sung các field có default: `query` là câu hỏi gốc,
+`analysis` là `QueryAnalysisResult | None`, `filters` là điều kiện thực dùng
+(mặc định `{}`). Các trace cũ thiếu những field này vẫn validate được.
 
 `strategy_override` là dict **một phần** của `RetrievalStrategy`, không phải
 strategy đầy đủ. Orchestrator merge rồi validate lại để phát hiện key sai,
@@ -228,3 +254,18 @@ chỉ dùng kiểm tra contract.
 Khi đổi contract: Luân review thay đổi `core/`; cập nhật mục 4 nếu đổi
 field/signature, tài liệu này, test và module phụ thuộc trong cùng PR.
 Không cần đổi interface khi thay mock bằng implementation thật.
+
+`LegalMetadata` bổ sung các field optional để giữ provenance: source_url,
+source_record_id, source_dataset, source_revision, topic_id/topic_title và
+subject_id/subject_title. Trên nguồn Hugging Face, đây là metadata của từng
+điều, không được ghi đè bằng metadata của điều khác cùng văn bản. Xem
+[TOPIC_CORPUS.md](TOPIC_CORPUS.md) về định danh và chọn corpus. Public method
+signatures của các module hỏi đáp giữ nguyên.
+
+`AnswerGenerator.generate` vẫn nhận `AnswerGenerationRequest` và trả
+`LegalAnswer`. Đầu ra nội bộ của LLM là `AnswerDraft {answer, sources}` với
+sources là các số nguyên dương của `[Nguồn N]`. Generator từ chối số ngoài
+context, số trùng hoặc citation fields do model tự cung cấp; tạo citation
+từ metadata/nội dung nguồn được giữ. Confidence chưa hiệu chuẩn bằng 0 và
+disclaimer do code quản lý. Citation verifier tiếp tục kiểm tra nguồn và
+claim support; không sửa trích dẫn sai hoặc nới phép so khớp nguyên văn.

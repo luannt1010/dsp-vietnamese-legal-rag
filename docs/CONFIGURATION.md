@@ -4,6 +4,49 @@
 ở startup/factory, sau đó truyền section phù hợp vào constructor từng module.
 Schema request/response không đọc file hoặc biến môi trường khi import.
 
+Profile chạy demo thật: `load_settings("configs/demo")`, hoặc dùng
+`python -m scripts.demo` để tự load profile và file credentials local.
+Xem [DEMO.md](DEMO.md) cho setup và các tham số lựa chọn phương pháp.
+Profile phát triển `configs` tiếp tục giữ các lựa chọn cần nhóm cấu hình.
+
+Các field tích hợp mới: `embedding.provider=ollama`, `base_url`, tokenizer
+model/revision; mỗi LLM role có tokenizer model/revision và overhead budget;
+role thứ tư là `llm.citation_verifier`. `llm.keep_alive`/`think` được truyền
+sang Ollama chat API. `retrieval.reranker.backend` chọn `onnx` hoặc
+`sentence_transformers`, ONNX có `file_name`. Vector có backend, index_type
+và các tham số HNSW/IVFFlat; graph có backend và namespace. Data pipeline có
+source_chunks_file, relations_file, index_dir và ba chunking strategy
+fixed/legal/hierarchical. Các path tương đối vẫn tính từ parent config_dir;
+profile lồng `configs/demo` dùng `../data/...` để trỏ về data của repository.
+
+`data_pipeline.source` chọn `json` hoặc `huggingface`. Nguồn Hugging Face có
+dataset/config/split/revision, topics, subjects và read_batch_size; selector
+nhận tên chính xác (chuẩn hóa hoa/thường, khoảng trắng, Unicode NFC) hoặc ID.
+Topics và subjects kết hợp OR; không có selector thì prepare/chat báo lỗi,
+list-topics/list-subjects vẫn chạy để tra catalog. `auto_prepare` quyết định
+ask/chat có tự xây corpus/index thiếu hay không. `prepare --refresh-source`
+mới resolve lại revision được yêu cầu; mặc định snapshot đã cache được pin.
+Xem [TOPIC_CORPUS.md](TOPIC_CORPUS.md) cho ví dụ và vị trí cache.
+
+Runtime hiện hỗ trợ embedding qua Ollama: `device: cpu` truyền `num_gpu: 0`,
+`auto` dùng lựa chọn của server, `cuda` cho phép server tự chọn mức offload GPU.
+Profile demo dùng CPU sau khi tái hiện lỗi CUDA runner. Device không đổi
+model/dimension/normalization nên không làm mất hiệu lực cache embedding.
+
+Analyzer dùng vocabulary corpus để chỉ tạo hard filter từ nhãn được nêu rõ
+trong câu hỏi gốc. LLM không tự đoán hard filter. Evaluator nhận schema feedback
+có giới hạn strategy của config; orchestrator merge và validate lại như cũ.
+`retrieval.timeout_s` áp dụng cho từng lượt retrieval bên trong deadline tổng.
+
+Prompt generator `v1` dùng `prompts/answer_generation/system.txt` và `user.txt`;
+version khác dùng cặp file trong `prompts/answer_generation/<version>/`.
+Prompt được đọc/kiểm tra khi khởi tạo, cần restart để nhận thay đổi. Các agent
+còn lại dùng `prompts/<module>/<version>.txt`.
+
+Đổi tham số xây index (HNSW `m`/`ef_construction`, IVFFlat `lists`) tạo tên
+table mới cùng corpus; `ef_search`/`probes` chỉ thay lúc query. Auto-prepare
+kiểm tra và xây riêng store còn thiếu, không ghi lại graph khi chỉ thiếu vector.
+
 ## Các file và người phụ trách
 
 | File | Thông số chính | Owner |
@@ -59,7 +102,7 @@ Các field dưới đây cố ý để `null`:
 
 - Embedding: `provider`, `model`, `revision` nếu có, `dimension`.
 - Reranker: `model`, `revision` nếu có; đối chiếu `max_input_tokens` với model.
-- LLM: `provider`; `model` và `context_window_tokens` cho cả ba vai trò.
+- LLM: `provider`; `model` và `context_window_tokens` cho cả bốn vai trò.
 - Ingestion: `data_pipeline.chunking.tokenizer_model` để đếm token chính xác.
 
 `load_settings()` vẫn chạy để phát triển mock. Gọi `settings.validate_runtime()`
