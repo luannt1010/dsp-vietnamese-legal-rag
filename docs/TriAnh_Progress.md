@@ -7,8 +7,10 @@ Evaluation theo schema/interface trong `core/`. Hai module gọi LLM thông qua
 `BaseLLM`, kiểm tra JSON đầu ra bằng Pydantic và báo `LLMError` khi đầu ra sai.
 Evaluator xử lý retrieval rỗng theo hướng thiếu căn cứ mà không gọi LLM.
 
-Đây là bản nền có thể kiểm thử độc lập; chưa được benchmark trên dữ liệu pháp
-luật thật và chưa tích hợp với retriever/orchestrator thật.
+Các module đã được tích hợp vào đường chạy orchestration/demo mới nhất. Báo
+cáo audit ghi nhận smoke test với dịch vụ thật, nhưng chưa có benchmark chất
+lượng trên bộ câu hỏi pháp lý đã gán nhãn; smoke test không thay thế ground
+truth hoặc đánh giá chất lượng.
 
 ## Đã hoàn thành
 
@@ -23,8 +25,18 @@ luật thật và chưa tích hợp với retriever/orchestrator thật.
   quy tắc feedback action và giới hạn vai trò evaluator.
 - `src/evaluation/metrics.py`: metrics retrieval gồm Precision@k, Recall@k,
   Average Precision/MAP, Reciprocal Rank/MRR, Hit@k, nDCG@k; context precision
-  và recall dựa trên reference IDs; faithfulness, answer relevancy và factual
-  correctness tổng hợp các nhãn/similarity judgments có sẵn.
+  theo reference IDs hoặc phán đoán độ liên quan từng context, context recall
+  theo reference claims, faithfulness, answer relevancy và factual correctness
+  tổng hợp các nhãn/similarity judgments có sẵn.
+- `src/evaluation/dataset.py`: schema và JSONL loader cho bộ câu hỏi đã gán
+  nhãn; kiểm tra evidence/reference claims, answerability, ID trùng, split và
+  ngăn một `split_group` xuất hiện ở cả development lẫn test.
+- `docs/EVALUATION_DATASET.md`: mô tả cấu trúc dữ liệu, quy trình gán nhãn,
+  split và giới hạn hiện tại của benchmark.
+- Evaluator hiện nằm trong pipeline orchestration: orchestration lưu từng
+  retrieval/evaluation round, áp dụng feedback và chỉ cho generation tiếp tục
+  khi đủ căn cứ. Cần xác nhận taxonomy intent và semantics metadata/filter với
+  nhóm; đây không còn là blocker cho tích hợp evaluator.
 - JSON output của LLM từ chối `NaN`, `Infinity`, `-Infinity`; lỗi decoder như
   integer vượt giới hạn được bọc thành `LLMError` và giữ nguyên nguyên nhân.
 - Đã xử lý các góp ý review của tech lead trong commit `61d5fee`
@@ -57,19 +69,33 @@ evaluator = RetrievalEvaluator(
 
 ## Cần phối hợp / chưa hoàn thành
 
-- **Luân:** thống nhất taxonomy intent và các metadata key được phép đi tiếp
-  vào metadata filtering; xác nhận các strategy override evaluator được phép
-  đề xuất; tích hợp evaluator vào orchestration.
-- **Đức Anh:** cung cấp corpus/chunk pháp luật mẫu và metadata chuẩn để tạo
-  evaluation dataset có căn cứ, gán nhãn đúng nguồn.
-- **Luân/nhóm phụ trách LLM:** chốt provider, model, context window và adapter
-  LLM thật. Các giá trị cấu hình model/provider hiện vẫn chưa được chốt trong
-  `configs/llm.yml`.
+- **Luân/nhóm:** xác nhận taxonomy intent, metadata/filter semantics và
+  strategy feedback theo contract/runtime hiện tại; tích hợp evaluator đã
+  được mô tả trong orchestration và audit.
+- **Đức Anh/nhóm dữ liệu:** chốt corpus snapshot/ID và hỗ trợ xác minh nguồn,
+  metadata, hiệu lực/sửa đổi văn bản cho từng record. Corpus pipeline đã có;
+  đầu việc còn lại là phiên bản cố định và evidence đáng tin cậy cho benchmark,
+  không phải tạo corpus từ đầu.
+- **Nhóm phụ trách LLM:** cấu hình demo hiện đã có model cho các vai trò và
+  smoke test với Ollama được báo cáo. Benchmark cần khóa revision/model,
+  prompt, context window và judge identity trong manifest; đây là yêu cầu tái
+  lập, không phải khẳng định adapter LLM thật chưa tồn tại.
 - **Nhóm:** định nghĩa rubric gán nhãn relevance và sufficiency, bộ câu hỏi
   kiểm thử, expected relevant chunk/document IDs và tiêu chí nghiệm thu.
 - **Benchmark thật:** chưa chạy; hiện chỉ có unit tests và metric functions,
-  chưa có dataset/corpus gán nhãn. Kết quả benchmark không thể được suy ra từ
-  các test giả lập.
+  chưa có evaluation dataset gán nhãn. `data/chunks/phapdien_chunks.json` là
+  corpus 100 chunk/12 văn bản, không phải ground truth benchmark. Kết quả
+  benchmark không thể được suy ra từ các test giả lập.
+- **Benchmark runner:** B0–B4 chưa được triển khai; runner/manifests, lưu
+  context/draft, cutoff 20/5, policy khóa feedback, judge và thống kê CI/latency
+  còn chờ triển khai riêng.
+- **Bộ câu hỏi gán nhãn:** chưa tạo vì cần người trong nhóm kiểm tra câu hỏi,
+  đáp án và trích dẫn theo đúng corpus revision; không dùng corpus chunks làm
+  nhãn tự động.
+- **Phân công evaluation dataset:** technical specification giao Evaluation
+  Dataset và Benchmark cho Trí Anh. Trí Anh có thể sở hữu schema, JSONL,
+  annotation workflow, IDs/splits và tích hợp benchmark; đáp án/evidence pháp
+  lý cần thành viên phụ trách dữ liệu và reviewer thứ hai kiểm tra.
 - **Đánh giá prompt/chất lượng model:** chưa thực hiện với provider thật; cần
   cấu hình model, credentials phù hợp và ví dụ pháp lý được nhóm duyệt.
 
@@ -89,19 +115,23 @@ evaluator = RetrievalEvaluator(
 
 ## Trạng thái branch và pull request
 
-- Feature branch: `feature/query-understanding-evaluation`.
-- Fix review đã được push trong commit `61d5fee`.
-- Pull request hiện tại: [#2](https://github.com/luannt1010/dsp-vietnamese-legal-rag/pull/2).
-   Commit fix và cập nhật báo cáo được push lên cùng branch nên cập nhật PR này;
-   không tạo PR trùng lặp.
+- PR #2 trên `feature/query-understanding-evaluation` là PR lịch sử cho phần
+  Query Understanding/Evaluation ban đầu; các commit ở đó không đại diện cho
+  thay đổi benchmark hiện tại.
+- Phần bổ sung dataset/metrics hiện được làm trên branch
+  `feature/evaluation-benchmark-support` từ `main`; tại thời điểm ghi báo cáo,
+  thay đổi chưa commit/push và chưa có PR. PR mới nên mô tả rõ loader/metrics
+  đã làm và các phần dataset có nhãn/runner còn chưa làm.
 
 ## Kiểm thử
 
-Các bài test được viết theo `unittest`; sau khi sửa góp ý đã chạy thành công
-19 tests:
+Ở lần kiểm thử gần nhất sau khi thêm dataset/metrics, đã chạy toàn bộ suite:
 
 ```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Pylance workspace check trên `src/` và `tests/unit/` cũng không phát hiện lỗi.
+Kết quả ghi nhận ở lần chạy đó: **313 passed, 10 skipped, 246 subtests
+passed**. Các báo cáo audit/demo khác ghi nhận các tổng số test khác nhau theo
+thời điểm và phạm vi; hãy chạy lại suite trên branch PR và dùng đúng kết quả
+đó trong mô tả PR.

@@ -90,7 +90,8 @@ def average_precision(
         if chunk_id in relevant:
             relevant_seen += 1
             precision_sum += relevant_seen / rank
-    return precision_sum / len(relevant)
+    denominator = len(relevant) if k is None else min(len(relevant), k)
+    return precision_sum / denominator
 
 
 def mean_average_precision(
@@ -183,6 +184,33 @@ def context_recall(
     """Return the fraction of reference context IDs that were retrieved."""
     ranked, reference = _validate_ids(retrieved_context_ids, reference_context_ids)
     return len(set(ranked) & reference) / len(reference)
+
+
+def context_precision_judgments(relevance_judgments: Sequence[bool]) -> float:
+    """Compute rank-aware precision from ordered per-context relevance labels.
+
+    Labels must be judged against the question/reference, rather than inferred
+    from chunk IDs. This is the deterministic, pre-judged equivalent of the
+    reference-based Context Precision metric.
+    """
+    _validate_binary_judgments(relevance_judgments, name="relevance_judgments")
+    relevant_ranks = [
+        rank
+        for rank, is_relevant in enumerate(relevance_judgments, start=1)
+        if is_relevant
+    ]
+    if not relevant_ranks:
+        return 0.0
+    return sum(
+        sum(relevance_judgments[:rank]) / rank
+        for rank in relevant_ranks
+    ) / len(relevant_ranks)
+
+
+def context_recall_claims(claim_support: Sequence[bool]) -> float:
+    """Compute context recall as reference claims supported by supplied context."""
+    _validate_binary_judgments(claim_support, name="claim_support")
+    return sum(claim_support) / len(claim_support)
 
 
 def faithfulness(claim_support: Sequence[bool]) -> float:

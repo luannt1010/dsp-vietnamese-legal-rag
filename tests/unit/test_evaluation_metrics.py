@@ -5,7 +5,9 @@ from src.evaluation.metrics import (
     answer_relevancy,
     average_precision,
     context_precision,
+    context_precision_judgments,
     context_recall,
+    context_recall_claims,
     factual_correctness,
     faithfulness,
     hit_at_k,
@@ -27,6 +29,7 @@ class EvaluationMetricsTests(unittest.TestCase):
 
     def test_average_precision_and_map(self) -> None:
         self.assertAlmostEqual(average_precision(["a", "x", "b"], {"a", "b", "c"}), 5 / 9)
+        self.assertAlmostEqual(average_precision(["a", "x"], {"a", "b"}, k=2), 0.5)
         self.assertAlmostEqual(
             mean_average_precision(
                 [["a", "x", "b"], ["x", "c"]],
@@ -57,6 +60,14 @@ class EvaluationMetricsTests(unittest.TestCase):
             0.5,
         )
         self.assertEqual(context_precision(["noise"], {"relevant-a"}), 0.0)
+
+    def test_context_metrics_accept_semantic_judgments_by_stage(self) -> None:
+        self.assertAlmostEqual(
+            context_precision_judgments([False, True, True]),
+            (1 / 2 + 2 / 3) / 2,
+        )
+        self.assertEqual(context_precision_judgments([False, False]), 0.0)
+        self.assertEqual(context_recall_claims([True, False, True]), 2 / 3)
 
     def test_answer_quality_metrics_aggregate_external_judgments(self) -> None:
         self.assertEqual(faithfulness([True, False, True]), 2 / 3)
@@ -93,6 +104,8 @@ class EvaluationMetricsTests(unittest.TestCase):
             ndcg_at_k(["a"], {"a"}, 0)
         with self.assertRaises(ValueError):
             faithfulness([])
+        with self.assertRaises(ValueError):
+            context_precision_judgments([True, 1])  # type: ignore[list-item]
         with self.assertRaises(ValueError):
             answer_relevancy([float("nan")])
         with self.assertRaises(ValueError):
