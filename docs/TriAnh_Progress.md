@@ -90,8 +90,12 @@ evaluator = RetrievalEvaluator(
   context/draft, cutoff 20/5, policy khóa feedback, judge và thống kê CI/latency
   còn chờ triển khai riêng.
 - **Bộ câu hỏi gán nhãn:** chưa tạo vì cần người trong nhóm kiểm tra câu hỏi,
-  đáp án và trích dẫn theo đúng corpus revision; không dùng corpus chunks làm
-  nhãn tự động.
+  đáp án và trích dẫn theo đúng corpus revision. Đã thêm
+  `data/evaluation/pilot.draft.jsonl` gồm 31 câu hỏi ứng viên với quote khớp
+  chính xác chunk cục bộ; đây chưa phải bộ nhãn được duyệt, không dùng để báo
+  benchmark hoặc suy diễn hiệu lực pháp luật. File chỉ phủ An ninh quốc gia,
+  chưa khớp 3 topic benchmark, chưa có source URL/split và chưa có câu
+  unanswerable do corpus cục bộ không đầy đủ.
 - **Phân công evaluation dataset:** technical specification giao Evaluation
   Dataset và Benchmark cho Trí Anh. Trí Anh có thể sở hữu schema, JSONL,
   annotation workflow, IDs/splits và tích hợp benchmark; đáp án/evidence pháp

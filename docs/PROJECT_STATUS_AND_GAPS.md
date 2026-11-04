@@ -31,7 +31,7 @@ readiness.
 | Data and indexes | Data preparation, hierarchical chunking, embeddings, vector and graph stores, and topic-based corpus preparation are documented. | Freeze an exact corpus snapshot for evaluation; validate source coverage, metadata, amendments, and legal validity at the relevant date. |
 | Integrated application | CLI demo wires analysis through citation verification. Recent audit documents real-service smoke tests. | The documented implementation is a CLI/demo, not a completed API or production deployment. |
 | Evaluation implementation | Ranking and answer/context metric aggregators and a JSONL dataset schema/loader are present. | Metrics consume labels or judgments; they do not create verified labels or perform the required judging themselves. |
-| Evaluation data | The repository has corpus fixtures and corpus snapshots. | No reviewed, labeled evaluation question set or benchmark ground truth is documented as available. Corpus chunks are not ground truth. |
+| Evaluation data | A 31-record candidate JSONL draft was added from exact excerpts in the local corpus fixture. | The draft is unreviewed, only covers An ninh quốc gia, has no source URLs or assigned splits, and is not benchmark ground truth. Corpus chunks are not ground truth. |
 | Benchmark | The B0-B4 experiment plan is documented. | No runner, frozen run manifest, complete stage artifacts, judge workflow, aggregate report, confidence intervals, or stage telemetry is documented as implemented. |
 | Testing | Unit tests, database integration tests, and smoke tests are documented. | No benchmark-derived quality result; the latest test total should be confirmed by rerunning the suite on the PR branch because reports record different historical totals. |
 | API and operations | The technical specification includes API/infrastructure and deployment-oriented phases. | API, packaging/deployment, production monitoring, and operational acceptance are not established by the current demo reports. |
@@ -52,9 +52,19 @@ Current progress:
 - **Implemented:** JSONL schema and loader, validation of required fields and
   answerability/evidence consistency, duplicate-ID checks, and leakage checks
   for declared `split_group`s.
-- **Not started / unavailable:** reviewed pilot questions, reference answers
-  and claims, cited legal evidence, relevance labels, and assigned development
-  and test groups. No benchmark quality score can yet be reported.
+- **Drafted, not approved:** `data/evaluation/pilot.draft.jsonl` has 31
+  source-grounded candidate records. The loader accepts them and all quotes
+  match the identified local chunk passages, but the question/answer/claim
+  labels have not received legal review. No benchmark quality score can yet be
+  reported.
+- **Still missing:** a frozen corpus identity for these records, verified
+  source URLs and legal validity, atomic claim review, relevance judgments,
+  unanswerable cases, and development/test group assignments.
+- **Scope limitation:** this local fixture contains 100 chunks from 12
+  documents, all categorized as An ninh quốc gia. It does not cover the three
+  topics in the benchmark plan. The draft intentionally does not label
+  unanswerable cases: the partial fixture cannot prove that absent information
+  is absent from the complete corpus.
 - **Plan target:** first pilot of 30-50 reviewed questions, then expand toward
   approximately 300, subject to team annotation capacity.
 - **Required prerequisite:** choose and freeze a corpus revision and identity.
@@ -88,8 +98,10 @@ members have accepted those tasks.
   effective unless the data supports that conclusion.
 - Agree on annotation rubric, question categories, answerability policy,
   evidence granularity, and the treatment of alternate valid sources.
-- Create and independently review the 30-50 question pilot, including
-  unanswerable cases and multi-claim/multi-document questions.
+- Review, correct, and supplement the 31 draft candidates; expand or replace
+  them as needed to make a 30-50 question pilot on the frozen benchmark corpus.
+  Include unanswerable cases only when absence is established against that
+  complete snapshot.
 - Assign `split_group`s based on overlapping sources or question families,
   then separate development and test groups. Keep test labels out of tuning.
 

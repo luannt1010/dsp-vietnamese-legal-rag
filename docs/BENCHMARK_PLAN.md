@@ -74,6 +74,10 @@ phiên bản thư viện; lưu các phán xét thành phần. Judge độc lập
 ## 4. Dataset và báo cáo
 
 - Pilot 30–50 câu để kiểm tra quy trình; mục tiêu ban đầu khoảng 300 câu.
+- `data/evaluation/pilot.draft.jsonl` hiện có 31 câu ứng viên lấy từ fixture
+  cục bộ An ninh quốc gia. Đây chưa phải pilot được duyệt: không khớp ba topic
+  benchmark, chưa xác minh snapshot/hiệu lực/URL, chưa gán split và chưa được
+  reviewer pháp lý kiểm tra. Không dùng để tuning hoặc báo kết quả benchmark.
 - Dự kiến development 20%, test 80%, tách theo nhóm nguồn/họ câu hỏi.
 - Bao phủ tra cứu, tổng hợp nhiều ý, ngoại lệ, nhiều nguồn và thiếu căn cứ.
 - Mỗi câu có ID, question, topic/type, answerable, reference answer/claims,

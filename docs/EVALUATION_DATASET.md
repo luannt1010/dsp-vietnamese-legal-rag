@@ -11,11 +11,29 @@ reference claims, and quoted legal evidence**; it is not the corpus chunk file.
   100 chunks from 12 documents, plus a separate pipeline that can prepare
   selected Pháp điển topics. These are corpus/retrieval inputs, not evaluation
   questions or ground truth.
-- There is no labeled evaluation dataset yet. Do not invent reference answers,
-  evidence quotes, or relevance labels from the chunks automatically.
-- The target is a 30–50 question pilot followed by approximately 300 reviewed
-  questions. Include lookup, multi-clause, multi-document, comparison, and
-  unanswerable cases across the three benchmark topics.
+- `data/evaluation/pilot.draft.jsonl` contains 31 **candidate** records drafted
+  from exact passages in that local fixture. Every evidence quote was checked
+  for exact containment in the referenced chunk. The file is not legally
+  reviewed, does not establish current legal validity, and must not be used to
+  claim benchmark quality.
+- This draft covers only the fixture's `An ninh quốc gia` subject. It does not
+  match the benchmark plan's three target topics (Giao thông, vận tải; Khoa
+  học, công nghệ; Giáo dục, đào tạo), nor does the local fixture establish the
+  frozen corpus revision or corpus ID for these records.
+- The exact local fixture used to check quotes has SHA-256
+  `05107F1287CC0880EDEC8534185271F7C0535708DF676CBC00B616D601F7E354`.
+  This identifies the checked-in JSON artifact only; it is not a substitute
+  for the upstream source revision or prepared-corpus ID required by the plan.
+- The draft has no verified source URLs, no development/test assignments, and
+  no unanswerable examples. The available fixture is a limited selection of
+  chunks, so absence of a passage cannot establish that a question is
+  unanswerable in the full corpus. Its `reference_claims` currently retain the
+  source passage as a provisional unit and need review/splitting into atomic
+  claims before claim-level scoring.
+- The target remains a 30–50 question **reviewed** pilot followed by
+  approximately 300 reviewed questions. The 31 draft records only provide a
+  starting annotation pool; include missing question types and the three target
+  topics after the benchmark corpus is frozen.
 
 ## JSONL record format
 
@@ -70,13 +88,24 @@ from src.evaluation import load_evaluation_dataset
 questions = load_evaluation_dataset("data/evaluation/pilot.jsonl")
 ```
 
+To validate the current draft:
+
+```python
+questions = load_evaluation_dataset("data/evaluation/pilot.draft.jsonl")
+```
+
+Passing validation confirms the data contract only. It does not approve the
+draft for benchmark scoring.
+
 ## Annotation and versioning workflow
 
 1. Freeze the corpus source revision and prepared corpus identity for the
    benchmark. Record these in the benchmark run manifest alongside chunking,
    embedding identity, and model/prompt digests.
 2. Draft questions from the selected corpus, not from memory. Confirm each
-   reference answer against the exact document snapshot.
+   reference answer against the exact document snapshot. Treat
+   `pilot.draft.jsonl` as unreviewed candidate material and re-check every
+   answer before adopting or changing it.
 3. Break answer references into atomic `reference_claims`; retain qualifications
    and exceptions in the relevant claim.
 4. Quote sufficient source text and retain document number and legal location.
