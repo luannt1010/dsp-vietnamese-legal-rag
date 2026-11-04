@@ -27,9 +27,10 @@ reference claims, and quoted legal evidence**; it is not the corpus chunk file.
 - The draft has no verified source URLs, no development/test assignments, and
   no unanswerable examples. The available fixture is a limited selection of
   chunks, so absence of a passage cannot establish that a question is
-  unanswerable in the full corpus. Its `reference_claims` currently retain the
-  source passage as a provisional unit and need review/splitting into atomic
-  claims before claim-level scoring.
+  unanswerable in the full corpus. Its `reference_answer` and
+  `reference_claims` are provisional summaries drafted from the quoted
+  passages; a reviewer must verify answer support, completeness, and claim
+  atomicity before claim-level scoring.
 - The target remains a 30–50 question **reviewed** pilot followed by
   approximately 300 reviewed questions. The 31 draft records only provide a
   starting annotation pool; include missing question types and the three target
