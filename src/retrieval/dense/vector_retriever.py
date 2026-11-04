@@ -10,6 +10,7 @@ from core.schemas import RetrievalRequest, RetrievedChunk
 from src.retrieval.common import (
     matches_filters, positive_integer, scored_hit, unique_hits, validate_filters, validate_vector,
 )
+from src.observability.telemetry import span
 
 
 class VectorStore(Protocol):
@@ -42,9 +43,10 @@ class VectorRetriever(BaseRetriever):
         except Exception as exc:
             raise EmbeddingError("query embedding failed") from exc
         try:
-            hits = unique_hits(self.store.search(
-                vector, filters=dict(request.filters), top_k=request.top_k,
-            ))
+            with span("vector_search"):
+                hits = unique_hits(self.store.search(
+                    vector, filters=dict(request.filters), top_k=request.top_k,
+                ))
             if any(not matches_filters(hit.metadata, request.filters) for hit in hits):
                 raise RetrievalError("vector store returned a hit outside the requested filters")
             hits.sort(key=lambda hit: hit.score, reverse=True)

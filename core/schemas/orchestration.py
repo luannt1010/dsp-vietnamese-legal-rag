@@ -9,9 +9,19 @@ from core.schemas.base import ContractModel, NonEmptyString, NonNegativeInt
 from core.schemas.evaluation import RetrievalEvaluationResult
 from core.schemas.retrieval import RetrievalResult, RetrievalStrategy
 from core.schemas.query import QueryAnalysisResult
+from core.schemas.context import LegalContext
+from core.schemas.base import PositiveInt
 
 
 PipelineStatus = Literal["completed", "insufficient_evidence", "failed", "timed_out"]
+
+
+class PipelineRunOptions(ContractModel):
+    """Optional execution controls; defaults preserve the demo's behavior."""
+
+    ranking_k: PositiveInt | None = None
+    context_top_k: PositiveInt | None = None
+    allow_strategy_changes: bool = True
 
 
 class RetrievalRound(ContractModel):
@@ -35,3 +45,5 @@ class PipelineResult(ContractModel):
     analysis: QueryAnalysisResult | None = None
     filters: dict[str, JsonValue] = Field(default_factory=dict)
     query: NonEmptyString | None = None
+    context: LegalContext | None = None
+    draft_answer: LegalAnswer | None = None

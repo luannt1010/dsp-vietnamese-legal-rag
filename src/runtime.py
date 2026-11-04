@@ -1,6 +1,6 @@
 """Composition root for the actual local demo: Ollama + pgvector + Neo4j."""
 
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from contextlib import ExitStack, contextmanager
 from dataclasses import dataclass
 
@@ -33,6 +33,7 @@ class DemoRuntime:
     corpus: PreparedCorpus
     vector_store: PgVectorStore | InMemoryVectorStore
     graph_store: Neo4jStore | InMemoryGraphStore
+    token_counter: Callable[[str], int] | None = None
 
 
 @contextmanager
@@ -93,7 +94,7 @@ def prepare_indexes(settings: Settings, *, refresh: bool = False, progress=print
 
 
 @contextmanager
-def open_runtime(settings: Settings, *, progress=print) -> Iterator[DemoRuntime]:
+def open_runtime(settings: Settings, *, progress=print, allow_strategy_changes: bool = True) -> Iterator[DemoRuntime]:
     settings.validate_runtime()
     corpus = prepare_corpus(settings, build=settings.data_pipeline.auto_prepare, progress=progress)
     with open_stores(settings, corpus) as (vector, graph):
@@ -125,7 +126,7 @@ def open_runtime(settings: Settings, *, progress=print) -> Iterator[DemoRuntime]
             counters[name] = tokenizers[key].count
             response_schema = schema.model_json_schema()
             if name == "retrieval_evaluator":
-                response_schema = evaluation_response_schema(settings.retrieval)
+                response_schema = evaluation_response_schema(settings.retrieval, allow_strategy_changes=allow_strategy_changes)
             elif name == "query_analyzer":
                 response_schema = query_response_schema()
             llms[name] = get_llm_instance(
@@ -159,4 +160,4 @@ def open_runtime(settings: Settings, *, progress=print) -> Iterator[DemoRuntime]
             vector_retriever=VectorRetriever(OllamaEmbedding(settings.embedding), vector),
             graph_retriever=GraphRetriever(graph, settings.retrieval.graph), reranker=reranker,
         )
-        yield DemoRuntime(pipeline, corpus, vector, graph)
+        yield DemoRuntime(pipeline, corpus, vector, graph, counters["answer_generator"])

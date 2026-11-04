@@ -7,6 +7,7 @@ from core.exceptions import RetrievalError
 from core.interfaces.base_reranker import BaseReRanker
 from core.schemas import LegalContext, QueryAnalysisResult
 from src.retrieval.common import positive_integer, scored_hit, unique_hits
+from src.observability.telemetry import instrument
 
 
 class CrossEncoderModel(Protocol):
@@ -48,6 +49,7 @@ class CrossEncoderReRanker(BaseReRanker):
                 raise RetrievalError("could not load cross-encoder; install the reranking extra and check model config") from exc
         return self.model
 
+    @instrument("reranker.predict", kind="model_call", role="reranker", model_from="model_name")
     def _compute_score(self, query: str, contents: list[str]) -> list[float]:
         try:
             raw = self.reranker.predict(

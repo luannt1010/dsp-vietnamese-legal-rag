@@ -8,6 +8,8 @@ from pydantic import JsonValue
 
 from core.config.settings import PipelineSettings
 from core.deadline import remaining_timeout, request_deadline
+from core.filtering import supported_relations
+from core.schemas.orchestration import PipelineRunOptions
 from core.exceptions import InsufficientEvidenceError, RAGError
 from core.interfaces import (
     BaseAnswerGenerator, BaseCitationVerifier, BaseEvaluator, BaseLegalContextBuilder,
@@ -20,6 +22,7 @@ from core.schemas import (
     RetrievalResult, RetrievalRound, RetrievalRouteRequest, RetrievalStrategy,
 )
 from src.retrieval.service import RetrievalService
+from src.observability.telemetry import set_round, span
 
 
 _logger = logging.getLogger(__name__)
@@ -60,40 +63,53 @@ class RAGPipeline:
         """Return the verified answer, or an explicit fallback with no citations."""
         return self.run_with_trace(request).answer
 
-    def run_with_trace(self, request: QueryRequest) -> PipelineResult:
+    def run_with_trace(
+        self, request: QueryRequest, *, options: PipelineRunOptions | None = None,
+        analysis: QueryAnalysisResult | None = None,
+    ) -> PipelineResult:
         """Keep every round's query, strategy, results and evaluation reason.
 
         Invalid caller input raises ValidationError. Expected component/runtime
         failures produce a fallback; programming errors are not silently hidden.
         """
         request = QueryRequest.model_validate(request.model_dump())
+        options = PipelineRunOptions.model_validate((options or PipelineRunOptions()).model_dump())
+        if analysis is not None:
+            analysis = QueryAnalysisResult.model_validate(analysis.model_dump())
+            if analysis.original_query != request.query:
+                raise ValueError("replayed analysis belongs to another question")
         rounds: list[RetrievalRound] = []
-        analysis = None
+        context = None
+        draft = None
         filters: dict[str, JsonValue] = {}
         stage = "analysis"
-        with request_deadline(self._settings.timeout_s):
+        with request_deadline(self._settings.timeout_s), span("pipeline"):
             try:
-                analysis = QueryAnalysisResult.model_validate(
-                    _call(self._query_analyzer.analyze, request).model_dump(),
-                )
+                if analysis is None:
+                    analysis = QueryAnalysisResult.model_validate(
+                        _call(self._query_analyzer.analyze, request, span_name="analysis").model_dump(),
+                    )
                 stage = "metadata_filtering"
                 filters = MetadataFilterResult.model_validate(_call(
                     self._metadata_filter.build_filters,
                     MetadataFilterRequest(metadata=analysis.metadata),
+                    span_name="metadata_filtering",
                 ).model_dump()).filters
                 current_query = analysis.rewritten_query
                 overrides: dict[str, JsonValue] = {}
 
                 for iteration in range(self._settings.max_iterations):
+                    set_round(iteration)
                     # Return through the router on every feedback round. Partial
                     # overrides persist; a later override replaces only its keys.
                     stage = "routing"
                     routed = _call(self._retrieval_router.route, RetrievalRouteRequest(
                         query=current_query, intent=analysis.intent,
                         filters=filters, entities=analysis.entities,
-                    ))
+                    ), span_name="routing")
                     strategy = self._retrieval_service.settings.validate_strategy(
-                        RetrievalStrategy.model_validate({**routed.model_dump(), **overrides}),
+                        RetrievalStrategy.model_validate({**routed.model_dump(), **overrides,
+                            **({"top_k": options.ranking_k} if options.ranking_k is not None else {})}),
                     )
                     record = RetrievalRound(
                         iteration=iteration, query=current_query,
@@ -107,8 +123,18 @@ class RAGPipeline:
                             self._retrieval_service.retrieve,
                             query=current_query, filters=filters, strategy=strategy,
                             entities=analysis.entities,
+                            span_name="retrieval",
                         ).model_dump())
                     record.retrieval_result = retrieved.model_copy(deep=True)
+
+                    # Preserve the full ranking, while evaluating/packing the same
+                    # bounded evidence that the answer model will actually use.
+                    if options.context_top_k is not None:
+                        hits = retrieved.results[:options.context_top_k]
+                        retrieved = RetrievalResult(
+                            query=retrieved.query, results=hits, total_candidates=retrieved.total_candidates,
+                            relations=list(supported_relations(retrieved.relations, hits)),
+                        )
 
                     stage = "evaluation"
                     evaluation = RetrievalEvaluationResult.model_validate(_call(
@@ -118,6 +144,7 @@ class RAGPipeline:
                             retrieval_result=retrieved.model_copy(deep=True),
                             iteration=iteration, max_iterations=self._settings.max_iterations,
                         ),
+                        span_name="evaluation",
                     ).model_dump())
                     record.evaluation = evaluation.model_copy(deep=True)
 
@@ -132,12 +159,15 @@ class RAGPipeline:
                     if evaluation.next_action == "refine_query":
                         current_query = evaluation.refined_query or current_query
                     elif evaluation.next_action == "change_strategy":
+                        if not options.allow_strategy_changes:
+                            return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters)
                         overrides.update(evaluation.strategy_override)
 
                 stage = "context"
                 context = LegalContext.model_validate(_call(
                     self._context_builder.build,
                     ContextBuilderRequest(retrieval_result=retrieved, original_query=request.query),
+                    span_name="context",
                 ).model_dump())
                 if not context.chunks or not context.context_text.strip():
                     raise InsufficientEvidenceError("context contains no usable evidence")
@@ -146,12 +176,15 @@ class RAGPipeline:
                 answer = LegalAnswer.model_validate(_call(
                     self._answer_generator.generate,
                     AnswerGenerationRequest(context=context.model_copy(deep=True), query=request.query),
+                    span_name="generation",
                 ).model_dump())
+                draft = answer.model_copy(deep=True)
                 stage = "verification"
                 verified = LegalAnswer.model_validate(_call(
-                    self._citation_verifier.verify, answer, context,
+                    self._citation_verifier.verify, answer, context, span_name="verification",
                 ).model_dump())
-                return PipelineResult(answer=verified, status="completed", rounds=rounds, query=request.query, analysis=analysis, filters=filters)
+                return PipelineResult(answer=verified, status="completed", rounds=rounds, query=request.query,
+                                      analysis=analysis, filters=filters, context=context, draft_answer=draft)
             except (RAGError, ValueError, TimeoutError) as exc:
                 if isinstance(exc, TimeoutError):
                     status = "timed_out"
@@ -163,14 +196,16 @@ class RAGPipeline:
                 # provider error messages. Detailed history is explicitly returned.
                 _logger.warning("rag_pipeline_failed stage=%s error_type=%s", stage, type(exc).__name__)
                 _logger.debug("rag_pipeline_failure_details", exc_info=True)
-                return _fallback(status, rounds, stage=stage, error_type=type(exc).__name__, query=request.query, analysis=analysis, filters=filters)
+                return _fallback(status, rounds, stage=stage, error_type=type(exc).__name__, query=request.query,
+                                 analysis=analysis, filters=filters, context=context, draft=draft)
 
 
-def _call(operation: Callable[..., _T], *args, **kwargs) -> _T:
+def _call(operation: Callable[..., _T], *args, span_name: str = "operation", **kwargs) -> _T:
     """Check the shared deadline before and after a synchronous component call."""
     remaining_timeout()
     try:
-        return operation(*args, **kwargs)
+        with span(span_name):
+            return operation(*args, **kwargs)
     finally:
         remaining_timeout()
 
@@ -180,6 +215,7 @@ def _fallback(
     stage: str | None = None, error_type: str | None = None,
     analysis: QueryAnalysisResult | None = None, filters: dict[str, JsonValue] | None = None,
     query: str | None = None,
+    context: LegalContext | None = None, draft: LegalAnswer | None = None,
 ) -> PipelineResult:
     return PipelineResult(
         answer=LegalAnswer(
@@ -188,4 +224,5 @@ def _fallback(
         ),
         status=status, rounds=rounds, failure_stage=stage, error_type=error_type,
         query=query, analysis=analysis, filters=filters or {},
+        context=context, draft_answer=draft,
     )

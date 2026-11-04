@@ -131,3 +131,15 @@ Mở Docker Desktop/Ollama rồi chạy:
 powershell -ExecutionPolicy Bypass -File .\scripts\start_demo_databases.ps1
 python -m scripts.demo chat
 ```
+
+## 7. Benchmark
+
+Benchmark B0–B4 đo retrieval, context, câu trả lời và inference latency bằng
+cấu hình riêng. Thành viên mới bắt đầu tại
+[benchmark quickstart](docs/BENCHMARK_QUICKSTART.md): cài môi trường, tải model,
+chuẩn bị corpus An ninh quốc gia và chạy bộ smoke 3 câu × B0–B4 có sẵn trong repo.
+
+Xem thêm [metric definitions và vận hành](docs/BENCHMARK.md),
+[thiết kế thí nghiệm](docs/BENCHMARK_PLAN.md) và
+[trạng thái dataset pilot](data/evaluation/README.md). Judge tự động hiện cần
+hiệu chuẩn; chạy smoke thành công không thay thế benchmark chất lượng đã duyệt.

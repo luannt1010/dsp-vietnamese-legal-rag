@@ -5,6 +5,7 @@ from core.exceptions import ConfigurationError, EmbeddingError
 from core.interfaces import BaseEmbedding
 from src.infrastructure.ollama_client import OllamaClient
 from src.retrieval.common import normalize_vector, validate_vector
+from src.observability.telemetry import instrument
 
 
 class OllamaEmbedding(BaseEmbedding):
@@ -25,6 +26,7 @@ class OllamaEmbedding(BaseEmbedding):
     def embed_query(self, text: str) -> list[float]:
         return self.embed_documents([text])[0]
 
+    @instrument("embedding", kind="model_call", role="embedding")
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
         if any(not isinstance(text, str) or not text.strip() for text in texts):
             raise ValueError("embedding inputs must be nonempty strings")

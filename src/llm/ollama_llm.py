@@ -6,6 +6,7 @@ from core.config.settings import Settings
 from core.exceptions import ConfigurationError, LLMError, LLMContextWindowError, LLMOutputTruncatedError
 from core.interfaces import BaseLLM
 from src.infrastructure.ollama_client import OllamaClient
+from src.observability.telemetry import instrument
 
 
 class OllamaBaseLLM(BaseLLM):
@@ -20,6 +21,7 @@ class OllamaBaseLLM(BaseLLM):
         if role not in {"query_analyzer", "retrieval_evaluator", "answer_generator", "citation_verifier"}:
             raise ConfigurationError(f"unsupported LLM role: {role}")
         self.role = getattr(config, role)
+        self.role_name = role
         if not self.role.model:
             raise ConfigurationError(f"llm.{role}.model is required")
         self.base_url = config.base_url or "http://localhost:11434"
@@ -38,6 +40,7 @@ class OllamaBaseLLM(BaseLLM):
     def _post(self, payload: dict) -> dict:
         return self.client.post("/api/chat", payload)
 
+    @instrument("llm.generate", kind="model_call", role_from="role_name", model_from="model")
     def generate(self, prompt: str) -> str:
         if not isinstance(prompt, str) or not prompt.strip():
             raise ValueError("LLM prompt must not be blank")

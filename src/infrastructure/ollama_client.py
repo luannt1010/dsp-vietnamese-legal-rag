@@ -6,6 +6,7 @@ import requests
 
 from core.deadline import remaining_timeout, request_deadline
 from core.exceptions import LLMError, RAGError
+from src.observability.telemetry import backend_usage, span
 
 
 class OllamaClient:
@@ -21,15 +22,18 @@ class OllamaClient:
         with request_deadline(self.timeout_s):
             for attempt in range(self.max_retries + 1):
                 try:
-                    response = requests.post(
-                        self.base_url + path, json=payload, timeout=remaining_timeout(self.timeout_s),
-                    )
-                    response.raise_for_status()
-                    result = response.json()
-                    remaining_timeout()
-                    if not isinstance(result, dict):
-                        raise error_type("Ollama returned a non-object JSON response")
-                    return result
+                    with span("ollama.request", kind="backend_request", model=payload.get("model"),
+                              endpoint=path, attempt=attempt + 1) as event:
+                        response = requests.post(
+                            self.base_url + path, json=payload, timeout=remaining_timeout(self.timeout_s),
+                        )
+                        response.raise_for_status()
+                        result = response.json()
+                        remaining_timeout()
+                        if not isinstance(result, dict):
+                            raise error_type("Ollama returned a non-object JSON response")
+                        event.update(backend_usage(result))
+                        return result
                 except (requests.ConnectionError, requests.Timeout) as exc:
                     failure = exc
                 except requests.HTTPError as exc:

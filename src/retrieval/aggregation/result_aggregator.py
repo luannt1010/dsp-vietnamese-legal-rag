@@ -12,6 +12,7 @@ from core.schemas import (
 )
 from src.retrieval.common import matches_filters, positive_integer, unique_hits, validate_filters
 from src.retrieval.hybrid.rrf import reciprocal_rank_fusion
+from src.observability.telemetry import span
 
 
 class ResultAggregator:
@@ -32,7 +33,8 @@ class ResultAggregator:
             raise ValueError("reranking is enabled but no reranker was injected")
         filtered = [[hit for hit in branch if matches_filters(hit.metadata, request.filters)]
                     for branch in rankings]
-        fused = reciprocal_rank_fusion(filtered, rank_constant=self.rank_constant)
+        with span("fusion"):
+            fused = reciprocal_rank_fusion(filtered, rank_constant=self.rank_constant)
         total = len(fused)
         candidates = fused[:request.candidate_k]
         if use_rerank and candidates:

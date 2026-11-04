@@ -13,6 +13,7 @@ from core.schemas import (
 from src.retrieval.aggregation.result_aggregator import ResultAggregator
 from src.retrieval.common import matches_filters, unique_hits, validate_filters
 from src.retrieval.hybrid.hybrid import collect_candidates
+from src.observability.telemetry import span
 
 
 class RetrievalService:
@@ -49,9 +50,11 @@ class RetrievalService:
                 raise ValueError(f"{name} is enabled but no adapter was injected")
         rankings = []
         if selected.use_bm25:
-            rankings.append(collect_candidates(self.bm25_retriever, request))
+            with span("bm25"):
+                rankings.append(collect_candidates(self.bm25_retriever, request))
         if selected.use_vector:
-            rankings.append(collect_candidates(self.vector_retriever, request))
+            with span("vector_retrieval"):
+                rankings.append(collect_candidates(self.vector_retriever, request))
         relations = []
         if selected.use_graph:
             seeds = list(dict.fromkeys(
@@ -63,7 +66,8 @@ class RetrievalService:
                 max_depth=self.settings.graph.max_depth,
             )
             try:
-                graph = self.graph_retriever.search(graph_request)
+                with span("graph_traversal"):
+                    graph = self.graph_retriever.search(graph_request)
                 graph = GraphRetrievalResult.model_validate(graph.model_dump())
             except RetrievalError:
                 raise

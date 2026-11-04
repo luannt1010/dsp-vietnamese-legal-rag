@@ -38,17 +38,19 @@ class _Stop(RetrievalEvaluationResult):
     strategy_override: dict[str, JsonValue] = Field(default_factory=dict, max_length=0)
 
 
-def evaluation_response_schema(settings: RetrievalSettings | None = None) -> dict:
+def evaluation_response_schema(settings: RetrievalSettings | None = None, *, allow_strategy_changes: bool = True) -> dict:
     # Pydantic model validators are not represented by model_json_schema().
     # Literal branches prevent a provider from emitting false + "continue".
-    schema = TypeAdapter(_Continue | _Refine | _Change | _Stop).json_schema()
+    variants = _Continue | _Refine | _Change | _Stop if allow_strategy_changes else _Continue | _Refine | _Stop
+    schema = TypeAdapter(variants).json_schema()
     override = RetrievalStrategy.model_json_schema()
     override["required"] = []  # An override is partial, not an entire strategy.
     override["minProperties"] = 1
     if settings is not None:
         override["properties"]["top_k"]["maximum"] = settings.max_top_k
         override["properties"]["candidate_k"]["maximum"] = settings.max_candidate_k
-    schema["$defs"]["_Change"]["properties"]["strategy_override"] = override
+    if allow_strategy_changes:
+        schema["$defs"]["_Change"]["properties"]["strategy_override"] = override
     # Let the model identify the evidence/gaps before selecting its verdict.
     for definition in schema["$defs"].values():
         properties = definition.get("properties", {})
