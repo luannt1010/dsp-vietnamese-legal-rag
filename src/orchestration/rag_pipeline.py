@@ -10,7 +10,7 @@ from core.config.settings import PipelineSettings
 from core.deadline import remaining_timeout, request_deadline
 from core.filtering import supported_relations
 from core.schemas.orchestration import PipelineRunOptions
-from core.exceptions import InsufficientEvidenceError, RAGError
+from core.exceptions import CitationVerificationError, InsufficientEvidenceError, RAGError
 from core.interfaces import (
     BaseAnswerGenerator, BaseCitationVerifier, BaseEvaluator, BaseLegalContextBuilder,
     BaseMetadataFilter, BaseQueryAnalyzer, BaseRetrievalRouter,
@@ -22,6 +22,7 @@ from core.schemas import (
     RetrievalResult, RetrievalRound, RetrievalRouteRequest, RetrievalStrategy,
 )
 from src.retrieval.service import RetrievalService
+from src.retrieval.common import prioritize_context_sources
 from src.observability.telemetry import set_round, span
 
 
@@ -100,6 +101,7 @@ class RAGPipeline:
 
                 for iteration in range(self._settings.max_iterations):
                     set_round(iteration)
+                    context = None  # A failed retry must not expose a previous round's context.
                     # Return through the router on every feedback round. Partial
                     # overrides persist; a later override replaces only its keys.
                     stage = "routing"
@@ -127,13 +129,29 @@ class RAGPipeline:
                         ).model_dump())
                     record.retrieval_result = retrieved.model_copy(deep=True)
 
-                    # Preserve the full ranking, while evaluating/packing the same
-                    # bounded evidence that the answer model will actually use.
+                    # Preserve the full ranking for retrieval metrics. Select the
+                    # bounded candidates, then evaluate exactly the packed context.
                     if options.context_top_k is not None:
-                        hits = retrieved.results[:options.context_top_k]
+                        hits = prioritize_context_sources(retrieved.results, request.query)[:options.context_top_k]
                         retrieved = RetrievalResult(
                             query=retrieved.query, results=hits, total_candidates=retrieved.total_candidates,
                             relations=list(supported_relations(retrieved.relations, hits)),
+                        )
+
+                    stage = "context"
+                    evidence = retrieved
+                    if retrieved.results:
+                        context = LegalContext.model_validate(_call(
+                            self._context_builder.build,
+                            ContextBuilderRequest(retrieval_result=retrieved, original_query=request.query),
+                            span_name="context",
+                        ).model_dump())
+                        if not context.chunks or not context.context_text.strip():
+                            raise InsufficientEvidenceError("context contains no usable evidence")
+                        evidence = RetrievalResult(
+                            query=retrieved.query, results=context.chunks,
+                            total_candidates=retrieved.total_candidates,
+                            relations=list(supported_relations(retrieved.relations, context.chunks)),
                         )
 
                     stage = "evaluation"
@@ -141,7 +159,7 @@ class RAGPipeline:
                         self._retrieval_evaluator.evaluate,
                         RetrievalEvaluationRequest(
                             original_query=request.query, current_query=current_query,
-                            retrieval_result=retrieved.model_copy(deep=True),
+                            retrieval_result=evidence.model_copy(deep=True),
                             iteration=iteration, max_iterations=self._settings.max_iterations,
                         ),
                         span_name="evaluation",
@@ -153,24 +171,15 @@ class RAGPipeline:
                     if evaluation.is_relevant and evaluation.is_sufficient:
                         if retrieved.results:
                             break
-                        return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters)
+                        return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters, context=context)
                     if evaluation.next_action == "stop" or iteration == self._settings.max_iterations - 1:
-                        return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters)
+                        return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters, context=context)
                     if evaluation.next_action == "refine_query":
                         current_query = evaluation.refined_query or current_query
                     elif evaluation.next_action == "change_strategy":
                         if not options.allow_strategy_changes:
-                            return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters)
+                            return _fallback("insufficient_evidence", rounds, query=request.query, analysis=analysis, filters=filters, context=context)
                         overrides.update(evaluation.strategy_override)
-
-                stage = "context"
-                context = LegalContext.model_validate(_call(
-                    self._context_builder.build,
-                    ContextBuilderRequest(retrieval_result=retrieved, original_query=request.query),
-                    span_name="context",
-                ).model_dump())
-                if not context.chunks or not context.context_text.strip():
-                    raise InsufficientEvidenceError("context contains no usable evidence")
 
                 stage = "generation"
                 answer = LegalAnswer.model_validate(_call(
@@ -194,10 +203,12 @@ class RAGPipeline:
                     status = "failed"
                 # Do not log query text, source content, credentials or raw
                 # provider error messages. Detailed history is explicitly returned.
-                _logger.warning("rag_pipeline_failed stage=%s error_type=%s", stage, type(exc).__name__)
+                details = _failure_details(exc)
+                _logger.warning("rag_pipeline_failed stage=%s error_type=%s code=%s cause_type=%s",
+                                stage, type(exc).__name__, details["code"], details.get("cause_type", "none"))
                 _logger.debug("rag_pipeline_failure_details", exc_info=True)
                 return _fallback(status, rounds, stage=stage, error_type=type(exc).__name__, query=request.query,
-                                 analysis=analysis, filters=filters, context=context, draft=draft)
+                                 analysis=analysis, filters=filters, context=context, draft=draft, failure_details=details)
 
 
 def _call(operation: Callable[..., _T], *args, span_name: str = "operation", **kwargs) -> _T:
@@ -216,6 +227,7 @@ def _fallback(
     analysis: QueryAnalysisResult | None = None, filters: dict[str, JsonValue] | None = None,
     query: str | None = None,
     context: LegalContext | None = None, draft: LegalAnswer | None = None,
+    failure_details: dict[str, str] | None = None,
 ) -> PipelineResult:
     return PipelineResult(
         answer=LegalAnswer(
@@ -225,4 +237,17 @@ def _fallback(
         status=status, rounds=rounds, failure_stage=stage, error_type=error_type,
         query=query, analysis=analysis, filters=filters or {},
         context=context, draft_answer=draft,
+        failure_details=failure_details or {},
     )
+
+
+def _failure_details(exc: Exception) -> dict[str, str]:
+    """Keep diagnostic codes and explicit verifier reasons, not raw provider errors."""
+    details = {"code": getattr(exc, "code", type(exc).__name__)}
+    if exc.__cause__ is not None:
+        details["cause_type"] = type(exc.__cause__).__name__
+    if isinstance(exc, CitationVerificationError):
+        details["message"] = str(exc)[:1000]
+        if exc.reason:
+            details["reason"] = exc.reason[:1000]
+    return details

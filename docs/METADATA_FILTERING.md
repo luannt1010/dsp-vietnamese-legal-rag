@@ -7,6 +7,23 @@ trích xuất và tạo điều kiện độc lập để truyền vào router/r
 
 ## Tích hợp
 
+Trong runtime thật, Query Analyzer lấy số hiệu từ **câu hỏi gốc** bằng
+`document_references.py`, rồi đối chiếu vocabulary số hiệu của corpus. Các cách
+viết khác hoa/thường hoặc `ND`/`NĐ` được ánh xạ về giá trị lưu trong index.
+Nhiều số hiệu dùng list OR trong field `document_number`. Khi có số hiệu rõ ràng,
+không thêm điều kiện AND về loại/lĩnh vực có thể loại nhầm một phía của so sánh.
+Số hiệu chưa có trong corpus vẫn được giữ; không âm thầm đổi sang văn bản khác.
+Evaluator chặn generation nếu context thiếu bất kỳ văn bản được nêu rõ nào.
+Có đúng văn bản chưa chứng minh đủ căn cứ: nội dung vẫn được evaluator kiểm tra.
+
+Runtime cũng inject vocabulary điều theo từng số hiệu. Nếu tên điều được nêu
+trong câu hỏi khớp tiêu đề đã index cho **mọi văn bản được hỏi**, Query Analyzer
+thêm list `article` chứa các định danh đầy đủ trong corpus. Nếu chỉ một phía
+khớp, giữ lọc số hiệu và không thêm lọc điều để tránh loại mất phía còn lại.
+Không suy đoán mã Pháp điển từ số điều luật gốc. Một điều được gọi tên trong
+dấu ngoặc kép nhưng không có trong context sẽ bị evaluator từ chối bằng guard
+deterministic; các điều cùng chủ đề không được dùng thay thế.
+
 ```python
 from core.schemas import MetadataFilterRequest, RetrievalRouteRequest
 from src.preprocessing import MetadataFilter

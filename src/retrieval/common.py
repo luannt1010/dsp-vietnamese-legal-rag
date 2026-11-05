@@ -2,12 +2,33 @@
 
 from collections.abc import Iterable, Mapping
 from math import hypot, isfinite
+from itertools import zip_longest
 
 from pydantic import JsonValue
 
 from core.exceptions import EmbeddingError, RetrievalError
 from core.filtering import FILTER_FIELDS, LOCATION_FIELDS, validate_filters
 from core.schemas import LegalChunk, RetrievalResult, RetrievedChunk
+from src.query_understanding.document_references import document_number_key, extract_document_numbers, names_provision
+
+
+def prioritize_context_sources(hits: list[RetrievedChunk], query: str) -> list[RetrievedChunk]:
+    """Prefer explicitly named provisions, then interleave requested documents.
+
+    This is a common context-selection policy, not a change to retrieval scores
+    or the ranking recorded for metrics. Otherwise preserve the original rank.
+    """
+    ranked = sorted(hits, key=lambda hit: not names_provision(
+        query, str(hit.metadata.get("article", "")), allow_question_particles=True,
+    ))
+    numbers = extract_document_numbers(query)
+    if not numbers:
+        return ranked
+    groups = [[hit for hit in ranked if document_number_key(str(hit.metadata.get("document_number", "")))
+               == document_number_key(number)] for number in numbers]
+    selected = [hit for row in zip_longest(*groups) for hit in row if hit is not None]
+    selected_ids = {hit.chunk_id for hit in selected}
+    return [*selected, *(hit for hit in ranked if hit.chunk_id not in selected_ids)]
 
 
 def matches_filters(metadata: Mapping[str, JsonValue], filters: Mapping[str, JsonValue]) -> bool:

@@ -33,24 +33,24 @@ class CitationVerifier(BaseCitationVerifier):
         answer = LegalAnswer.model_validate(answer.model_dump())
         context = LegalContext.model_validate(context.model_dump())
         if not answer.citations:
-            raise CitationVerificationError("answer has no source citations")
+            raise CitationVerificationError("answer has no source citations", code="missing_citations")
         if not context.chunks or not context.context_text.strip():
-            raise CitationVerificationError("context has no retained source evidence")
+            raise CitationVerificationError("context has no retained source evidence", code="empty_context")
 
         # Only chunks actually included in context may support an answer.
         by_document: dict[str, list[RetrievedChunk]] = {}
         chunk_ids: set[str] = set()
         for chunk in context.chunks:
             if chunk.chunk_id in chunk_ids:
-                raise CitationVerificationError("context contains duplicate chunk IDs")
+                raise CitationVerificationError("context contains duplicate chunk IDs", code="invalid_context")
             if "document_id" in chunk.metadata and chunk.metadata["document_id"] != chunk.document_id:
-                raise CitationVerificationError("context contains conflicting document identity")
+                raise CitationVerificationError("context contains conflicting document identity", code="invalid_context")
             if chunk.content not in context.context_text:
-                raise CitationVerificationError("context contains a source absent from its text")
+                raise CitationVerificationError("context contains a source absent from its text", code="invalid_context")
             chunk_ids.add(chunk.chunk_id)
             by_document.setdefault(chunk.document_id, []).append(chunk)
         if context.cited_document_ids != list(by_document):
-            raise CitationVerificationError("context document IDs do not match its retained sources")
+            raise CitationVerificationError("context document IDs do not match its retained sources", code="invalid_context")
 
         matched_sources: dict[str, RetrievedChunk] = {}
         for index, citation in enumerate(answer.citations, start=1):
@@ -59,7 +59,7 @@ class CitationVerifier(BaseCitationVerifier):
                 if _matches_citation(citation, chunk)
             ]
             if not matches:
-                raise CitationVerificationError(f"citation {index} does not match a retained source")
+                raise CitationVerificationError(f"citation {index} does not match a retained source", code="citation_source_mismatch")
             matched_sources.update((chunk.chunk_id, chunk) for chunk in matches)
 
         self._verify_claims(answer, context.query, list(matched_sources.values()))
@@ -90,9 +90,12 @@ class CitationVerifier(BaseCitationVerifier):
                 parse_json_object(response, module_name="Citation verifier"),
             )
         except Exception as exc:
-            raise CitationVerificationError("claim support verification failed") from exc
+            raise CitationVerificationError("claim support verification failed", code="claim_support_check_failed") from exc
         if not result.is_supported:
-            raise CitationVerificationError(f"answer claims are not supported: {result.reason}")
+            raise CitationVerificationError(
+                f"answer claims are not supported: {result.reason}",
+                code="unsupported_answer_claims", reason=result.reason,
+            )
 
 
 def _matches_citation(citation: LegalCitation, chunk: RetrievedChunk) -> bool:

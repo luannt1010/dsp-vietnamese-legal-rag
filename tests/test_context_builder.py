@@ -50,6 +50,25 @@ def relation(**overrides):
 
 
 class ContextBuilderTests(unittest.TestCase):
+    def test_parent_expansion_never_evicts_another_retained_answer_source(self):
+        early = hit("early", content="Đoạn truy xuất ngắn.", parent_id="large-parent")
+        answer = hit("answer", document_id="answer-doc", content="Căn cứ trả lời phải được giữ.")
+        parent = hit("large-parent", content="Đoạn truy xuất ngắn. " + "Thông tin phụ. " * 100)
+        budget = len(builder().build(request(parent)).context_text)
+        component = LegalContextBuilder(token_counter=len, settings=ContextSettings(max_context_tokens=budget),
+                                        parent_lookup={parent.chunk_id: parent}.get)
+        context = component.build(request(early, answer))
+        self.assertEqual([source.chunk_id for source in context.chunks], ["early", "answer"])
+        self.assertLessEqual(len(context.context_text), budget)
+
+    def test_comparison_reserves_a_source_from_each_requested_document(self):
+        first = hit("first", content="A" * 100, document_number="23/2004/QH11")
+        extra = hit("extra", content="B" * 100, document_number="23/2004/QH11")
+        second = hit("second", document_id="doc-b", content="C" * 100, document_number="110/2014/NĐ-CP")
+        budget = len(builder().build(request(first, second)).context_text)
+        context = builder(budget).build(request(first, extra, second, query="So sánh 23/2004/QH11 và 110/2014/NĐ-CP?"))
+        self.assertEqual([source.chunk_id for source in context.chunks], ["first", "second"])
+
     def test_complete_article_merges_clause_hits_and_preserves_other_conditions(self):
         article = hit("article", content="Điều 1\n1. Điều kiện A.\n2. Điều kiện B.\n3. Ngoại lệ C.")
         first = hit("clause-a", content="1. Điều kiện A.", parent_id="article")

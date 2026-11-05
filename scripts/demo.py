@@ -96,6 +96,7 @@ def main() -> int:
     commands.add_parser("doctor", help="check actual model and database connectivity")
     prepare = commands.add_parser("prepare", help="chunk, embed and index the configured corpus")
     prepare.add_argument("--refresh-source", action="store_true", help="resolve the requested HF revision again (cached by default)")
+    prepare.add_argument("--force-reindex", action="store_true", help="write database indexes even when already ready; reuse prepared embeddings")
     for kind in ("topics", "subjects"):
         listing = commands.add_parser("list-" + kind, help="list dataset names, IDs and article counts")
         listing.add_argument("--refresh-source", action="store_true")
@@ -122,7 +123,8 @@ def main() -> int:
             print(json.dumps(doctor(settings), ensure_ascii=False, indent=2))
             return 0
         if args.command == "prepare":
-            print(json.dumps(prepare_indexes(settings, refresh=args.refresh_source), ensure_ascii=False, indent=2))
+            print(json.dumps(prepare_indexes(settings, refresh=args.refresh_source, force_reindex=args.force_reindex),
+                             ensure_ascii=False, indent=2))
             return 0
         with open_runtime(settings) as runtime:
             if args.command == "ask":
@@ -138,6 +140,9 @@ def main() -> int:
                 if question:
                     ask(runtime, question)
         return 0
+    except KeyboardInterrupt:
+        print("Interrupted by user. Rerun prepare if database indexing was interrupted.", file=sys.stderr)
+        return 130
     except Exception as exc:
         print(f"ERROR {type(exc).__name__}: {exc}", file=sys.stderr)
         if args.debug:

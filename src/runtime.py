@@ -77,11 +77,42 @@ def _write_indexes(settings: Settings, corpus: PreparedCorpus, vector, graph, *,
         graph.write(corpus.graph)
 
 
-def prepare_indexes(settings: Settings, *, refresh: bool = False, progress=print) -> dict:
+def _index_readiness(corpus: PreparedCorpus, vector, graph) -> tuple[bool, bool]:
+    """Both entry points use the same checks for corpus-scoped persistent stores.
+
+    In-memory stores are already populated by open_stores. A Neo4j write that
+    was interrupted is incomplete even if some/all node counts already match.
+    """
+    vector_ready = not isinstance(vector, PgVectorStore) or (
+        vector.count() == len(corpus.chunks) and vector.has_index()
+    )
+    graph_ready = True
+    if isinstance(graph, Neo4jStore):
+        counts = graph.counts()
+        graph_ready = graph.is_ready() and (
+            counts["chunks"] == len(corpus.chunks)
+            and counts["parents"] == len(corpus.parents)
+            and counts["relations"] == len(corpus.graph.relations)
+        )
+    return vector_ready, graph_ready
+
+
+def prepare_indexes(
+    settings: Settings, *, refresh: bool = False, force_reindex: bool = False, progress=print,
+) -> dict:
     settings.validate_runtime(purpose="ingestion")
     corpus = prepare_corpus(settings, build=True, refresh=refresh, progress=progress)
     with open_stores(settings, corpus) as (vector, graph):
-        _write_indexes(settings, corpus, vector, graph, progress=progress)
+        vector_ready, graph_ready = _index_readiness(corpus, vector, graph)
+        if vector_ready and not force_reindex:
+            progress("Vector index already ready; skipping indexing")
+        if graph_ready and not force_reindex:
+            progress("Graph index already ready; skipping indexing")
+        _write_indexes(
+            settings, corpus, vector, graph, progress=progress,
+            write_vector=force_reindex or not vector_ready,
+            write_graph=force_reindex or not graph_ready,
+        )
         info = {
             **corpus.manifest, "vector_backend": settings.database.vector.backend,
             "vector_index": settings.database.vector.index_type,
@@ -98,12 +129,7 @@ def open_runtime(settings: Settings, *, progress=print, allow_strategy_changes: 
     settings.validate_runtime()
     corpus = prepare_corpus(settings, build=settings.data_pipeline.auto_prepare, progress=progress)
     with open_stores(settings, corpus) as (vector, graph):
-        vector_ready = not isinstance(vector, PgVectorStore) or (vector.count() == len(corpus.chunks) and vector.has_index())
-        graph_ready = True
-        if isinstance(graph, Neo4jStore):
-            counts = graph.counts()
-            graph_ready = graph.is_ready() and (counts["chunks"] == len(corpus.chunks) and counts["parents"] == len(corpus.parents)
-                              and counts["relations"] == len(corpus.graph.relations))
+        vector_ready, graph_ready = _index_readiness(corpus, vector, graph)
         if not (vector_ready and graph_ready):
             if not settings.data_pipeline.auto_prepare:
                 raise ConfigurationError("database indexes are incomplete; run prepare or enable auto_prepare")
@@ -148,14 +174,20 @@ def open_runtime(settings: Settings, *, progress=print, allow_strategy_changes: 
         bm25 = settings.retrieval.bm25
         parents = {chunk.chunk_id: as_hit(chunk) for chunk in corpus.parents}
         vocabulary = {
+            "document_number": sorted({chunk.metadata.document_number for chunk in corpus.chunks}),
             "document_type": sorted({chunk.metadata.document_type for chunk in corpus.chunks}),
             "legal_domain": sorted({domain for chunk in corpus.chunks for domain in chunk.metadata.legal_domain}),
         }
+        provisions: dict[str, set[str]] = {}
+        for chunk in corpus.chunks:
+            if chunk.article:
+                provisions.setdefault(chunk.metadata.document_number, set()).add(chunk.article)
         pipeline = create_pipeline(
             settings, query_llm=llms["query_analyzer"], evaluation_llm=llms["retrieval_evaluator"],
             citation_llm=llms["citation_verifier"],
             answer_generator=AnswerGenerator(llms["answer_generator"], prompt_version=settings.llm.answer_generator.prompt_version),
             token_counter=counters["answer_generator"], parent_lookup=parents.get, metadata_vocabulary=vocabulary,
+            provision_vocabulary={number: sorted(titles) for number, titles in provisions.items()},
             bm25_retriever=BM25Retriever(corpus.chunks, k1=bm25.k1, b=bm25.b, tokenizer=bm25.tokenizer, lowercase=bm25.lowercase),
             vector_retriever=VectorRetriever(OllamaEmbedding(settings.embedding), vector),
             graph_retriever=GraphRetriever(graph, settings.retrieval.graph), reranker=reranker,

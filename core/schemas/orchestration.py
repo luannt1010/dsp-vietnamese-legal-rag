@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from pydantic import Field, JsonValue
+from pydantic import Field, JsonValue, model_serializer
 
 from core.schemas.answer import LegalAnswer
 from core.schemas.base import ContractModel, NonEmptyString, NonNegativeInt
@@ -42,8 +42,18 @@ class PipelineResult(ContractModel):
     rounds: list[RetrievalRound] = Field(default_factory=list)
     failure_stage: str | None = None
     error_type: str | None = None
+    failure_details: dict[str, str] = Field(default_factory=dict)
     analysis: QueryAnalysisResult | None = None
     filters: dict[str, JsonValue] = Field(default_factory=dict)
     query: NonEmptyString | None = None
     context: LegalContext | None = None
     draft_answer: LegalAnswer | None = None
+
+    @model_serializer(mode="wrap")
+    def serialize_result(self, handler):
+        data = handler(self)
+        # Older benchmark samples have no details. Preserve their serialized
+        # fingerprint when reading them to score or review historical runs.
+        if not self.failure_details:
+            data.pop("failure_details", None)
+        return data

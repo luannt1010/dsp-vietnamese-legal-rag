@@ -96,8 +96,8 @@ def test_feedback_schema_exposes_actual_strategy_caps_and_disallows_empty_change
     from src.evaluation.response_schema import evaluation_response_schema, _Change, _Continue
     settings = RetrievalSettings(max_top_k=7, max_candidate_k=30)
     schema = evaluation_response_schema(settings)
-    change = schema["$defs"]["_Change"]["properties"]["strategy_override"]
-    assert change["minProperties"] == 1 and change["required"] == []
+    change = schema["properties"]["strategy_override"]
+    assert change["required"] == []
     assert change["properties"]["top_k"]["maximum"] == 7
     assert change["properties"]["candidate_k"]["maximum"] == 30
     base = {"is_relevant": True, "confidence": 0.5, "reason": "fixture"}
@@ -129,6 +129,20 @@ def test_evaluator_preserves_full_law_text_without_index_provenance_or_dangling_
     assert "source_url" not in prompt and "source_revision" not in prompt and "-20" not in prompt
     assert len(prompt) < 5000
     assert result.model_dump() == before
+
+
+def test_retrieval_rewrite_cannot_add_requirements_to_the_sufficiency_judge():
+    hit = RetrievedChunk(chunk_id="a", document_id="a", content="Điều kiện được cấp giấy chứng nhận.",
+                         score=1, retrieval_method="fixture")
+    llm = Mock(generate=Mock(return_value='{"is_relevant":true,"is_sufficient":true,"confidence":1,"next_action":"continue","reason":"fixture"}'))
+    RetrievalEvaluator(llm).evaluate(RetrievalEvaluationRequest(
+        original_query="Điều kiện là gì?", current_query="Điều kiện, HỒ_SƠ_TỰ_THÊM và THỦ_TỤC_TỰ_THÊM là gì?",
+        retrieval_result=RetrievalResult(query="retrieval rewrite", results=[hit]),
+    ))
+    payload = json.loads(llm.generate.call_args.args[0].split("untrusted data:\n", 1)[1])
+    assert payload["original_query"] == "Điều kiện là gì?"
+    assert "current_query" not in payload
+    assert "HỒ_SƠ_TỰ_THÊM" not in llm.generate.call_args.args[0]
 
 
 @pytest.mark.parametrize("device, options", [("cpu", {"num_gpu": 0}), ("auto", None), ("cuda", {"num_gpu": -1})])

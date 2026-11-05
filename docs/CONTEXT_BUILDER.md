@@ -49,8 +49,19 @@ an toàn khi gọi đồng thời nếu dùng theo cách này.
   tổng context + prompt reserve + output phải nằm trong cửa sổ answer model.
   Answer generator vẫn phải kiểm tra token của prompt thực tế, kể cả chat
   template và câu hỏi dài vượt mức dự phòng, trước khi gọi model.
-- Giữ thứ tự `RetrievalResult.results`; không sắp xếp lại bằng score khác
-  thang đo. Giữ trọn chunk, không sửa hoặc cắt nội dung quy định pháp luật.
+- Giữ thứ tự `RetrievalResult.results`; nếu câu hỏi chỉ rõ nhiều số hiệu,
+  ưu tiên tiêu đề điều được nêu rõ trong câu hỏi, rồi chia lượt giữa các văn bản.
+  Các hit còn lại giữ thứ hạng trong từng văn bản. Cùng policy được áp dụng trước giới hạn số nguồn cho
+  context, nên một văn bản không chiếm hết top-k context. Ranking retrieval
+  được lưu/chấm giữ nguyên. Không sắp xếp bằng score khác thang đo. Giữ trọn chunk,
+  không sửa hoặc cắt nội dung quy định pháp luật.
+
+Tên điều chỉ là tín hiệu chọn context, không phải bằng chứng rằng nội dung đã đủ.
+Evaluator vẫn kiểm tra toàn bộ yêu cầu trên context thực tế. Policy dùng câu hỏi
+và metadata nguồn, không đọc reference answer, claims hoặc qrels của benchmark.
+Ở bước ưu tiên context, tên điều có thể khớp sau khi bỏ từ đệm câu hỏi như
+"gì", "nào", "những", "để". Cách khớp này chỉ sắp ưu tiên nguồn, không làm
+rộng điều kiện lọc cứng `article` của Query Analyzer.
 - Bỏ qua chunk không vừa và tiếp tục thử chunk nhỏ hơn phía sau. Không có
   chunk nào vừa thì báo `InsufficientEvidenceError`.
 - Đếm chuỗi context hoàn chỉnh mỗi lần thử thêm block. Không cộng số token
@@ -61,13 +72,16 @@ an toàn khi gọi đồng thời nếu dùng theo cách này.
 
 Việc bớt chunk theo ngân sách có thể làm mất căn cứ cần thiết cho một phần
 câu hỏi. Builder không thay evaluator hoặc chứng minh tính đầy đủ pháp lý;
-orchestrator/generator cần xử lý trường hợp thiếu căn cứ sau khi đóng gói.
+orchestrator gọi evaluator trên chính các nguồn còn lại sau khi đóng gói,
+trước khi cho phép generation.
 
-Khi có `parent_lookup`, builder đi từ leaf qua khoản đến điều, chọn ancestor
-nguyên vẹn lớn nhất còn vừa budget và thuộc cùng văn bản. Các hit ở nhiều
-khoản được gộp theo ID điều, giữ các điều kiện/ngoại lệ ở khoản khác. Điều quá
-lớn thì giữ khoản/leaf vừa ngân sách; không cắt nội dung. Hierarchy có vòng
-lặp báo lỗi; parent thiếu hoặc khác văn bản không được dùng để mở rộng.
+Khi có `parent_lookup`, builder giữ các leaf vừa ngân sách trước, sau đó mới
+thử nâng lên khoản/điều cùng văn bản bằng phần ngân sách còn lại. Một lần mở rộng
+chỉ được nhận nếu không làm mất nguồn khác đã giữ. Các hit có chung ancestor
+có thể gộp thành một nguồn nguyên vẹn. Điều quá lớn thì giữ khoản/leaf; không
+cắt nội dung. Hierarchy có vòng lặp báo lỗi; parent thiếu hoặc khác văn bản
+không được dùng để mở rộng. Telemetry `context_selection` ghi ID đầu vào và
+ID/số hiệu nguồn được giữ để đối chiếu với retrieval ranking.
 
 ## Truy nguyên và quan hệ graph
 

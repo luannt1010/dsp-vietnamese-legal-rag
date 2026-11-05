@@ -28,6 +28,7 @@ def create_pipeline(
     reranker: BaseReRanker | None = None,
     parent_lookup: Callable[[str], RetrievedChunk | None] | None = None,
     metadata_vocabulary: dict | None = None,
+    provision_vocabulary: dict[str, list[str]] | None = None,
 ) -> RAGPipeline:
     """Compose selected adapters. Only enabled retrieval branches need adapters.
 
@@ -38,6 +39,7 @@ def create_pipeline(
         query_analyzer=QueryAnalyzer(
             query_llm, prompt_version=settings.llm.query_analyzer.prompt_version,
             metadata_vocabulary=metadata_vocabulary,
+            provision_vocabulary=provision_vocabulary,
         ),
         metadata_filter=MetadataFilter(),
         retrieval_router=RetrievalRouter(settings.retrieval),

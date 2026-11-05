@@ -10,6 +10,8 @@ from core.filtering import supported_relations
 from core.exceptions import InsufficientEvidenceError
 from core.interfaces import BaseLegalContextBuilder
 from core.schemas import ContextBuilderRequest, LegalContext, RetrievedChunk
+from src.observability.telemetry import span
+from src.retrieval.common import prioritize_context_sources
 
 
 # Keep citation/location and reported applicability data visible to generation.
@@ -25,7 +27,7 @@ _SEPARATOR = "\n\n"
 
 
 class LegalContextBuilder(BaseLegalContextBuilder):
-    """Pack whole chunks in retrieval order, then add supported graph relations.
+    """Retain retrieved evidence before spending spare budget on parent expansion.
 
     token_counter must count text with the answer model's tokenizer, without
     per-call special tokens. No heuristic counter or model is loaded here.
@@ -62,44 +64,46 @@ class LegalContextBuilder(BaseLegalContextBuilder):
         # Nested lists/dicts can be mutated after Pydantic construction. Validate
         # again and take a private snapshot before making any packing decisions.
         validated = ContextBuilderRequest.model_validate(request.model_dump())
-        hits = validated.retrieval_result.results
-        if self._parent_lookup is not None:
-            expanded = []
-            for hit in hits:
-                candidate = hit
-                seen = {hit.chunk_id}
-                parent_id = hit.metadata.get("parent_id")
-                while isinstance(parent_id, str):
-                    if parent_id in seen:
-                        raise ValueError("cycle in context parent hierarchy")
-                    seen.add(parent_id)
-                    parent = self._parent_lookup(parent_id)
-                    if parent is None or parent.document_id != hit.document_id:
-                        break
-                    if not self._fits(_render_chunk(parent, source_number=1)):
-                        break
-                    # Keep the largest complete ancestor that fits, so hits
-                    # from several clauses share one article and its conditions.
-                    candidate = parent
-                    parent_id = parent.metadata.get("parent_id")
-                expanded.append(candidate)
-            hits = expanded
-        candidates = _unique_chunks(hits)
+        candidates = prioritize_context_sources(
+            _unique_chunks(validated.retrieval_result.results), validated.original_query,
+        )
+        chains = {hit.chunk_id: [hit, *self._ancestors(hit)] for hit in candidates}
+        _unique_chunks(node for chain in chains.values() for node in chain)
+        ancestry = {node.chunk_id: {ancestor.chunk_id for ancestor in chain[index + 1:]}
+                    for chain in chains.values() for index, node in enumerate(chain)}
 
-        text = ""
+        # First allocate budget to the actual retrieval hits. Expanding an early
+        # hit must not evict a later hit that supplied the answer to the question.
         retained: list[RetrievedChunk] = []
         for chunk in candidates:
-            block = _render_chunk(chunk, source_number=len(retained) + 1)
-            proposed = _append_block(text, block)
-            if self._fits(proposed):
-                text = proposed
+            if self._fits(_render_sources([*retained, chunk])):
                 retained.append(chunk)
-            # Do not cut legal provisions mid-sentence. A later, smaller chunk
-            # may still fit, so an oversized candidate does not stop the scan.
 
         if not retained:
             raise InsufficientEvidenceError(
                 "no complete source chunk fits the legal context budget",
+            )
+
+        # Upgrade only sources already retained. An ancestor can merge several
+        # descendants, but every other retained source must still fit unchanged.
+        for hit in candidates:
+            for parent in chains[hit.chunk_id][1:]:
+                covered = [i for i, source in enumerate(retained)
+                           if source.chunk_id == parent.chunk_id
+                           or parent.chunk_id in ancestry.get(source.chunk_id, set())]
+                if not covered:
+                    continue
+                proposed = [source for i, source in enumerate(retained) if i not in covered]
+                proposed.insert(covered[0], parent)
+                if self._fits(_render_sources(proposed)):
+                    retained = proposed
+
+        text = _render_sources(retained)
+        with span("context_selection", kind="decision") as decision:
+            decision.update(
+                input_chunk_ids=[hit.chunk_id for hit in candidates],
+                retained_chunk_ids=[hit.chunk_id for hit in retained],
+                retained_document_numbers=list(dict.fromkeys(hit.metadata.get("document_number") for hit in retained)),
             )
 
         # Relations have lower priority than source evidence. Never add an edge
@@ -116,6 +120,21 @@ class LegalContextBuilder(BaseLegalContextBuilder):
             chunks=retained,
             cited_document_ids=list(dict.fromkeys(chunk.document_id for chunk in retained)),
         )
+
+    def _ancestors(self, hit: RetrievedChunk) -> list[RetrievedChunk]:
+        result, seen = [], {hit.chunk_id}
+        parent_id = hit.metadata.get("parent_id")
+        while self._parent_lookup is not None and isinstance(parent_id, str):
+            if parent_id in seen:
+                raise ValueError("cycle in context parent hierarchy")
+            seen.add(parent_id)
+            parent = self._parent_lookup(parent_id)
+            if parent is None or parent.document_id != hit.document_id:
+                break
+            parent = RetrievedChunk.model_validate(parent.model_dump())
+            result.append(parent)
+            parent_id = parent.metadata.get("parent_id")
+        return result
 
     def _fits(self, text: str) -> bool:
         # Count the actual concatenation, including labels, JSON and separators.
@@ -143,6 +162,10 @@ def _unique_chunks(chunks: Iterable[RetrievedChunk]) -> list[RetrievedChunk]:
         ):
             raise ValueError(f"conflicting source for chunk ID {chunk.chunk_id}")
     return list(unique.values())
+
+
+def _render_sources(chunks: list[RetrievedChunk]) -> str:
+    return _SEPARATOR.join(_render_chunk(chunk, source_number=i) for i, chunk in enumerate(chunks, 1))
 
 
 def _render_chunk(chunk: RetrievedChunk, *, source_number: int) -> str:

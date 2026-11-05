@@ -35,3 +35,8 @@ class InsufficientEvidenceError(RAGError):
 
 class CitationVerificationError(RAGError):
     """A citation or answer claim could not be verified against the context."""
+
+    def __init__(self, message: str, *, code: str = "citation_verification_failed", reason: str | None = None):
+        super().__init__(message)
+        self.code = code
+        self.reason = reason

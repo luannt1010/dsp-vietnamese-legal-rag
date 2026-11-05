@@ -91,6 +91,9 @@ def run_benchmark(config, settings, questions, directory, *, runtime_factory=ope
                                     relevant_chunk_ids=labels[question.question_id])
                     store.save_sample(sample)
                     progress(f"  {question.question_id}: {result.status} {elapsed / 1000:.2f}s")
+                    if result.failure_details:
+                        progress(f"    stage={result.failure_stage} code={result.failure_details['code']} "
+                                 f"cause={result.failure_details.get('cause_type', 'none')}")
     return store
 
 

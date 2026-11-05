@@ -69,6 +69,7 @@ def prepare_corpus(
     artifact = directory / "corpus.json"
     cached = artifact.is_file()
     if cached:
+        progress(f"Loading cached corpus {corpus_id} ({artifact.stat().st_size / 1024**2:.1f} MiB)")
         payload = json.loads(artifact.read_text(encoding="utf-8"))
         if payload["manifest"]["signature"] != signature:
             raise ConfigurationError("cached index signature differs; prepare a new corpus")

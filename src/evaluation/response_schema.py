@@ -1,4 +1,4 @@
-"""Expose feedback-state invariants to structured-output providers as well."""
+"""Portable provider schema and strict Python validation of feedback states."""
 
 from typing import Literal
 
@@ -7,6 +7,7 @@ from pydantic import Field, JsonValue, TypeAdapter
 from core.schemas import RetrievalEvaluationResult, RetrievalStrategy
 from core.config.settings import RetrievalSettings
 from core.schemas.base import NonEmptyString
+from src.observability.telemetry import span
 
 
 class _Continue(RetrievalEvaluationResult):
@@ -15,6 +16,7 @@ class _Continue(RetrievalEvaluationResult):
     next_action: Literal["continue"]
     refined_query: Literal[None] = None
     strategy_override: dict[str, JsonValue] = Field(default_factory=dict, max_length=0)
+    missing_information: list[NonEmptyString] = Field(default_factory=list, max_length=0)
 
 
 class _Refine(RetrievalEvaluationResult):
@@ -38,24 +40,40 @@ class _Stop(RetrievalEvaluationResult):
     strategy_override: dict[str, JsonValue] = Field(default_factory=dict, max_length=0)
 
 
+_FEEDBACK = TypeAdapter(_Continue | _Refine | _Change | _Stop)
+
+
+def validate_feedback(payload: dict) -> RetrievalEvaluationResult:
+    """Validate the decision; discard advice that the selected action cannot use."""
+    validated = RetrievalEvaluationResult.model_validate(payload)
+    canonical = validated.model_dump()
+    discarded = []
+    for action, field, empty in (("refine_query", "refined_query", None),
+                                 ("change_strategy", "strategy_override", {})):
+        if validated.next_action != action and canonical[field] != empty:
+            canonical[field] = empty
+            discarded.append(field)
+    if discarded:
+        with span("feedback_normalization", kind="decision") as event:
+            event["discarded_inactive_fields"] = discarded
+    # No normalization of is_relevant/is_sufficient/next_action. Inconsistent
+    # verdicts (such as false + continue) still fail rather than authorize an answer.
+    checked = _FEEDBACK.validate_python(canonical)
+    return RetrievalEvaluationResult.model_validate(checked.model_dump())
+
+
 def evaluation_response_schema(settings: RetrievalSettings | None = None, *, allow_strategy_changes: bool = True) -> dict:
-    # Pydantic model validators are not represented by model_json_schema().
-    # Literal branches prevent a provider from emitting false + "continue".
-    variants = _Continue | _Refine | _Change | _Stop if allow_strategy_changes else _Continue | _Refine | _Stop
-    schema = TypeAdapter(variants).json_schema()
+    # A union of complete feedback objects produced contradictory decisions in
+    # live Ollama probes despite correct evidence. Use one flat object for the
+    # provider; validate decisions and canonicalize inactive advice in Python.
+    schema = RetrievalEvaluationResult.model_json_schema()
     override = RetrievalStrategy.model_json_schema()
     override["required"] = []  # An override is partial, not an entire strategy.
-    override["minProperties"] = 1
     if settings is not None:
         override["properties"]["top_k"]["maximum"] = settings.max_top_k
         override["properties"]["candidate_k"]["maximum"] = settings.max_candidate_k
-    if allow_strategy_changes:
-        schema["$defs"]["_Change"]["properties"]["strategy_override"] = override
-    # Let the model identify the evidence/gaps before selecting its verdict.
-    for definition in schema["$defs"].values():
-        properties = definition.get("properties", {})
-        definition["properties"] = {
-            key: properties[key] for key in ("reason", "missing_information", *properties)
-            if key in properties
-        }
+    if not allow_strategy_changes:
+        schema["properties"]["next_action"]["enum"].remove("change_strategy")
+        override["maxProperties"] = 0
+    schema["properties"]["strategy_override"] = override
     return schema

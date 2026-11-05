@@ -82,7 +82,7 @@ class OrchestrationTests(unittest.TestCase):
         self.assertEqual(result.analysis.original_query, self.request.query)
         self.assertEqual(result.filters, {"document_type": ["mock"]})
         self.assertEqual([call[0] for call in calls.mock_calls], [
-            "analysis", "filter", "route", "retrieve", "evaluate", "context", "generate", "verify",
+            "analysis", "filter", "route", "retrieve", "context", "evaluate", "generate", "verify",
         ])
         self.assertEqual(parts.analyzer.analyze.call_args.args[0], self.request)
         self.assertEqual(parts.generator.generate.call_args.args[0].query, self.request.query)
@@ -137,7 +137,8 @@ class OrchestrationTests(unittest.TestCase):
         self.assertEqual(result.status, "insufficient_evidence")
         self.assertEqual(len(result.rounds), 2)
         self.assertEqual(parts.service.retrieve.call_count, 2)
-        parts.context.build.assert_not_called()
+        self.assertEqual(parts.context.build.call_count, 2)
+        self.assertIsNotNone(result.context)  # Retain the evidence the gate actually rejected.
         parts.generator.generate.assert_not_called()
         parts.verifier.verify.assert_not_called()
         self.assertEqual(result.answer.citations, [])

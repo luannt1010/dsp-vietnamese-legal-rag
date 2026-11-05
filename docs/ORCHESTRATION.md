@@ -10,7 +10,16 @@ Data Pipeline/ingestion chạy trước; orchestration xử lý câu hỏi trên
 
 Luồng chính:
 
-`Query Analyzer → Metadata Filter → Router → Retrieval Service → Evaluation → Context Builder → Answer Generator → Citation Verifier → Final Answer`
+`Query Analyzer → Metadata Filter → Router → Retrieval Service → Context Builder → Evaluation → Answer Generator → Citation Verifier → Final Answer`
+
+Context Builder chạy trong mỗi vòng trước Evaluation. Evaluator nhận đúng các
+nguồn đã đóng gói mà generator sẽ dùng; không phê duyệt top-k rồi bỏ mất căn cứ
+do ngân sách token ở bước sau. Trace vẫn giữ ranking retrieval gốc để chấm các
+metric retrieval, đồng thời giữ context của vòng cuối kể cả khi bị từ chối.
+Trong mỗi vòng, context được reset trước retrieval để lỗi ở vòng sau không trả
+nhầm context của vòng trước. Đầu vào model evaluator chỉ có câu hỏi gốc;
+query viết lại vẫn lưu trong trace/request cho retrieval và debug, không được
+dùng làm yêu cầu bổ sung khi chấm đủ căn cứ.
 
 Khi thiếu căn cứ, evaluator đề xuất refine query hoặc đổi strategy; pipeline
 thực hiện đề xuất và **gọi lại Router** trước vòng retrieval tiếp theo.
@@ -43,6 +52,12 @@ Không viết lại BM25/vector/RRF/reranking/graph/context/citation logic.
   Context rỗng cũng không được đưa vào generator.
 - Citation verification bắt buộc trước khi trả answer thành công. Nếu lỗi,
   không trả answer chưa xác minh hoặc tự loại citation để cho qua.
+- `failure_details` phân biệt `citation_source_mismatch`, `unsupported_answer_claims`
+  và `claim_support_check_failed`; `cause_type` chỉ rõ lỗi provider/parse bị bọc.
+  Lý do verifier nằm trong artifact cục bộ, không ghi vào log warning. Log warning
+  chỉ ghi stage, loại lỗi và mã lỗi; CLI benchmark cũng in mã lỗi dưới mẫu failed.
+  Khi không có chi tiết, field mới được bỏ khỏi serialization để fingerprint của
+  artifact cũ không đổi khi đọc lại.
 - Fallback không gọi generator/verifier; trả thông báo hệ thống, citations
   rỗng, confidence 0. Không chuyển retrieval score/evaluation confidence thành
   answer confidence hoặc tự tắt filter/nhánh retrieval để thử lại khi lỗi.
