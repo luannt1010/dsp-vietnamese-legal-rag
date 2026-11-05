@@ -1,0 +1,67 @@
+\chapter{Project Introduction}\label{ch:introduction}
+\section{Overview}
+\subsection{Project Information}
+\begin{table}[H]\centering\small
+\caption{Project identity and documented team membership.}\label{tab:team}
+\begin{tabularx}{\textwidth}{lYl}\toprule
+\textbf{No.} & \textbf{Full name} & \textbf{Student code}\\\midrule
+1 & Vo Tran Ngoc Trung & SE192927\\
+2 & Nguyen Tri Anh & SE192569\\
+3 & Nguyen Thanh Luan & SE193674\\
+4 & Nguyen Duc Anh & SE196482\\\bottomrule
+\end{tabularx}
+\end{table}
+The project, \textit{Retrieval-Augmented Question Answering for Vietnamese Legal Documents}, is undertaken by Group 4 under the supervision of Nguyen Trong Tai at FPT University. No separate project code is recorded. Its domain combines natural language processing, legal information retrieval, and evaluation of generative systems. Intended users include students, researchers, and readers seeking to locate provisions and understand the content of supplied legal documents.
+
+\subsection{Project Overview}
+The project implements a Vietnamese legal question-answering pipeline that connects a natural-language question to traceable source passages. It combines lexical and dense retrieval, optionally expands candidates through a document-reference graph, and optionally reranks the results. A context builder retains complete legal evidence within a token budget. An online evaluator checks whether that evidence is sufficient before the answer generator is called. A separate verifier then checks the generated citations and their support. If these checks do not pass, the system can return an explicit fallback rather than a completed answer.
+
+The research contribution is an inspectable implementation and a controlled benchmark across five retrieval configurations. The evidence reported here consists of a frozen development run of 45 questions and 225 pipeline executions. It supports analysis of operational behaviour, retrieval, context quality, answer quality, and inference latency. It does not establish legal correctness for unseen cases or superiority over commercial legal assistants.
+
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=5mm]
+\node[box,text width=3.5cm] (q) {Vietnamese legal question};
+\node[box,text width=3.5cm,right=7mm of q] (e) {Retrieve and pack\\source evidence};
+\node[box,text width=3.5cm,right=7mm of e] (a) {Evaluate, answer\\and verify citations};
+\draw[arrow] (q)--(e);\draw[arrow] (e)--(a);
+\node[below=6mm of e,font=\small,align=center] {Independent benchmark: retrieval $\rightarrow$ context $\rightarrow$ answer quality + latency};
+\end{tikzpicture}
+\caption{Project objective: evidence-linked answering with a separate evaluation workflow.}\label{fig:objective}
+\end{figure}
+
+\section{Project Background}
+Legal retrieval requires attention to document identity and to the relationship between an article, its clauses, and their conditions. A passage containing the right subject words may describe a narrower scope than the question asks for. Conversely, an answer can be incomplete when retrieval finds the correct article but omits an exception or a second required document. These are distinct problems of ranking, evidence coverage, and reasoning over retained text.
+
+RAG conditions generation on retrieved material rather than relying exclusively on model parameters \citep{lewis2020rag}. That design provides an evidence channel, but does not by itself guarantee that the right material is retrieved or that every generated statement follows from it. The present implementation therefore treats retrieval, context sufficiency, and answer verification as separate responsibilities. This separation also makes failures easier to diagnose: a ranking miss should not be conflated with a citation mismatch or an unreliable offline judge.
+
+The data source is a pinned snapshot of a community-hosted mirror of Vietnamese codified legal texts \citep{phapdien}. Source URLs and revision identifiers are preserved for traceability. A source-backed amendment or replacement link can help discover a related document, but its presence alone does not prove the law applicable to a particular date or dispute. Temporal legal interpretation remains outside the guarantees of this prototype.
+
+\section{Project Objective}
+The first objective is to implement an end-to-end, modular pipeline that produces an answer supported by retained passages, or a clear insufficient-evidence outcome. The second is to compare a hybrid baseline with reranking, graph assistance, and bounded retrieval feedback under shared data, models, and budgets. The third is to report inference cost alongside quality so that a small numerical improvement is considered together with its latency and uncertainty.
+
+These objectives are operationalized through the research questions in Chapter~\ref{ch:methodology}. Success means that the workflow can be reproduced, its evidence and failures can be inspected, and conclusions respect the limitations of the experiment. It does not mean that every completed response is legally correct or that adding more components must improve performance.
+
+\section{Problem Statement}
+Given a question $q$ and a fixed legal corpus $D$, the system must select evidence $C\subset D$ under a context budget and return an answer $a$ with source-linked citations. The challenge is to preserve the question's scope while balancing exact legal identifiers, semantic similarity, graph neighbours, and limited generation context. The benchmark asks whether each optional component improves retrieval or downstream quality relative to the same hybrid baseline, and what additional latency is observed.
+
+Three sources of uncertainty must remain visible. First, the relevance labels cover identified evidence rather than all potentially useful passages. Second, development questions have informed pipeline changes. Third, several quality measures rely on model judgments that can themselves be inconsistent. A defensible report must describe these limitations instead of treating a single aggregate score as the system's accuracy.
+
+\section{Significance of the Project}
+The project connects source provenance with experimental observability. Hierarchical chunks retain legal locations, the generator selects from numbered retained sources, and citation identities and quotations are constructed from those sources. The benchmark stores the resulting ranks, packed context, decisions, answers, timings, and judgment details. This makes it possible to investigate why a result occurred and to separate engineering reliability from evidence of retrieval effectiveness.
+
+For the course, the work illustrates a complete data science process: data selection and preparation, representation design, controlled ablation, quantitative analysis, and critical interpretation. The practical output is a reproducible research prototype and benchmark tooling. Independent legal review and broader evaluation would be required before making stronger claims about deployment readiness.
+
+\section{Project Scope \& Limitations}
+\subsection{Project Scope}
+\textbf{A. Data and domain.} The evaluated corpus covers three selected topics: transportation and traffic, science and technology, and education and training. It contains 7,425 source article records originating from 647 documents. These are transformed into 14,708 embedded leaf chunks and 14,333 unembedded parent chunks. The report does not describe an experiment over the entire national legal corpus.
+
+\textbf{B. Architecture and methods.} The implementation includes query analysis, deterministic metadata filtering, BM25 and dense retrieval, RRF, optional Neo4j graph retrieval, an optional cross-encoder reranker, hierarchical context packing, an online sufficiency gate, generation, and citation verification. Feedback is bounded to three retrieval rounds in B4. Graph traversal is independently bounded to depth two.
+
+\textbf{C. Functionality.} The delivered interfaces are command-line preparation, question answering, interactive chat, diagnostics, and benchmark validation/run/score/report commands. A user-facing web application and live legal-update service are future extensions. The pipeline uses pretrained models through Ollama and an ONNX reranker; it does not fine-tune an LLM or train a reinforcement-learning policy.
+
+\textbf{D. Evaluation.} The development pilot contains 45 answerable questions, evenly divided across three topics. It evaluates five configurations once each, with question-level pairing. Retrieval metrics use chunk relevance labels; context and answer metrics use a separate offline judge. Timings measure full pipeline inference under the recorded protocol, not corpus preparation or offline scoring.
+
+\subsection{Limitations and Out-of-Scope}
+The pilot is small and contains many explicit document or provision cues. Its labels have not been independently reviewed by legal experts, and the same questions have supported development. There are no held-out final-test or unanswerable questions in this run. Dense retrieval quality is not isolated from the other shared pipeline components, and no chunking or model-family ablation is included.
+
+The snapshot does not establish current legal validity. Citation verification constrains the evidence channel but is not a formal proof that every sentence is entailed. The offline judge has truncation errors and demonstrable semantic inconsistencies. Incomplete hardware and LLM quantization records limit the portability of latency results.

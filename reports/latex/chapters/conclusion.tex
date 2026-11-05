@@ -1,0 +1,17 @@
+\chapter{Conclusion}\label{ch:conclusion}
+\section{Summary of Findings}
+The project delivers a local Vietnamese legal RAG prototype and a separate benchmark workflow. It combines hybrid retrieval, optional graph expansion and reranking, hierarchical context, pre-generation sufficiency evaluation, source-derived citations and post-generation verification. Models remain pretrained and the graph uses source-backed document references.
+
+The development study covers 45 questions, three topics and five configurations, with 225 complete inference records. Each method completes 43 questions and returns insufficient evidence for two; no inference failure or timeout is recorded. Retrieval Recall@5 ranges from 0.9667 to 0.9778 and nDCG@5 from 0.9508 to 0.9614. Precision@5 ranges from 0.2133 to 0.2178 against a label-defined ceiling of 0.2267. These results support strong retrieval of the specified labels on this development set, not universal legal-question accuracy.
+
+The optional components do not establish a statistically significant quality advantage under the reported Holm-adjusted comparisons. B0 has the lowest observed all-outcome mean inference latency at 21.76 seconds; B4 has the highest at 24.28 seconds. B4's additional rounds recover no extra completed answers, and its final answers match B3 for all 45 questions. No explicit graph-relation block survives into packed context in the recorded pilot, so a graph-grounded multi-hop benefit is not demonstrated.
+
+\section{Contributions and Reflections on the Project}
+The engineering contribution is a pipeline with visible evidence boundaries and failure states. Controlled method switches, source-resolved qrels, separate scoring artifacts, configuration identities, telemetry and paired statistics make its results inspectable, including when additions do not outperform the baseline.
+
+The methodological lesson is that an operational benchmark is not automatically a valid correctness measure. This run is complete and arithmetically auditable, yet its judge has truncation errors and incorrect entailment decisions. Low faithfulness means cannot be converted directly into a hallucination rate.
+
+\section{Limitations and Future Work}
+The current set has informed development, contains only answerable questions, and awaits independent legal review. Its evidence labels are narrow, its task mix is dominated by lookup and multi-clause questions, and it has only one repeat per configuration. Hardware and LLM quantization records are incomplete. Neither a current-validity service nor a production web application is established by this implementation.
+
+Future work should calibrate the judge against reviewed labels and rescore the frozen answers. A larger held-out test should include graph-dependent, multi-document, ambiguous and unanswerable requests. Repeated runs with complete environment records are needed before stronger comparative or deployment claims.

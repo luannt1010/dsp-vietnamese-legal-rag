@@ -143,3 +143,23 @@ Xem thêm [metric definitions và vận hành](docs/BENCHMARK.md),
 [thiết kế thí nghiệm](docs/BENCHMARK_PLAN.md) và
 [trạng thái dataset pilot](data/evaluation/README.md). Judge tự động hiện cần
 hiệu chuẩn; chạy smoke thành công không thay thế benchmark chất lượng đã duyệt.
+
+Bộ **development ba chủ đề, 45 câu** và lệnh Windows CMD/Conda nằm trong
+[hướng dẫn bộ câu hỏi đã chuẩn hóa](data/evaluation/new/README.md). Bộ này đã dùng
+để phát triển pipeline, chưa phải tập test độc lập và còn chờ rà soát pháp lý.
+
+## 8. Báo cáo học thuật và Overleaf
+
+Bản dùng **pdfLaTeX** gom các chương, bảng và tài liệu tham khảo vào một
+[main.tex](reports/overleaf-pdflatex/main.tex). Các hình PDF vector dựng sẵn nằm
+trong `figures/` đi kèm để giảm thời gian compile.
+
+- [ZIP để upload thành project Overleaf mới](output/Report_dsp_pdflatex.zip).
+- [PDF báo cáo đã biên dịch](output/pdf/Report_dsp_pdflatex.pdf).
+- [Hướng dẫn pdfLaTeX](reports/overleaf-pdflatex/README.md).
+- [Nguồn tác giả nhiều file, dữ liệu biểu đồ và công cụ tái tạo](reports/latex/README.md).
+
+Trên Overleaf, chọn **Compiler: pdfLaTeX**, **Main document: main.tex**, giữ
+thư mục `figures/`, rồi Recompile. Không cần chạy benchmark để biên dịch báo cáo.
+Báo cáo phân biệt completion với correctness và nêu rõ giới hạn của development
+pilot, nhãn evidence và judge; chưa khẳng định một cấu hình vượt trội.

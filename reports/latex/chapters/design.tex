@@ -1,0 +1,97 @@
+\chapter{System Design and Implementation}\label{ch:design}
+\section{AI Model Integration}
+The orchestration layer coordinates small, explicit components rather than placing all behaviour in one prompt. Query analysis produces structured intent, entities, and a retrieval rewrite. Deterministic code derives filters from the original request. The retrievers return ranked chunks through shared contracts. Context construction retains source evidence, while generation and verification use those retained sources as their common reference.
+
+Table~\ref{tab:modules} maps the main responsibilities to the implementation. This division permits a component to be debugged with its input and output without invoking every model again. It also prevents the benchmark from acquiring a separate, subtly different implementation of answering logic.
+
+\begin{table}[H]\centering\small
+\caption{Implementation responsibilities and principal repository locations.}\label{tab:modules}
+\begin{tabularx}{\textwidth}{P{3.2cm}Y}\toprule
+\textbf{Responsibility} & \textbf{Code location, relative to repository root}\\\midrule
+Runtime and index readiness & \path{src/runtime.py}\\
+Source and corpus preparation & \path{src/data_pipeline/}\\
+Query understanding and document references & \path{src/query_understanding/}\\
+Lexical/dense retrieval and fusion & \path{src/retrieval/}\\
+Document graph building and traversal & \path{src/knowledge_graph/}\\
+Context packing and citation checks & \path{src/generation/}\\
+Sufficiency decisions & \path{src/evaluation/retrieval_evaluator.py}\\
+Pipeline state and feedback & \path{src/orchestration/rag_pipeline.py}\\
+Independent benchmark & \path{src/benchmark/}, \path{scripts/benchmark.py}\\\bottomrule
+\end{tabularx}
+\end{table}
+
+Model calls use role-specific prompts, structured response validation, timeouts, and bounded retry settings. In the recorded run, query analysis and citation verification use the 2B model, while context sufficiency and answer generation use the 4B model. The same family also supplies the offline judge at a different stage. Local serving simplifies access to the models, but shared-family judgments may have correlated errors and are not an independent correctness guarantee.
+
+\section{Data Flow and Processing}
+\subsection{Offline Preparation}
+Preparation first resolves the source revision and selected topics, normalizes records, and constructs hierarchical chunks. Leaf embeddings are cached using chunk identity and text content. Prepared-corpus identity distinguishes the selected source and preparation configuration. A healthy existing prepared corpus can be reused; the runtime then checks index readiness rather than always recomputing embeddings and rewriting all database rows.
+
+Leaf vectors are stored in PostgreSQL using pgvector HNSW cosine search with $m=16$, construction effort 128 and search effort 100. The observed configuration uses a connection pool of three. Neo4j stores source-backed document relationships and chunk hierarchy. Readiness checks and explicit reindex options are separate from source-refresh checks, so a query-prompt change does not by itself require corpus re-embedding.
+
+\subsection{Online Question Answering}
+Figure~\ref{fig:architecture} gives the actual stage order. Context sufficiency is evaluated \emph{before} generation. The feedback loop returns to retrieval only when the online decision calls for refinement and the round limit permits it. Graph traversal depth and the number of retrieval rounds are different controls.
+
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=5mm]
+\node[box,text width=10cm] (q) {Original question $\rightarrow$ query analysis $\rightarrow$ deterministic metadata filters};
+\node[box,text width=10cm,below=of q] (route) {Router: fixed benchmark methods and cutoffs};
+\node[tinybox,below=8mm of route,xshift=-4cm] (bm) {BM25 lexical retrieval};
+\node[tinybox,below=8mm of route] (ve) {Dense vector retrieval};
+\node[tinybox,below=8mm of route,xshift=4cm] (gr) {Optional document-graph retrieval};
+\node[box,text width=10cm,below=9mm of ve] (f) {RRF fusion $\rightarrow$ optional reranker $\rightarrow$ recorded leaf ranking};
+\node[box,text width=10cm,below=of f] (c) {Context candidate selection $\rightarrow$ budgeted packing / complete parent expansion};
+\node[box,text width=10cm,below=of c] (e) {Online sufficiency evaluator: answer, refine, or stop};
+\node[box,text width=10cm,below=of e] (g) {Generator selects retained source numbers $\rightarrow$ deterministic citations};
+\node[box,text width=10cm,below=of g] (v) {Citation identity + quote checks $\rightarrow$ model support verification};
+\node[box,text width=10cm,below=of v] (a) {Completed answer or explicit insufficient-evidence / failure outcome};
+\draw[arrow] (q)--(route);
+\foreach \u in {bm,ve,gr}{\draw[arrow] (route.south)--(\u.north);\draw[arrow] (\u.south)--(f.north);}
+\foreach \u/\w in {f/c,c/e,e/g,g/v,v/a}{\draw[arrow] (\u)--(\w);}
+\draw[arrow,orange] (e.east)--++(1.0,0) |- node[pos=.5,right,font=\footnotesize,align=left]{B4 refinement\\up to 3 rounds} (route.east);
+\end{tikzpicture}
+\caption{Implemented online architecture. Database preparation and offline benchmark judging are outside this inference flow.}\label{fig:architecture}
+\end{figure}
+
+The original question remains the controlling request throughout evaluation. The rewritten retrieval query is not substituted for it in the sufficiency judgment. This matters when a rewrite omits a requested document or narrows a conjunction into a single clause. Hard filters use deterministic reference resolution; the pipeline does not trust an LLM to silently redefine legal scope.
+
+The context builder first prioritizes candidates relevant to explicit provision names and balances requested documents. It then packs leaves under the configured budget and considers complete parent expansion. Expansion must not evict other retained evidence, and it does not truncate a provision halfway through to fit a model window. These rules aim to preserve conditions and exceptions while preventing one long document from consuming all available context. They are shared by B0--B4.
+
+The online evaluator decides whether the packed context is enough for the original question. If evidence is sufficient, the generator writes the response and selects numbered retained sources. If it is insufficient, B4 may refine retrieval; the other methods stop after their single round. The maximum of three rounds is a bound, not a requirement to run all three for every question.
+
+\subsection{Document-Reference Graph}
+The graph builder derives relationships from source metadata and explicit source references. Typed links include \code{AMENDS}, \code{REPLACES}, \code{REPEALS}, and \code{RELATED_TO}. Modification links point from the later modifying document to the earlier target. Unresolved references are retained for inspection rather than invented as fully resolved legal facts.
+
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=6mm]
+\node[box,text width=3.1cm] (new) {Later document\\source-backed reference};
+\node[box,text width=3.1cm,right=28mm of new] (old) {Earlier target document};
+\node[box,text width=3.1cm,below=12mm of old] (ar) {Article / clause parent};
+\node[box,text width=3.1cm,below=of ar] (le) {Retrievable leaf chunks};
+\draw[arrow] (new)--node[above,font=\footnotesize,align=center]{AMENDS / REPLACES\\or REPEALS} (old);
+\draw[arrow] (old)--node[right,font=\footnotesize]{contains} (ar);
+\draw[arrow] (ar)--node[right,font=\footnotesize]{parent link} (le);
+\node[below=8mm of new,text width=4.4cm,font=\small,align=left] {Traversal: breadth first, maximum depth 2, at most 100 documents. Seeds come from retrieved documents or entity lookup.};
+\end{tikzpicture}
+\caption{Graph schema and traversal bounds. Nodes illustrate types, not asserted links between named legal instruments.}\label{fig:graph}
+\end{figure}
+
+The retriever performs bounded breadth-first expansion. It ranks candidate chunks using lexical overlap, depth and stable identity tie-breaking. Graph candidates then pass through the common metadata and fusion rules. Explicit relation evidence must survive the retention checks before a relationship is included in packed context. Consequently, enabling graph traversal does not imply that a relation block reaches the answer generator. Chapter~\ref{ch:results} audits that distinction in the pilot.
+
+\subsection{Generation, Verification and Failure Visibility}
+Citation identities, provision locations, source URLs and verbatim quotations are derived from retained source objects after the generator chooses source numbers. This reduces opportunities for invented document numbers or quotations. The verifier checks identity and quote consistency deterministically, then asks a model to assess support using only actually cited retained sources. It does not silently repair an unsupported answer by dropping a citation.
+
+The system records completed, insufficient-evidence, failed and timed-out outcomes separately. A verifier rejection is a failure outcome, not an answer-quality score. Structured failure stage, exception type and diagnostic information support debugging. Likewise, an inactive refinement hint may be normalized without changing the evaluator's decision; an inconsistent ``insufficient but continue'' decision is rejected rather than accepted as success.
+
+The current citation contract operates at the answer and selected-source level. It does not establish a formal sentence-to-provision proof, and a completed status does not mean that every claim was correctly judged. The report therefore evaluates completion independently from faithfulness and reference-based factual scores.
+
+\section{Deployment Strategy}
+The reproducible local deployment consists of a Python environment, Ollama, PostgreSQL with pgvector, and Neo4j. The repository provides database startup and diagnostic commands. CLI preparation creates or reuses indexes; CLI answering and chat invoke the same orchestration components as the benchmark. Configuration files under \path{configs/demo/} define the runtime, while \path{configs/benchmark/} defines the experimental matrix and offline judge.
+
+The recorded environment is Python 3.12.13 on Windows 11 build 10.0.26300. The manifest records an AMD64 Family 25 Model 68 Stepping 1 CPU descriptor, ONNX Runtime 1.31.1, NumPy 2.5.1, Pydantic 2.13.4, Neo4j driver 6.4.1 and psycopg 3.3.4. Exact CPU product name, RAM, GPU, LLM quantization and system load are not documented. The reranker export is known to be int8, which should not be generalized to the Ollama models.
+
+An API host/port configuration is not evidence of a delivered web service. A browser UI, authentication layer, monitored production endpoint and automatic legal update workflow are not implemented capabilities demonstrated by this study. The deployment claim is limited to the local CLI prototype and its benchmark.
+
+\section{Scalability and Maintenance}
+Embedding caches, prepared-corpus identities, index reuse and atomic artifacts reduce repeated work. Interrupted benchmarks can resume compatible missing samples. Rescoring reuses stored answers under a recorded judge identity. These features improve maintainability; concurrent-user throughput remains unmeasured.
+
+Future scaling studies should measure database search, model loading and decoding under controlled hardware and concurrency. Nested model and stage spans must not be double-counted. Source refresh and reindex procedures must preserve label-to-revision mappings so that changed data are not mistaken for a method improvement.

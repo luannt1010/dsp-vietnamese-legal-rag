@@ -1,0 +1,74 @@
+% Compile with Tectonic or XeLaTeX + BibTeX (see README.md).
+\documentclass[11pt,a4paper,oneside]{report}
+\usepackage[top=25.4mm,bottom=25.4mm,left=25.4mm,right=24.9767mm,footskip=12.49mm]{geometry}
+\usepackage{fontspec}
+\IfFontExistsTF{Calibri}{\setmainfont{Calibri}}{\IfFontExistsTF{Carlito}{\setmainfont{Carlito}}{\setmainfont{TeX Gyre Heros}}}
+\IfFontExistsTF{Times New Roman}{\newfontfamily\coverfont{Times New Roman}}{\newfontfamily\coverfont{TeX Gyre Termes}}
+\IfFontExistsTF{Consolas}{\setmonofont{Consolas}[Scale=MatchLowercase]}{\setmonofont{lmmono10-regular.otf}[Scale=MatchLowercase]}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,booktabs,tabularx,longtable,array,multirow}
+\usepackage[table]{xcolor}
+\usepackage{graphicx,tikz,pgfplots}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,shapes.geometric}
+\pgfplotsset{compat=1.18}
+\usepackage{titlesec,setspace,enumitem,caption,float,placeins,fvextra}
+\usepackage[round,authoryear]{natbib}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=navy,bookmarksnumbered=true]{hyperref}
+\definecolor{chapterred}{HTML}{C00000}
+\definecolor{navy}{HTML}{254B70}
+\definecolor{teal}{HTML}{187E83}
+\definecolor{orange}{HTML}{C96F21}
+\definecolor{purple}{HTML}{79559A}
+\definecolor{pale}{HTML}{F2F5F7}
+\definecolor{peach}{HTML}{FCE8E0}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}\counterwithout{table}{chapter}
+\titleformat{\chapter}[hang]{\color{chapterred}\bfseries\fontsize{16}{19}\selectfont}{\thechapter.}{.5em}{}
+\titleformat{\section}{\bfseries\fontsize{13}{16}\selectfont}{\thesection.}{.5em}{}
+\titleformat{\subsection}{\bfseries\fontsize{12}{15}\selectfont}{\thesubsection}{.5em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{12pt}
+\titlespacing*{\section}{0pt}{12pt}{5pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setstretch{1.15}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\raggedbottom
+\renewcommand{\contentsname}{Table of Contents}
+\setlength{\emergencystretch}{2em}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.22}
+\setlist{nosep,leftmargin=1.5em,topsep=4pt}
+\captionsetup{font=small,labelfont=bf,skip=7pt}
+\hypersetup{pdftitle={Retrieval-Augmented Question Answering for Vietnamese Legal Documents},pdfauthor={Group 4, FPT University},pdfsubject={Data Science Project: implementation and development benchmark}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\note}[1]{\par\smallskip{\small\textit{#1}}\par}
+\newcommand{\frontchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+\newenvironment{reporttable}{\begin{center}\small}{\end{center}}
+\DefineVerbatimEnvironment{commands}{Verbatim}{fontsize=\footnotesize,breaklines=true,breakanywhere=true,frame=single,rulecolor=\color{gray!40},framesep=5pt}
+\tikzset{box/.style={draw=navy,rounded corners=2pt,fill=pale,align=center,font=\small,text width=3.0cm,minimum height=.9cm,execute at begin node=\hyphenpenalty10000},arrow/.style={-{Latex[length=2mm]},thick,draw=navy},tinybox/.style={box,text width=2.4cm,font=\footnotesize}}
+\pgfplotsset{every axis/.append style={font=\small,tick label style={font=\small},label style={font=\small},legend style={font=\footnotesize,draw=none},grid=major,grid style={gray!15},axis line style={gray!60}}}
+\begin{document}
+\input{chapters/front}
+\input{chapters/introduction}
+\input{chapters/management}
+\input{chapters/related}
+\input{chapters/methodology}
+\input{chapters/design}
+\input{chapters/results}
+\input{chapters/conclusion}
+\chapter{References}
+\begingroup
+\renewcommand{\bibsection}{}
+\small\setlength{\bibsep}{5pt}
+\bibliographystyle{plainnat}
+\bibliography{references}
+\endgroup
+\input{chapters/appendices}
+\end{document}

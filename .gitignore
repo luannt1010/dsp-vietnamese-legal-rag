@@ -67,3 +67,20 @@ Thumbs.db
 # Local demo credentials, model cache, prepared indexes and traces
 .runtime/
 data/runtime/
+
+# Local LaTeX build intermediates; keep authored sources and vector figure PDFs.
+/reports/**/*.aux
+/reports/**/*.bbl
+/reports/**/*.blg
+/reports/**/*.fdb_latexmk
+/reports/**/*.fls
+/reports/**/*.lof
+/reports/**/*.log
+/reports/**/*.lot
+/reports/**/*.out
+/reports/**/*.synctex.gz
+/reports/**/*.toc
+/reports/**/*.xdv
+/reports/latex/Report_dsp.pdf
+/reports/overleaf-single/main.pdf
+/reports/overleaf-pdflatex/main.pdf

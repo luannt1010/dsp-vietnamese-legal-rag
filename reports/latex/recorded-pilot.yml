@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "repeats": 1,
+  "seed": 42,
+  "warmup_queries": 1,
+  "replay_analysis": false,
+  "ranking_k": 20,
+  "context_top_k": 5,
+  "candidate_k": 20,
+  "ks": [
+    5,
+    10,
+    20
+  ],
+  "bootstrap_samples": 2000,
+  "hardware_notes": "Record CPU/GPU/RAM and model quantization before the run",
+  "experiments": [
+    {
+      "id": "B0",
+      "use_graph": false,
+      "use_rerank": false,
+      "max_iterations": 1
+    },
+    {
+      "id": "B1",
+      "use_graph": false,
+      "use_rerank": true,
+      "max_iterations": 1
+    },
+    {
+      "id": "B2",
+      "use_graph": true,
+      "use_rerank": false,
+      "max_iterations": 1
+    },
+    {
+      "id": "B3",
+      "use_graph": true,
+      "use_rerank": true,
+      "max_iterations": 1
+    },
+    {
+      "id": "B4",
+      "use_graph": true,
+      "use_rerank": true,
+      "max_iterations": 3
+    }
+  ]
+}
