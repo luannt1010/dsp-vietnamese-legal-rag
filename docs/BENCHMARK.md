@@ -96,7 +96,11 @@ credentials: `.runtime/demo.env`. Có thể truyền `--config`, `--config-dir`,
 - B0: Hybrid; B1: +reranker; B2: +graph; B3: +graph+reranker; B4: B3+feedback.
 - B0–B3 tối đa một vòng; B4 tối đa ba vòng, chỉ refine query, khóa strategy.
 - Mỗi nhánh BM25/vector lấy 20; giữ ranking tối đa 20 sau fusion/rerank;
-  evaluator và Context Builder chỉ nhận top 5 và relations được hỗ trợ.
+  chọn tối đa 5 nguồn cho Context Builder và relations được hỗ trợ. Câu hỏi
+  có tên điều rõ ràng ưu tiên tên điều khớp; nhiều số hiệu chia lượt chọn giữa
+  các văn bản, giữ thứ hạng của các hit còn lại trong từng văn bản;
+  evaluator chấm đúng nguồn còn lại sau đóng gói context trong ngân sách token.
+  Retrieval@k vẫn chấm ranking gốc, không chấm thứ tự được chia lượt cho context.
 - Sufficiency gate và citation verification dùng chung. `max_iterations=1`
   không bỏ gate. Nếu một adapter trả change_strategy dù policy khóa, lượt đó
   dừng insufficient_evidence; schema Ollama cũng loại action này.

@@ -57,6 +57,13 @@ tạo embedding/index; có thể mất nhiều thời gian. Các lần sau dùng
 Model Ollama có tag thay đổi được: runner lưu model digest và từ chối trộn
 model khác digest trong cùng run.
 
+`prepare` nạp lại corpus cache để kiểm tra; file lớn vẫn có thể cần thời gian
+đọc/validate. Index đã đủ row count/index HNSW hoặc IVFFlat và graph có marker
+complete/counts đúng sẽ được bỏ qua, không ghi lại toàn bộ. Khi cần chủ động
+ghi lại database từ embedding cache, dùng `python -m scripts.demo prepare
+--force-reindex` (một dòng). `--refresh-source` là tùy chọn riêng để kiểm tra
+revision nguồn, không đồng nghĩa ép ghi lại index đã sẵn sàng.
+
 ## 3. Smoke benchmark 15 mẫu
 
 Repo cung cấp:
@@ -159,6 +166,44 @@ Precision@k dùng mẫu số k. Với chỉ một gold chunk, P@5 tối đa theo
 là metric theo thứ hạng, không phải tỷ lệ mọi đoạn context hữu ích.
 
 ## 6. Lỗi thường gặp và tests
+
+Sau bản sửa truy xuất theo số hiệu và đóng gói context, dùng **thư mục run mới**.
+Ví dụ chạy lại bộ development đã chuẩn hóa trong Windows CMD/Conda:
+
+```cmd
+conda activate free_env
+cd /d D:\dsp-vietnamese-legal-rag
+set RAG__DATA_PIPELINE__SOURCE__TOPICS=
+set RAG__DATA_PIPELINE__SOURCE__SUBJECTS=[]
+set RAG__DATA_PIPELINE__SOURCE__REVISION=a1b6860c821b7142ffe2385178af4e4bb6f86aff
+python -m scripts.demo doctor
+python -m scripts.demo prepare
+python -m scripts.benchmark run --dataset data\evaluation\new\three_topics_pilot.development.v1.jsonl --split development --config configs\benchmark\smoke.yml --output .runtime\benchmarks\three-topics-dev-next-01
+python -m scripts.benchmark score --output .runtime\benchmarks\three-topics-dev-next-01
+python -m scripts.benchmark report --output .runtime\benchmarks\three-topics-dev-next-01
+```
+
+Các lệnh `set` ở đây là cú pháp **CMD**: bỏ override topic từ smoke ANQG để
+dùng ba topic mặc định trong `configs/demo/data_pipeline.yml`. Khi đổi từ corpus
+ANQG sang ba topic này, cần chạy prepare một lần cho corpus mới. Đổi tên output
+nếu `three-topics-dev-next-01` đã tồn tại từ một lần chạy khác.
+
+Không cần prepare/index lại chỉ vì thay query filtering, context packing hoặc
+evaluator. `samples/...json` giữ `result.failure_details` khi có lỗi verifier:
+`citation_source_mismatch` là nguồn/quote không khớp; `unsupported_answer_claims`
+là verifier từ chối nội dung; `claim_support_check_failed` là bước gọi/đọc kết quả
+verifier bị lỗi, xem thêm `cause_type`. Không đánh đồng ba trường hợp này.
+Telemetry `context_selection` cho biết nguồn đã giữ để đối chiếu với ranking.
+Evaluator nhận context đã đóng gói; trace giữ context cả khi gate từ chối.
+
+Schema gửi cho provider là một object phẳng; Python vẫn kiểm tra các invariant
+của feedback, không tự chuyển verdict sai cấu trúc thành "continue". Gợi ý
+`refined_query`/`strategy_override` không thuộc action đã chọn được loại bỏ,
+giữ nguyên verdict/action và ghi `feedback_normalization` vào telemetry. Cấu hình
+demo dùng evaluator `qwen3.5:4b`, tokenizer 4B và prompt `v2`; các model
+embedding/generation/verification giữ nguyên. Câu hỏi nhiều văn bản chia lượt
+chọn nguồn cho context từ ranking, còn metric retrieval vẫn chấm ranking gốc.
+Điểm do judge chấm vẫn cần hiệu chuẩn riêng.
 
 | Hiện tượng | Cách kiểm tra |
 |---|---|

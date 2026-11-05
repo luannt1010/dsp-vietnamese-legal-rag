@@ -1,0 +1,68 @@
+{
+  "dataset_file": "three_topics_pilot.development.v1.jsonl",
+  "dataset_version": "development.v1",
+  "normalization_date": "2026-11-05",
+  "status": "normalized_snapshot_checked_pending_independent_review",
+  "source_dataset": "tmquan/phapdien-moj-gov-vn",
+  "source_config": "documents",
+  "source_split": "train",
+  "source_revision": "a1b6860c821b7142ffe2385178af4e4bb6f86aff",
+  "prepared_corpus_id": "4d70694000eb63e3",
+  "source_dataset_file": "three_topics_pilot.draft.jsonl",
+  "source_dataset_sha256": "24e5850a79f284b66db4792beefb3b1a06960a87ed7b066d2839661589da704a",
+  "sha256": "ca37f9c1f0c2ebbacb3f6b17d4742654eca65e29d7d1d2129eb8ff0f9dbd56e4",
+  "record_count": 45,
+  "topic_counts": {
+    "Giao thông, vận tải": 15,
+    "Khoa học, công nghệ": 15,
+    "Giáo dục, đào tạo": 15
+  },
+  "question_type_counts": {
+    "lookup": 12,
+    "multi_clause": 27,
+    "comparison": 3,
+    "multi_document": 3
+  },
+  "split_counts": {
+    "development": 45
+  },
+  "answerable_count": 45,
+  "unanswerable_count": 0,
+  "question_wording_changed_count": 12,
+  "reference_claim_count": 233,
+  "evidence_count": 115,
+  "all_evidence_resolved": true,
+  "unique_relevant_chunk_counts": {
+    "1": 39,
+    "2": 6
+  },
+  "selected_document_numbers": {
+    "Giao thông, vận tải": [
+      "23/2004/QH11",
+      "110/2014/NĐ-CP",
+      "48/2019/NĐ-CP"
+    ],
+    "Khoa học, công nghệ": [
+      "07/2017/QH14",
+      "21/2008/QH12",
+      "76/2018/NĐ-CP"
+    ],
+    "Giáo dục, đào tạo": [
+      "43/2019/QH14",
+      "80/2017/NĐ-CP",
+      "116/2020/NĐ-CP"
+    ]
+  },
+  "review_file": "three_topics_pilot.development.v1.review.json",
+  "notes": [
+    "Normalized against the fixed prepared PhapDien snapshot; no claim of current legal validity or independent expert approval.",
+    "All 45 records are development because prior results were inspected. A new untouched test set is still required.",
+    "No unanswerable cases were added and no pipeline inference or judge calls were run during normalization.",
+    "Question wording is preserved unless scope/reference alignment requires clarification. No blanket insertion of titles or retrieval hints.",
+    "Reference claims are separately assessable legal propositions. A definition or a closed list under one predicate can remain one claim; attached conditions and exceptions are preserved.",
+    "Evidence quotes are contiguous verbatim spans of original evidence, checked by the existing resolver against all leaf chunks in the corpus. Relevance remains quote-based and is not an exhaustive relevance judgment over alternative provisions.",
+    "PhapDien article identifiers are retained; original-law article numbers and legal effective versions are not guessed.",
+    "The three multi_document items require synthesizing two cited documents but do not by themselves prove graph traversal or multi-hop reasoning.",
+    "Changed labels/question wording require a fresh run directory. Do not merge or directly interpret score differences as pipeline improvements against the old run."
+  ]
+}

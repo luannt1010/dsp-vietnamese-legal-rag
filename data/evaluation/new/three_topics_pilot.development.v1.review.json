@@ -1,0 +1,3839 @@
+{
+  "dataset_file": "three_topics_pilot.development.v1.jsonl",
+  "dataset_sha256": "ca37f9c1f0c2ebbacb3f6b17d4742654eca65e29d7d1d2129eb8ff0f9dbd56e4",
+  "source_dataset_sha256": "24e5850a79f284b66db4792beefb3b1a06960a87ed7b066d2839661589da704a",
+  "prepared_corpus_id": "4d70694000eb63e3",
+  "summary": {
+    "record_count": 45,
+    "topic_counts": {
+      "Giao thông, vận tải": 15,
+      "Khoa học, công nghệ": 15,
+      "Giáo dục, đào tạo": 15
+    },
+    "question_type_counts": {
+      "lookup": 12,
+      "multi_clause": 27,
+      "comparison": 3,
+      "multi_document": 3
+    },
+    "split_counts": {
+      "development": 45
+    },
+    "answerable_count": 45,
+    "unanswerable_count": 0,
+    "question_wording_changed_count": 12,
+    "reference_claim_count": 233,
+    "evidence_count": 115,
+    "all_evidence_resolved": true,
+    "unique_relevant_chunk_counts": {
+      "1": 39,
+      "2": 6
+    }
+  },
+  "checks": {
+    "schema": "passed",
+    "unique_ids_and_questions": "passed",
+    "all_45_ids_preserved": "passed",
+    "exact_original_quote_provenance": "passed",
+    "production_evidence_resolver": "passed",
+    "independent_legal_review": "pending",
+    "exhaustive_alternative_evidence_review": "pending",
+    "production_cli_validate": {
+      "status": "passed",
+      "questions": 45,
+      "answerable": 45,
+      "evidence_checked": true,
+      "corpus_path": "data/runtime/4d70694000eb63e3/corpus.json"
+    },
+    "qrels_vs_previous_run": {
+      "status": "identical",
+      "question_count": 45,
+      "run_directory": ".runtime/benchmarks/three-topics-cmd-01"
+    }
+  },
+  "questions": [
+    {
+      "question_id": "GT001",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Theo văn bản 23/2004/QH11, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 23/2004/QH11, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 2,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 23/2004/QH11 quy định về hoạt động giao thông đường thủy nội địa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật số 23/2004/QH11 quy định các điều kiện bảo đảm an toàn giao thông đường thủy nội địa đối với kết cấu hạ tầng, phương tiện và người tham gia giao thông, vận tải đường thủy nội địa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:03788b5a341d5e3f:hierarchical:0:fde98ddaafa0"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:03788b5a341d5e3f:hierarchical:0:fde98ddaafa0"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT002",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Văn bản 23/2004/QH11 áp dụng với những đối tượng nào, và có nêu ngoại lệ nào không?",
+      "question_after": "Văn bản 23/2004/QH11 áp dụng với những đối tượng nào, và có nêu ngoại lệ nào không?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 2,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 23/2004/QH11 áp dụng đối với tổ chức, cá nhân liên quan đến hoạt động giao thông đường thủy nội địa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Trường hợp điều ước quốc tế mà Việt Nam ký kết hoặc gia nhập có quy định khác với Luật số 23/2004/QH11 thì áp dụng quy định của điều ước quốc tế đó.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:2b0f58476ef934a1:hierarchical:0:caa16d7b1dec"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:2b0f58476ef934a1:hierarchical:0:caa16d7b1dec"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT003",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Văn bản 23/2004/QH11 quy định những chính sách nào về giao thông, vận tải tại điều khoản “Chính sách phát triển giao thông đường thủy nội địa”?",
+      "question_after": "Văn bản 23/2004/QH11 quy định những chính sách nào về giao thông, vận tải tại điều khoản “Chính sách phát triển giao thông đường thủy nội địa”?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 4,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nhà nước ưu tiên đầu tư phát triển kết cấu hạ tầng đường thủy nội địa trên các tuyến giao thông đường thủy nội địa trọng điểm, khu vực kinh tế trọng điểm, vùng sâu, vùng xa có lợi thế về giao thông đường thủy nội địa so với các loại hình giao thông khác.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nhà nước khuyến khích, tạo điều kiện cho tổ chức, cá nhân Việt Nam và nước ngoài đầu tư phát triển kết cấu hạ tầng đường thủy nội địa.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Nhà nước khuyến khích, tạo điều kiện ứng dụng khoa học, công nghệ tiên tiến và đào tạo nguồn nhân lực chuyên ngành để phát triển giao thông đường thủy nội địa bền vững.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Nhà nước khuyến khích, tạo điều kiện đầu tư kinh doanh, khai thác vận tải đường thủy nội địa để phát triển giao thông đường thủy nội địa bền vững.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:1b89fd60f02917a6:hierarchical:0:92e9240cf3f5"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:1b89fd60f02917a6:hierarchical:0:92e9240cf3f5"
+        ],
+        [
+          "phapdien:c7290f27835e:1b89fd60f02917a6:hierarchical:0:92e9240cf3f5"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT004",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Tuyên truyền, phổ biến, giáo dục pháp luật về giao thông đường thủy nội địa” của văn bản 23/2004/QH11 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Tuyên truyền, phổ biến, giáo dục pháp luật về giao thông đường thủy nội địa” của văn bản 23/2004/QH11 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 3,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Tổ chức liên quan đến giao thông đường thủy nội địa có trách nhiệm tuyên truyền, phổ biến, giáo dục pháp luật về giao thông đường thủy nội địa cho Nhân dân và cán bộ, công chức, người lao động trong phạm vi quản lý của mình.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Cơ quan thông tin, tuyên truyền có trách nhiệm tổ chức tuyên truyền, phổ biến pháp luật về giao thông đường thủy nội địa thường xuyên, rộng rãi đến toàn dân.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Cơ quan quản lý nhà nước về giáo dục và đào tạo có trách nhiệm chỉ đạo việc giáo dục pháp luật về giao thông đường thủy nội địa trong các cơ sở giáo dục phù hợp với đặc điểm của từng vùng lãnh thổ.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:f4e74b72e214daf2:hierarchical:0:c1199fe77bcc"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:f4e74b72e214daf2:hierarchical:0:c1199fe77bcc"
+        ],
+        [
+          "phapdien:c7290f27835e:f4e74b72e214daf2:hierarchical:0:c1199fe77bcc"
+        ],
+        [
+          "phapdien:c7290f27835e:f4e74b72e214daf2:hierarchical:0:c1199fe77bcc"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT005",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Kết cấu hạ tầng đường thủy nội địa” của văn bản 23/2004/QH11 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Kết cấu hạ tầng đường thủy nội địa” của văn bản 23/2004/QH11 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 8,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 5
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Kết cấu hạ tầng đường thủy nội địa gồm đường thủy nội địa, hành lang bảo vệ luồng, cảng và bến thủy nội địa, khu neo đậu ngoài cảng, kè, đập giao thông, báo hiệu đường thủy nội địa và các công trình phụ trợ khác.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Đường thủy nội địa được phân loại thành đường thủy nội địa quốc gia, đường thủy nội địa địa phương và đường thủy nội địa chuyên dùng.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Đường thủy nội địa được chia thành các cấp kỹ thuật.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Bộ Giao thông vận tải tổ chức quản lý, bảo trì đường thủy nội địa quốc gia.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Ủy ban nhân dân cấp tỉnh tổ chức quản lý, bảo trì đường thủy nội địa địa phương.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Tổ chức, cá nhân có đường thủy nội địa chuyên dùng tổ chức quản lý, bảo trì đường thủy nội địa chuyên dùng được giao.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Các tổ chức, cá nhân chịu trách nhiệm quản lý, bảo trì tại khoản 3 phải bố trí lực lượng quản lý, bảo trì đường thủy nội địa.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Bộ trưởng Bộ Giao thông vận tải quyết định việc phân loại, phân cấp kỹ thuật, tiêu chuẩn cấp kỹ thuật, công bố tuyến đường thủy nội địa và quy định việc tổ chức quản lý đường thủy nội địa.",
+          "evidence_indices": [
+            4
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:08421ea548a89769:hierarchical:0:9ca849799444"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:08421ea548a89769:hierarchical:0:9ca849799444"
+        ],
+        [
+          "phapdien:c7290f27835e:08421ea548a89769:hierarchical:0:9ca849799444"
+        ],
+        [
+          "phapdien:c7290f27835e:08421ea548a89769:hierarchical:0:9ca849799444"
+        ],
+        [
+          "phapdien:c7290f27835e:08421ea548a89769:hierarchical:0:9ca849799444"
+        ],
+        [
+          "phapdien:c7290f27835e:08421ea548a89769:hierarchical:0:9ca849799444"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT006",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Theo văn bản 110/2014/NĐ-CP, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 110/2014/NĐ-CP, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 1,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 110/2014/NĐ-CP quy định điều kiện kinh doanh vận tải đường thủy nội địa, gồm kinh doanh vận tải hành khách và kinh doanh vận tải hàng hóa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:b05a5f53d68ca43f:hierarchical:0:9eabf60ebbac"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:b05a5f53d68ca43f:hierarchical:0:9eabf60ebbac"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT007",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Văn bản 110/2014/NĐ-CP áp dụng với những đối tượng nào, và có nêu ngoại lệ nào không?",
+      "question_after": "Văn bản 110/2014/NĐ-CP áp dụng với những đối tượng nào, và có nêu ngoại lệ nào không?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 2,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 110/2014/NĐ-CP áp dụng đối với tổ chức, cá nhân có liên quan đến hoạt động kinh doanh vận tải đường thủy nội địa bằng phương tiện thủy nội địa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nghị định số 110/2014/NĐ-CP không áp dụng đối với tổ chức, cá nhân có liên quan đến hoạt động kinh doanh vận tải hành khách đường thủy nội địa trong các khu du lịch khép kín.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:011544b964253795:hierarchical:0:fd56eed2954b"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:011544b964253795:hierarchical:0:fd56eed2954b"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT008",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo văn bản 110/2014/NĐ-CP, các thuật ngữ được nêu trong điều khoản giải thích từ ngữ được hiểu như thế nào?",
+      "question_after": "Theo văn bản 110/2014/NĐ-CP, các thuật ngữ được nêu trong điều khoản giải thích từ ngữ được hiểu như thế nào?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 3,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Đơn vị kinh doanh vận tải thủy nội địa là doanh nghiệp, hợp tác xã tham gia kinh doanh vận tải bằng phương tiện thủy nội địa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Kinh doanh vận tải đường thủy nội địa là hoạt động của đơn vị kinh doanh sử dụng phương tiện thủy nội địa để vận tải hành khách, hàng hóa có thu cước phí vận tải.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Tuyến vận tải đường thủy nội địa cố định là tuyến được cơ quan có thẩm quyền phê duyệt hoặc công bố, được xác định bởi cảng, bến nơi đi và cảng, bến nơi đến.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:5a87dce4abd5340d:hierarchical:0:11a25f8b2c32"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:5a87dce4abd5340d:hierarchical:0:11a25f8b2c32"
+        ],
+        [
+          "phapdien:c7290f27835e:5a87dce4abd5340d:hierarchical:0:11a25f8b2c32"
+        ],
+        [
+          "phapdien:c7290f27835e:5a87dce4abd5340d:hierarchical:0:11a25f8b2c32"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT009",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Văn bản 110/2014/NĐ-CP quy định những hình thức nào tại điều khoản “Các hình thức kinh doanh vận tải đường thủy nội địa”?",
+      "question_after": "Văn bản 110/2014/NĐ-CP quy định những hình thức nào tại điều khoản “Các hình thức kinh doanh vận tải đường thủy nội địa”?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 5
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Kinh doanh vận tải hành khách theo tuyến cố định là một hình thức kinh doanh vận tải đường thủy nội địa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Kinh doanh vận tải hành khách theo hợp đồng chuyến là một hình thức kinh doanh vận tải đường thủy nội địa.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Kinh doanh vận chuyển khách du lịch là một hình thức kinh doanh vận tải đường thủy nội địa.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Kinh doanh vận tải hành khách ngang sông là một hình thức kinh doanh vận tải đường thủy nội địa.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Kinh doanh vận tải hàng hóa là một hình thức kinh doanh vận tải đường thủy nội địa.",
+          "evidence_indices": [
+            4
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:e0f5dae497d5b272:hierarchical:0:a3914c9f0930"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:e0f5dae497d5b272:hierarchical:0:a3914c9f0930"
+        ],
+        [
+          "phapdien:c7290f27835e:e0f5dae497d5b272:hierarchical:0:a3914c9f0930"
+        ],
+        [
+          "phapdien:c7290f27835e:e0f5dae497d5b272:hierarchical:0:a3914c9f0930"
+        ],
+        [
+          "phapdien:c7290f27835e:e0f5dae497d5b272:hierarchical:0:a3914c9f0930"
+        ],
+        [
+          "phapdien:c7290f27835e:e0f5dae497d5b272:hierarchical:0:a3914c9f0930"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT010",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Những điều kiện nào được quy định tại điều khoản “Điều kiện kinh doanh vận tải hành khách theo tuyến cố định, điều kiện kinh doanh vận tải hành khách theo hợp đồng chuyến và điều kiện kinh doanh vận chuyển khách du lịch” của văn bản 110/2014/NĐ-CP?",
+      "question_after": "Theo văn bản 110/2014/NĐ-CP, đơn vị kinh doanh vận tải hành khách theo tuyến cố định, theo hợp đồng chuyến hoặc vận chuyển khách du lịch phải được thành lập theo hình thức tổ chức nào?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 1,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Theo điều khoản về điều kiện kinh doanh vận tải hành khách theo tuyến cố định, theo hợp đồng chuyến và vận chuyển khách du lịch của Nghị định số 110/2014/NĐ-CP, đơn vị kinh doanh vận tải phải thành lập doanh nghiệp hoặc hợp tác xã theo quy định của pháp luật Việt Nam.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Giới hạn rõ điều kiện về hình thức tổ chức mà đoạn nguồn thực sự nêu; không coi một câu trong snapshot là danh sách mọi điều kiện kinh doanh."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:0a98a977d82d7a47:hierarchical:0:a4c302e39fae"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:0a98a977d82d7a47:hierarchical:0:a4c302e39fae"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT011",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo văn bản 48/2019/NĐ-CP, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 48/2019/NĐ-CP, phạm vi điều chỉnh gồm những nội dung nào và những hoạt động nào không thuộc phạm vi áp dụng?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 2,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 48/2019/NĐ-CP quy định về quản lý hoạt động của phương tiện phục vụ vui chơi, giải trí dưới nước tại Việt Nam, bao gồm quản lý hoạt động vui chơi, giải trí dưới nước, vùng hoạt động, phương tiện và người lái phương tiện.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nghị định số 48/2019/NĐ-CP không áp dụng đối với hoạt động lễ hội truyền thống và hoạt động lặn.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Nêu rõ yêu cầu về các hoạt động bị loại trừ để phù hợp khoản 2 trong đáp án."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:90008aa5b66c33c5:hierarchical:0:f1ec862f1b46"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:90008aa5b66c33c5:hierarchical:0:f1ec862f1b46"
+        ],
+        [
+          "phapdien:c7290f27835e:90008aa5b66c33c5:hierarchical:0:f1ec862f1b46"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT012",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Văn bản 48/2019/NĐ-CP áp dụng với những đối tượng nào, và có nêu ngoại lệ nào không?",
+      "question_after": "Văn bản 48/2019/NĐ-CP áp dụng với những đối tượng nào; phương tiện thủy nội địa hoặc tàu biển khi phục vụ vui chơi, giải trí dưới nước phải tuân thủ những quy định nào?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 2,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 48/2019/NĐ-CP áp dụng đối với cơ quan, tổ chức, cá nhân và phương tiện có liên quan đến hoạt động vui chơi, giải trí dưới nước tại Việt Nam.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Phương tiện thủy nội địa hoặc tàu biển khi tham gia hoạt động phục vụ vui chơi, giải trí dưới nước phải tuân theo Nghị định số 48/2019/NĐ-CP ngoài việc tuân theo pháp luật về giao thông đường thủy nội địa hoặc pháp luật về hàng hải.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Thay câu hỏi ngoại lệ bằng nghĩa vụ tuân thủ bổ sung đúng nội dung khoản 2."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:c5a27f1721a6a01d:hierarchical:0:7455a102f4b2"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:c5a27f1721a6a01d:hierarchical:0:7455a102f4b2"
+        ],
+        [
+          "phapdien:c7290f27835e:c5a27f1721a6a01d:hierarchical:0:7455a102f4b2"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT013",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo văn bản 48/2019/NĐ-CP, các thuật ngữ được nêu trong điều khoản giải thích từ ngữ được hiểu như thế nào?",
+      "question_after": "Theo văn bản 48/2019/NĐ-CP, các thuật ngữ được nêu trong điều khoản giải thích từ ngữ được hiểu như thế nào?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 4,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Phương tiện phục vụ vui chơi, giải trí dưới nước là tàu, thuyền hoặc cấu trúc nổi khác dùng phục vụ vui chơi, giải trí dưới nước, có sức chở không quá 05 người và hoạt động trong vùng được cơ quan nhà nước có thẩm quyền chấp thuận hoặc công bố.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Vùng hoạt động vui chơi, giải trí dưới nước là vùng nước mà phương tiện vui chơi, giải trí dưới nước được phép hoạt động trong phạm vi ranh giới an toàn được cơ quan nhà nước có thẩm quyền chấp thuận hoặc công bố.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Người lái phương tiện phục vụ vui chơi, giải trí dưới nước là người trực tiếp điều khiển phương tiện vui chơi, giải trí dưới nước.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Người tham gia vui chơi, giải trí dưới nước là người ở trên phương tiện nhưng không trực tiếp điều khiển phương tiện phục vụ vui chơi, giải trí dưới nước, trừ nhân viên phục vụ trên phương tiện.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:5ff4c9d671e8d76d:hierarchical:0:ba971d750b36"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:5ff4c9d671e8d76d:hierarchical:0:ba971d750b36"
+        ],
+        [
+          "phapdien:c7290f27835e:5ff4c9d671e8d76d:hierarchical:0:ba971d750b36"
+        ],
+        [
+          "phapdien:c7290f27835e:5ff4c9d671e8d76d:hierarchical:0:ba971d750b36"
+        ],
+        [
+          "phapdien:c7290f27835e:5ff4c9d671e8d76d:hierarchical:0:ba971d750b36"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT014",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Phạm vi điều chỉnh của Luật 23/2004/QH11 khác gì so với Nghị định 110/2014/NĐ-CP?",
+      "question_after": "Phạm vi điều chỉnh của Luật 23/2004/QH11 khác gì so với Nghị định 110/2014/NĐ-CP?",
+      "question_changed": false,
+      "claim_count_before": 2,
+      "claim_count_after": 2,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 23/2004/QH11 quy định về hoạt động giao thông đường thủy nội địa và các điều kiện bảo đảm an toàn đối với kết cấu hạ tầng, phương tiện và người tham gia giao thông, vận tải đường thủy nội địa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nghị định số 110/2014/NĐ-CP quy định điều kiện kinh doanh vận tải đường thủy nội địa, gồm kinh doanh vận tải hành khách và kinh doanh vận tải hàng hóa.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:03788b5a341d5e3f:hierarchical:0:fde98ddaafa0",
+        "phapdien:c7290f27835e:b05a5f53d68ca43f:hierarchical:0:9eabf60ebbac"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:03788b5a341d5e3f:hierarchical:0:fde98ddaafa0"
+        ],
+        [
+          "phapdien:c7290f27835e:b05a5f53d68ca43f:hierarchical:0:9eabf60ebbac"
+        ]
+      ]
+    },
+    {
+      "question_id": "GT015",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Luật 23/2004/QH11 nêu nguyên tắc chung nào cho giao thông đường thủy, còn Nghị định 48/2019/NĐ-CP đặt ra yêu cầu nào cho hoạt động vui chơi, giải trí dưới nước?",
+      "question_after": "Luật 23/2004/QH11 nêu nguyên tắc chung nào cho giao thông đường thủy, còn Nghị định 48/2019/NĐ-CP đặt ra yêu cầu nào cho hoạt động vui chơi, giải trí dưới nước?",
+      "question_changed": false,
+      "claim_count_before": 2,
+      "claim_count_after": 12,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 23/2004/QH11 yêu cầu hoạt động giao thông đường thủy nội địa bảo đảm thông suốt, trật tự, an toàn cho người, phương tiện, tài sản và bảo vệ môi trường.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Theo Luật số 23/2004/QH11, hoạt động giao thông đường thủy nội địa phải phục vụ phát triển kinh tế - xã hội, góp phần bảo đảm quốc phòng, an ninh, bảo vệ chủ quyền và lợi ích quốc gia.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Theo Luật số 23/2004/QH11, bảo đảm trật tự, an toàn giao thông đường thủy nội địa là trách nhiệm của toàn xã hội, chính quyền các cấp và tổ chức, cá nhân quản lý hoặc trực tiếp tham gia giao thông.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Luật số 23/2004/QH11 yêu cầu thực hiện đồng bộ giải pháp kỹ thuật, an toàn của phương tiện và kết cấu hạ tầng; đào tạo, nâng cao chuyên môn, nghiệp vụ; phổ biến ý thức chấp hành pháp luật; xử lý nghiêm vi phạm về trật tự, an toàn giao thông đường thủy nội địa.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Theo Luật số 23/2004/QH11, phát triển giao thông đường thủy nội địa phải phù hợp với quy hoạch kết cấu hạ tầng đường thủy nội địa và quy hoạch khác có liên quan theo pháp luật về quy hoạch, bảo đảm quốc phòng, an ninh.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Luật số 23/2004/QH11 yêu cầu phát triển kết cấu hạ tầng đường thủy nội địa hiện đại, đồng bộ về luồng, tuyến, cảng, bến, công nghệ quản lý, xếp dỡ hàng hóa; bảo đảm an toàn giao thông, phòng chống thiên tai, bảo vệ môi trường và ứng phó biến đổi khí hậu.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Luật số 23/2004/QH11 yêu cầu phát triển vận tải đường thủy nội địa kết nối đồng bộ với các phương thức vận tải khác.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Theo Luật số 23/2004/QH11, quản lý hoạt động giao thông đường thủy nội địa phải thống nhất trên cơ sở phân công, phân cấp trách nhiệm, quyền hạn rõ ràng và phối hợp chặt chẽ giữa các bộ, ngành, chính quyền các cấp.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 8,
+          "claim": "Nghị định số 48/2019/NĐ-CP yêu cầu hoạt động vui chơi, giải trí bảo đảm trật tự, an toàn, an ninh, bảo vệ môi trường, hiệu quả và góp phần phát triển du lịch, kinh tế - xã hội.",
+          "evidence_indices": [
+            4
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 9,
+          "claim": "Theo Nghị định số 48/2019/NĐ-CP, đầu tư xây dựng vùng hoạt động vui chơi, giải trí dưới nước phải phù hợp với các quy hoạch ngành quốc gia và quy hoạch có tính chất kỹ thuật chuyên ngành đã được phê duyệt.",
+          "evidence_indices": [
+            5
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 10,
+          "claim": "Theo Nghị định số 48/2019/NĐ-CP, khi thực hiện dự án đầu tư xây dựng vùng hoạt động vui chơi, giải trí dưới nước, chủ đầu tư phải tuân theo pháp luật về đầu tư, xây dựng.",
+          "evidence_indices": [
+            5
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 11,
+          "claim": "Theo Nghị định số 48/2019/NĐ-CP, tổ chức, cá nhân khai thác, cung cấp dịch vụ, người lái phương tiện và người tham gia vui chơi, giải trí dưới nước phải tuân thủ Nghị định và quy định pháp luật có liên quan.",
+          "evidence_indices": [
+            6
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Bổ sung các nguyên tắc về trách nhiệm, quy hoạch, kết nối vận tải, quản lý và nghĩa vụ chủ đầu tư mà câu hỏi rộng yêu cầu nhưng đáp án cũ bỏ sót."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:a8f40df47183b2ff:hierarchical:0:0e44e3d895cf",
+        "phapdien:c7290f27835e:bf1d2ff9ff32540d:hierarchical:0:b9d57a2941ff"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:bf1d2ff9ff32540d:hierarchical:0:b9d57a2941ff"
+        ],
+        [
+          "phapdien:c7290f27835e:bf1d2ff9ff32540d:hierarchical:0:b9d57a2941ff"
+        ],
+        [
+          "phapdien:c7290f27835e:bf1d2ff9ff32540d:hierarchical:0:b9d57a2941ff"
+        ],
+        [
+          "phapdien:c7290f27835e:bf1d2ff9ff32540d:hierarchical:0:b9d57a2941ff"
+        ],
+        [
+          "phapdien:c7290f27835e:a8f40df47183b2ff:hierarchical:0:0e44e3d895cf"
+        ],
+        [
+          "phapdien:c7290f27835e:a8f40df47183b2ff:hierarchical:0:0e44e3d895cf"
+        ],
+        [
+          "phapdien:c7290f27835e:a8f40df47183b2ff:hierarchical:0:0e44e3d895cf"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN001",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Theo văn bản 07/2017/QH14, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 07/2017/QH14, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 6,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 07/2017/QH14 quy định về hoạt động chuyển giao công nghệ tại Việt Nam, từ nước ngoài vào Việt Nam và từ Việt Nam ra nước ngoài.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật số 07/2017/QH14 quy định quyền và nghĩa vụ của tổ chức, cá nhân tham gia hoạt động chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Luật số 07/2017/QH14 quy định về thẩm định công nghệ dự án đầu tư.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Luật số 07/2017/QH14 quy định về hợp đồng chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Luật số 07/2017/QH14 quy định biện pháp khuyến khích chuyển giao công nghệ và phát triển thị trường khoa học và công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Luật số 07/2017/QH14 quy định về quản lý nhà nước về chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:7c9ac6c0ec3c7a7e:hierarchical:0:1704e4a3a55f"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:7c9ac6c0ec3c7a7e:hierarchical:0:1704e4a3a55f"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN002",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Đối tượng công nghệ được chuyển giao” của văn bản 07/2017/QH14 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Đối tượng công nghệ được chuyển giao” của văn bản 07/2017/QH14 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Bí quyết kỹ thuật, bí quyết công nghệ là đối tượng công nghệ được chuyển giao theo Luật số 07/2017/QH14.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Phương án, quy trình công nghệ; giải pháp, thông số, bản vẽ, sơ đồ kỹ thuật; công thức, phần mềm máy tính, thông tin dữ liệu là đối tượng công nghệ được chuyển giao theo Luật số 07/2017/QH14.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Giải pháp hợp lý hóa sản xuất, đổi mới công nghệ là đối tượng công nghệ được chuyển giao theo Luật số 07/2017/QH14.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Máy móc, thiết bị đi kèm một trong các đối tượng tại điểm a, b, c khoản 1 điều về đối tượng công nghệ được chuyển giao là đối tượng công nghệ được chuyển giao theo Luật số 07/2017/QH14.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Nếu đối tượng công nghệ được chuyển giao được bảo hộ quyền sở hữu trí tuệ thì việc chuyển giao quyền sở hữu trí tuệ phải theo pháp luật về sở hữu trí tuệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:a912fd40c08c85d0:hierarchical:0:254f69f2e6c1"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:a912fd40c08c85d0:hierarchical:0:254f69f2e6c1"
+        ],
+        [
+          "phapdien:c7290f27835e:a912fd40c08c85d0:hierarchical:0:254f69f2e6c1"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN003",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Văn bản 07/2017/QH14 quy định những hình thức nào tại điều khoản “Hình thức chuyển giao công nghệ”?",
+      "question_after": "Văn bản 07/2017/QH14 quy định những hình thức chuyển giao công nghệ nào và yêu cầu thể hiện việc chuyển giao trong hợp đồng hoặc hồ sơ như thế nào?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 9,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 07/2017/QH14 quy định hình thức chuyển giao công nghệ độc lập.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong dự án đầu tư.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong góp vốn bằng công nghệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong nhượng quyền thương mại.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong chuyển giao quyền sở hữu trí tuệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong mua, bán máy móc, thiết bị đi kèm đối tượng công nghệ theo điểm d khoản 1 Điều 4 của Luật.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Luật số 07/2017/QH14 cho phép chuyển giao công nghệ bằng hình thức khác theo quy định của pháp luật.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Chuyển giao công nghệ độc lập và góp vốn bằng công nghệ phải được lập thành hợp đồng theo Luật số 07/2017/QH14.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 8,
+          "claim": "Các trường hợp tại điểm a, c, d, đ khoản 2 và khoản 3 điều về hình thức chuyển giao công nghệ được thể hiện bằng hợp đồng hoặc điều, khoản, phụ lục của hợp đồng hoặc hồ sơ dự án đầu tư có nội dung theo Điều 23 Luật số 07/2017/QH14.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Nêu rõ phần yêu cầu hợp đồng/hồ sơ vì đáp án và evidence bao gồm cả khoản 4."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+        ],
+        [
+          "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+        ],
+        [
+          "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+        ],
+        [
+          "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN004",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Phương thức chuyển giao công nghệ” của văn bản 07/2017/QH14 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Phương thức chuyển giao công nghệ” của văn bản 07/2017/QH14 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 5
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Chuyển giao tài liệu về công nghệ là một phương thức chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Đào tạo cho bên nhận công nghệ nắm vững và làm chủ công nghệ trong thời hạn thỏa thuận là một phương thức chuyển giao công nghệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Cử chuyên gia tư vấn kỹ thuật cho bên nhận công nghệ đưa công nghệ vào ứng dụng, vận hành để đạt chỉ tiêu chất lượng sản phẩm, tiến độ theo thỏa thuận là một phương thức chuyển giao công nghệ.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Chuyển giao máy móc, thiết bị kèm công nghệ theo điểm d khoản 1 Điều 4 Luật số 07/2017/QH14, kèm các phương thức tại điều về phương thức chuyển giao công nghệ, là một phương thức chuyển giao công nghệ.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Các bên có thể thỏa thuận phương thức chuyển giao công nghệ khác.",
+          "evidence_indices": [
+            4
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:432835132598dc6b:hierarchical:0:f437fe19ed41"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:432835132598dc6b:hierarchical:0:f437fe19ed41"
+        ],
+        [
+          "phapdien:c7290f27835e:432835132598dc6b:hierarchical:0:f437fe19ed41"
+        ],
+        [
+          "phapdien:c7290f27835e:432835132598dc6b:hierarchical:0:f437fe19ed41"
+        ],
+        [
+          "phapdien:c7290f27835e:432835132598dc6b:hierarchical:0:f437fe19ed41"
+        ],
+        [
+          "phapdien:c7290f27835e:432835132598dc6b:hierarchical:0:f437fe19ed41"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN005",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Quyền chuyển giao công nghệ” của văn bản 07/2017/QH14 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Quyền chuyển giao công nghệ” của văn bản 07/2017/QH14 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Chủ sở hữu công nghệ có quyền chuyển nhượng quyền sở hữu công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Chủ sở hữu công nghệ có quyền chuyển giao quyền sử dụng công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Tổ chức, cá nhân có quyền sử dụng công nghệ được chuyển giao quyền sử dụng công nghệ đó cho tổ chức, cá nhân khác khi chủ sở hữu công nghệ đồng ý.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Các bên thỏa thuận phạm vi chuyển giao quyền sử dụng công nghệ là độc quyền hoặc không độc quyền.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Các bên thỏa thuận về quyền chuyển giao tiếp quyền sử dụng công nghệ của bên nhận chuyển giao cho bên thứ ba.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:067848ece1c411a1:hierarchical:0:c10b5da22668"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:067848ece1c411a1:hierarchical:0:c10b5da22668"
+        ],
+        [
+          "phapdien:c7290f27835e:067848ece1c411a1:hierarchical:0:c10b5da22668"
+        ],
+        [
+          "phapdien:c7290f27835e:067848ece1c411a1:hierarchical:0:c10b5da22668"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN006",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Theo văn bản 21/2008/QH12, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 21/2008/QH12, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 2,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 21/2008/QH12 quy định về hoạt động công nghệ cao.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật số 21/2008/QH12 quy định chính sách, biện pháp khuyến khích, thúc đẩy hoạt động công nghệ cao.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:1be21970695af2ef:hierarchical:0:d2adcec6f61c"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:1be21970695af2ef:hierarchical:0:d2adcec6f61c"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN007",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Văn bản 21/2008/QH12 áp dụng với những đối tượng nào, và có nêu ngoại lệ nào không?",
+      "question_after": "Theo văn bản 21/2008/QH12, những tổ chức, cá nhân nào thuộc đối tượng áp dụng và hoạt động công nghệ cao phải diễn ra ở đâu?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 3,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 21/2008/QH12 áp dụng đối với tổ chức, cá nhân Việt Nam tham gia hoạt động công nghệ cao tại Việt Nam.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật số 21/2008/QH12 áp dụng đối với người Việt Nam định cư ở nước ngoài tham gia hoạt động công nghệ cao tại Việt Nam.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Luật số 21/2008/QH12 áp dụng đối với tổ chức, cá nhân nước ngoài tham gia hoạt động công nghệ cao tại Việt Nam.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Bỏ yêu cầu tìm ngoại lệ không có trong đoạn gán nhãn; giữ rõ điều kiện hoạt động tại Việt Nam."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:c95a8c2af343c44c:hierarchical:0:5a89a89e47ed"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:c95a8c2af343c44c:hierarchical:0:5a89a89e47ed"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN008",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Công nghệ cao được ưu tiên đầu tư phát triển” của văn bản 21/2008/QH12 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Công nghệ cao được ưu tiên đầu tư phát triển” của văn bản 21/2008/QH12 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 8,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Các lĩnh vực tập trung đầu tư phát triển công nghệ cao gồm công nghệ thông tin, công nghệ sinh học, công nghệ vật liệu mới và công nghệ tự động hóa.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Căn cứ nhu cầu phát triển kinh tế - xã hội, quốc phòng, an ninh, Chính phủ điều chỉnh, bổ sung các lĩnh vực công nghệ cần tập trung đầu tư phát triển công nghệ cao.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Công nghệ cao được ưu tiên đầu tư phát triển phải thuộc các lĩnh vực tại khoản 1, khoản 2 điều về công nghệ cao được ưu tiên đầu tư phát triển, phù hợp yêu cầu và xu thế khoa học công nghệ tiên tiến, hiện đại của thế giới, phát huy lợi thế đất nước và có tính khả thi.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Ngoài các yêu cầu chung, công nghệ cao được ưu tiên đầu tư phát triển phải đáp ứng ít nhất một trong ba điều kiện tại khoản 3 điều về công nghệ cao được ưu tiên đầu tư phát triển.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Một điều kiện lựa chọn tại khoản 3 là công nghệ có tác động mạnh và hiệu quả lớn đối với phát triển các ngành, lĩnh vực kinh tế - xã hội, quốc phòng, an ninh.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Một điều kiện lựa chọn tại khoản 3 là công nghệ góp phần hiện đại hóa các ngành sản xuất, dịch vụ hiện có.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Một điều kiện lựa chọn tại khoản 3 là công nghệ là yếu tố quan trọng quyết định hình thành ngành sản xuất, dịch vụ mới có sức cạnh tranh và hiệu quả kinh tế - xã hội cao.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Bộ Khoa học và Công nghệ chủ trì, phối hợp với bộ, cơ quan ngang bộ liên quan trình Thủ tướng Chính phủ ban hành, sửa đổi, bổ sung Danh mục công nghệ cao được ưu tiên đầu tư phát triển và mục tiêu, lộ trình, giải pháp thực hiện.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:e2c2d40247da91df:hierarchical:0:074d0414b3d9"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:e2c2d40247da91df:hierarchical:0:074d0414b3d9"
+        ],
+        [
+          "phapdien:c7290f27835e:e2c2d40247da91df:hierarchical:0:074d0414b3d9"
+        ],
+        [
+          "phapdien:c7290f27835e:e2c2d40247da91df:hierarchical:0:074d0414b3d9"
+        ],
+        [
+          "phapdien:c7290f27835e:e2c2d40247da91df:hierarchical:0:074d0414b3d9"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN009",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Sản phẩm công nghệ cao được khuyến khích phát triển” của văn bản 21/2008/QH12 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Sản phẩm công nghệ cao được khuyến khích phát triển” của văn bản 21/2008/QH12 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 6,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Sản phẩm công nghệ cao được khuyến khích phát triển phải được tạo ra từ công nghệ thuộc Danh mục công nghệ cao được ưu tiên đầu tư phát triển.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Sản phẩm công nghệ cao được khuyến khích phát triển phải có tỷ trọng giá trị gia tăng cao trong cơ cấu giá trị sản phẩm.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Sản phẩm công nghệ cao được khuyến khích phát triển phải có tính cạnh tranh cao và hiệu quả kinh tế - xã hội lớn.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Sản phẩm công nghệ cao được khuyến khích phát triển phải có khả năng xuất khẩu hoặc thay thế sản phẩm nhập khẩu.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Sản phẩm công nghệ cao được khuyến khích phát triển phải góp phần nâng cao năng lực khoa học và công nghệ quốc gia.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Bộ Khoa học và Công nghệ chủ trì, phối hợp với bộ, cơ quan ngang bộ liên quan trình Thủ tướng Chính phủ ban hành, sửa đổi, bổ sung Danh mục sản phẩm công nghệ cao được khuyến khích phát triển phù hợp từng thời kỳ phát triển kinh tế - xã hội.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:56e06c2afa9cc6bf:hierarchical:0:afa63d9799df"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:56e06c2afa9cc6bf:hierarchical:0:afa63d9799df"
+        ],
+        [
+          "phapdien:c7290f27835e:56e06c2afa9cc6bf:hierarchical:0:afa63d9799df"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN010",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Hợp tác quốc tế về công nghệ cao” của văn bản 21/2008/QH12 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Hợp tác quốc tế về công nghệ cao” của văn bản 21/2008/QH12 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 6,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Hợp tác quốc tế trong nghiên cứu, ứng dụng, phát triển công nghệ cao được mở rộng, đặc biệt với quốc gia, vùng lãnh thổ, tổ chức, cá nhân nước ngoài, tập đoàn kinh tế đa quốc gia, tập đoàn kinh tế nước ngoài có trình độ khoa học công nghệ tiên tiến, trên nguyên tắc phù hợp pháp luật Việt Nam và điều ước quốc tế mà Việt Nam là thành viên.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Tổ chức, cá nhân Việt Nam được khuyến khích và tạo điều kiện tham gia chương trình, dự án hợp tác quốc tế, hội, hiệp hội quốc tế và tổ chức khác về công nghệ cao.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Tổ chức, cá nhân nước ngoài và người Việt Nam định cư ở nước ngoài được thu hút thực hiện hoạt động công nghệ cao tại Việt Nam.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Hợp tác quốc tế về phát triển nhân lực công nghệ cao được đẩy mạnh, ưu tiên hợp tác đào tạo sinh viên ngành kỹ thuật công nghệ cao tại các trường đại học, cao đẳng, dạy nghề tiên tiến khu vực và thế giới.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Người có trình độ cao và lực lượng trẻ tài năng được thu hút, sử dụng có hiệu quả để hợp tác nghiên cứu, giảng dạy, ươm tạo công nghệ cao, ươm tạo và phát triển doanh nghiệp công nghệ cao tại Việt Nam.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Việc hội nhập quốc tế về khoa học công nghệ thực hiện theo lộ trình, đẩy mạnh tìm kiếm, chuyển giao công nghệ tiên tiến vào Việt Nam nhằm nâng cao năng lực làm chủ và sáng tạo công nghệ cao của tổ chức nghiên cứu, đào tạo, doanh nghiệp trong nước.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:82048e8685f44b90:hierarchical:0:75483cf18c3c"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:82048e8685f44b90:hierarchical:0:75483cf18c3c"
+        ],
+        [
+          "phapdien:c7290f27835e:82048e8685f44b90:hierarchical:0:75483cf18c3c"
+        ],
+        [
+          "phapdien:c7290f27835e:82048e8685f44b90:hierarchical:0:75483cf18c3c"
+        ],
+        [
+          "phapdien:c7290f27835e:82048e8685f44b90:hierarchical:0:75483cf18c3c"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN011",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Theo văn bản 76/2018/NĐ-CP, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 76/2018/NĐ-CP, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 76/2018/NĐ-CP quy định chi tiết, hướng dẫn thi hành các Điều 9, 10, 11, 27, 31, khoản 3 Điều 32, Điều 35, 36, 40, 42, 43 và khoản 3 Điều 48 của Luật Chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nội dung được Nghị định số 76/2018/NĐ-CP hướng dẫn gồm danh mục công nghệ và quản lý hoạt động chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Nội dung được Nghị định số 76/2018/NĐ-CP hướng dẫn gồm tổ chức đánh giá, thẩm định giá, giám định công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Nội dung được Nghị định số 76/2018/NĐ-CP hướng dẫn gồm hỗ trợ, thúc đẩy chuyển giao công nghệ và phát triển thị trường khoa học và công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Hình thức, phương thức đặc thù chuyển giao công nghệ trong nông nghiệp tại khoản 2, 3 Điều 52 Luật Chuyển giao công nghệ thực hiện theo quy định khác của Chính phủ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:0b3427338b5ad7b8:hierarchical:0:fbb9b67f5e6f"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:0b3427338b5ad7b8:hierarchical:0:fbb9b67f5e6f"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN012",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Văn bản 76/2018/NĐ-CP áp dụng với những đối tượng nào, và có nêu ngoại lệ nào không?",
+      "question_after": "Văn bản 76/2018/NĐ-CP áp dụng với những đối tượng nào?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 1,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 76/2018/NĐ-CP áp dụng đối với cơ quan, tổ chức, cá nhân liên quan đến hoạt động chuyển giao công nghệ quy định tại Điều 1 của Luật Chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Bỏ yêu cầu tìm ngoại lệ không được đoạn gán nhãn hỗ trợ; không suy diễn toàn bộ văn bản không có ngoại lệ."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:1c87cca403743b61:hierarchical:0:6cd2f8ca3478"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:1c87cca403743b61:hierarchical:0:6cd2f8ca3478"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN013",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Danh mục công nghệ khuyến khích chuyển giao, Danh mục công nghệ hạn chế chuyển giao và Danh mục công nghệ cấm chuyển giao” của văn bản 76/2018/NĐ-CP quy định những nội dung gì?",
+      "question_after": "Văn bản 76/2018/NĐ-CP ban hành những danh mục công nghệ nào, tương ứng với phụ lục nào; việc đề xuất sửa đổi, bổ sung các danh mục được thực hiện ra sao?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 4,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 76/2018/NĐ-CP ban hành Danh mục công nghệ khuyến khích chuyển giao tại Phụ lục I.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nghị định số 76/2018/NĐ-CP ban hành Danh mục công nghệ hạn chế chuyển giao tại Phụ lục II.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Nghị định số 76/2018/NĐ-CP ban hành Danh mục công nghệ cấm chuyển giao tại Phụ lục III.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Căn cứ tình hình phát triển kinh tế - xã hội và yêu cầu quản lý nhà nước, các bộ, cơ quan ngang bộ xem xét, đề xuất, gửi Bộ Khoa học và Công nghệ tổng hợp và trình Chính phủ sửa đổi, bổ sung công nghệ thuộc các danh mục.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Hỏi đúng ba danh mục, phụ lục và quy trình cập nhật; loại tên file đính kèm khỏi đáp án và quote."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:579f76412a0b1b2d:hierarchical:0:c54ca42ea5c7"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:579f76412a0b1b2d:hierarchical:0:c54ca42ea5c7"
+        ],
+        [
+          "phapdien:c7290f27835e:579f76412a0b1b2d:hierarchical:0:c54ca42ea5c7"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN014",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Luật 07/2017/QH14 và Nghị định 76/2018/NĐ-CP có phạm vi điều chỉnh khác nhau như thế nào?",
+      "question_after": "Luật 07/2017/QH14 và Nghị định 76/2018/NĐ-CP có phạm vi điều chỉnh khác nhau như thế nào?",
+      "question_changed": false,
+      "claim_count_before": 2,
+      "claim_count_after": 11,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 07/2017/QH14 quy định về hoạt động chuyển giao công nghệ tại Việt Nam, từ nước ngoài vào Việt Nam và từ Việt Nam ra nước ngoài.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật số 07/2017/QH14 quy định quyền và nghĩa vụ của tổ chức, cá nhân tham gia hoạt động chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Luật số 07/2017/QH14 quy định về thẩm định công nghệ dự án đầu tư.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Luật số 07/2017/QH14 quy định về hợp đồng chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Luật số 07/2017/QH14 quy định biện pháp khuyến khích chuyển giao công nghệ và phát triển thị trường khoa học và công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Luật số 07/2017/QH14 quy định về quản lý nhà nước về chuyển giao công nghệ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Nghị định số 76/2018/NĐ-CP quy định chi tiết, hướng dẫn thi hành các Điều 9, 10, 11, 27, 31, khoản 3 Điều 32, Điều 35, 36, 40, 42, 43 và khoản 3 Điều 48 của Luật Chuyển giao công nghệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Nội dung được Nghị định số 76/2018/NĐ-CP hướng dẫn gồm danh mục công nghệ và quản lý hoạt động chuyển giao công nghệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 8,
+          "claim": "Nội dung được Nghị định số 76/2018/NĐ-CP hướng dẫn gồm tổ chức đánh giá, thẩm định giá, giám định công nghệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 9,
+          "claim": "Nội dung được Nghị định số 76/2018/NĐ-CP hướng dẫn gồm hỗ trợ, thúc đẩy chuyển giao công nghệ và phát triển thị trường khoa học và công nghệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 10,
+          "claim": "Hình thức, phương thức đặc thù chuyển giao công nghệ trong nông nghiệp tại khoản 2, 3 Điều 52 Luật Chuyển giao công nghệ thực hiện theo quy định khác của Chính phủ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Tách đủ các nội dung phạm vi và quy định riêng về chuyển giao trong nông nghiệp, giữ chủ thể văn bản cho từng ý."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:0b3427338b5ad7b8:hierarchical:0:fbb9b67f5e6f",
+        "phapdien:c7290f27835e:7c9ac6c0ec3c7a7e:hierarchical:0:1704e4a3a55f"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:7c9ac6c0ec3c7a7e:hierarchical:0:1704e4a3a55f"
+        ],
+        [
+          "phapdien:c7290f27835e:0b3427338b5ad7b8:hierarchical:0:fbb9b67f5e6f"
+        ]
+      ]
+    },
+    {
+      "question_id": "KHCN015",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo Luật 07/2017/QH14, chuyển giao công nghệ có thể thực hiện dưới những hình thức nào; Nghị định 76/2018/NĐ-CP cho phép các bên thỏa thuận những phương thức thanh toán nào?",
+      "question_after": "Theo Luật 07/2017/QH14, chuyển giao công nghệ có thể thực hiện dưới những hình thức nào; Nghị định 76/2018/NĐ-CP cho phép những phương thức thanh toán nào và đặt ra yêu cầu gì khi góp vốn bằng công nghệ có sử dụng vốn nhà nước?",
+      "question_changed": true,
+      "claim_count_before": 2,
+      "claim_count_after": 15,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": 1
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật số 07/2017/QH14 quy định hình thức chuyển giao công nghệ độc lập.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong dự án đầu tư.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong góp vốn bằng công nghệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong nhượng quyền thương mại.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong chuyển giao quyền sở hữu trí tuệ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Luật số 07/2017/QH14 quy định phần chuyển giao công nghệ trong mua, bán máy móc, thiết bị đi kèm đối tượng công nghệ theo điểm d khoản 1 Điều 4 của Luật.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Luật số 07/2017/QH14 cho phép chuyển giao công nghệ bằng hình thức khác theo quy định của pháp luật.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, các bên tham gia hợp đồng có thể thỏa thuận thanh toán bằng một hoặc nhiều phương thức.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 8,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, các bên có thể trả một lần hoặc nhiều lần bằng tiền hoặc hàng hóa, bao gồm hình thức trả tính theo từng đơn vị sản phẩm sản xuất ra từ công nghệ chuyển giao.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 9,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, các bên có thể chuyển giá trị công nghệ thành vốn góp vào dự án đầu tư hoặc vốn của doanh nghiệp.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 10,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, góp vốn bằng công nghệ được tạo ra bằng vốn nhà nước hoặc sử dụng vốn nhà nước để mua công nghệ phải thực hiện thẩm định giá công nghệ theo pháp luật.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 11,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, các bên có thể thanh toán theo phần trăm giá bán tịnh.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 12,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, các bên có thể thanh toán theo phần trăm doanh thu thuần.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 13,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, các bên có thể thanh toán theo phần trăm lợi nhuận trước thuế hoặc thỏa thuận thanh toán theo phần trăm lợi nhuận sau thuế.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 14,
+          "claim": "Theo Nghị định số 76/2018/NĐ-CP, các bên có thể kết hợp các phương thức thanh toán tại điểm a, b, c, d, đ khoản 1 điều về giá và phương thức thanh toán chuyển giao công nghệ hoặc dùng hình thức thanh toán khác phù hợp pháp luật về chuyển giao công nghệ.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Nêu rõ điều kiện thẩm định giá khi góp vốn bằng công nghệ có vốn nhà nước; bổ sung phương án lợi nhuận sau thuế bị thiếu trong đáp án cũ; evidence chỉ lấy hình thức và khoản thanh toán liên quan."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687",
+        "phapdien:c7290f27835e:d712260246168084:clause:1:hierarchical:0:3693b59f0e16"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+        ],
+        [
+          "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+        ],
+        [
+          "phapdien:c7290f27835e:c0871836d470024a:hierarchical:0:2caf20fbc687"
+        ],
+        [
+          "phapdien:c7290f27835e:d712260246168084:clause:1:hierarchical:0:3693b59f0e16"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD001",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Theo văn bản 43/2019/QH14, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 43/2019/QH14, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 4,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định về hệ thống giáo dục quốc dân.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định về cơ sở giáo dục, nhà giáo và người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định về quản lý nhà nước về giáo dục.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định quyền và trách nhiệm của cơ quan, tổ chức, cá nhân liên quan đến hoạt động giáo dục.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:3f710c352164b34d:hierarchical:0:0a1bd206405f"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:3f710c352164b34d:hierarchical:0:0a1bd206405f"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD002",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "split"
+      ],
+      "question_before": "Điều khoản “Mục tiêu giáo dục” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Mục tiêu giáo dục” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Mục tiêu giáo dục là phát triển toàn diện con người Việt Nam có đạo đức, tri thức, văn hóa, sức khỏe, thẩm mỹ và nghề nghiệp.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Mục tiêu giáo dục bao gồm phát triển con người có phẩm chất, năng lực và ý thức công dân.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Mục tiêu giáo dục bao gồm phát triển con người có lòng yêu nước, tinh thần dân tộc, trung thành với lý tưởng độc lập dân tộc và chủ nghĩa xã hội.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Mục tiêu giáo dục bao gồm phát huy tiềm năng, khả năng sáng tạo của mỗi cá nhân.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Mục tiêu giáo dục bao gồm nâng cao dân trí, phát triển nguồn nhân lực, bồi dưỡng nhân tài, đáp ứng yêu cầu xây dựng, bảo vệ Tổ quốc và hội nhập quốc tế.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:0d3eaa0018fe8e7e:hierarchical:0:87054d8ed0c0"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:0d3eaa0018fe8e7e:hierarchical:0:87054d8ed0c0"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD003",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Tính chất, nguyên lý giáo dục” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Tính chất, nguyên lý giáo dục” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nền giáo dục Việt Nam là nền giáo dục xã hội chủ nghĩa có tính nhân dân, dân tộc, khoa học, hiện đại.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nền giáo dục Việt Nam lấy chủ nghĩa Mác - Lê nin và tư tưởng Hồ Chí Minh làm nền tảng.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Hoạt động giáo dục thực hiện theo nguyên lý học đi đôi với hành.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Hoạt động giáo dục thực hiện theo nguyên lý lý luận gắn liền với thực tiễn.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Hoạt động giáo dục thực hiện theo nguyên lý giáo dục nhà trường kết hợp với giáo dục gia đình và giáo dục xã hội.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:bf2f3ea8f175caee:hierarchical:0:67a1ddd608fb"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:bf2f3ea8f175caee:hierarchical:0:67a1ddd608fb"
+        ],
+        [
+          "phapdien:c7290f27835e:bf2f3ea8f175caee:hierarchical:0:67a1ddd608fb"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD004",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Phát triển giáo dục” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Phát triển giáo dục” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 6,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Phát triển giáo dục là quốc sách hàng đầu.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Phát triển giáo dục phải gắn với nhu cầu phát triển kinh tế - xã hội, tiến bộ khoa học, công nghệ và củng cố quốc phòng, an ninh.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Phát triển giáo dục phải thực hiện chuẩn hóa, hiện đại hóa, xã hội hóa.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Phát triển giáo dục phải bảo đảm cân đối cơ cấu ngành nghề, trình độ, nguồn nhân lực và phù hợp vùng miền.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Phát triển giáo dục phải mở rộng quy mô trên cơ sở bảo đảm chất lượng, hiệu quả và kết hợp giữa đào tạo và sử dụng.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Phát triển hệ thống giáo dục mở, xây dựng xã hội học tập nhằm tạo cơ hội cho mọi người tiếp cận giáo dục, học ở mọi trình độ, mọi hình thức và học tập suốt đời.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:2b79bce55e3982e6:hierarchical:0:cc532c0b42ac"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:2b79bce55e3982e6:hierarchical:0:cc532c0b42ac"
+        ],
+        [
+          "phapdien:c7290f27835e:2b79bce55e3982e6:hierarchical:0:cc532c0b42ac"
+        ],
+        [
+          "phapdien:c7290f27835e:2b79bce55e3982e6:hierarchical:0:cc532c0b42ac"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD005",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Hệ thống giáo dục quốc dân” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_after": "Điều khoản “Hệ thống giáo dục quốc dân” của văn bản 43/2019/QH14 quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 8,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Hệ thống giáo dục quốc dân là hệ thống giáo dục mở, liên thông gồm giáo dục chính quy và giáo dục thường xuyên.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Giáo dục mầm non gồm giáo dục nhà trẻ và giáo dục mẫu giáo.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Giáo dục phổ thông gồm giáo dục tiểu học, giáo dục trung học cơ sở và giáo dục trung học phổ thông.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Giáo dục nghề nghiệp đào tạo trình độ sơ cấp, trung cấp, cao đẳng và các chương trình đào tạo nghề nghiệp khác.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Giáo dục đại học đào tạo trình độ đại học, thạc sĩ và tiến sĩ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Thủ tướng Chính phủ quyết định phê duyệt Khung cơ cấu hệ thống giáo dục quốc dân và Khung trình độ quốc gia Việt Nam.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Thủ tướng Chính phủ quy định thời gian đào tạo, tiêu chuẩn từng trình độ và khối lượng học tập tối thiểu đối với trình độ của giáo dục nghề nghiệp, giáo dục đại học.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Bộ trưởng Bộ Giáo dục và Đào tạo, Bộ trưởng Bộ Lao động - Thương binh và Xã hội, trong phạm vi nhiệm vụ, quyền hạn, quy định ngưỡng đầu vào trình độ cao đẳng, đại học thuộc ngành đào tạo giáo viên và ngành thuộc lĩnh vực sức khỏe.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:fcf3f4327a4dfa9b:hierarchical:0:718750bf24b2"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:fcf3f4327a4dfa9b:hierarchical:0:718750bf24b2"
+        ],
+        [
+          "phapdien:c7290f27835e:fcf3f4327a4dfa9b:hierarchical:0:718750bf24b2"
+        ],
+        [
+          "phapdien:c7290f27835e:fcf3f4327a4dfa9b:hierarchical:0:718750bf24b2"
+        ],
+        [
+          "phapdien:c7290f27835e:fcf3f4327a4dfa9b:hierarchical:0:718750bf24b2"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD006",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo văn bản 80/2017/NĐ-CP, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 80/2017/NĐ-CP, phạm vi điều chỉnh và đối tượng áp dụng được quy định như thế nào?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 4,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 80/2017/NĐ-CP quy định về môi trường giáo dục an toàn, lành mạnh, thân thiện và phòng, chống bạo lực học đường.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nghị định số 80/2017/NĐ-CP áp dụng đối với cơ sở giáo dục mầm non, phổ thông, thường xuyên, nghề nghiệp, trường chuyên biệt, cơ sở giáo dục có vốn đầu tư nước ngoài hoặc liên kết đào tạo với nước ngoài tại Việt Nam có người học dưới 18 tuổi.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Nghị định số 80/2017/NĐ-CP áp dụng đối với lớp xóa mù chữ, ngoại ngữ, tin học, kỹ năng, năng khiếu, văn hóa và lớp dành cho trẻ em vì hoàn cảnh khó khăn hoặc đặc biệt không được đi học ở nhà trường có người học dưới 18 tuổi.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Nghị định số 80/2017/NĐ-CP áp dụng đối với các cơ quan, tổ chức và cá nhân có liên quan.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Câu hỏi cũ chỉ hỏi phạm vi nhưng đáp án chứa cả đối tượng; nêu rõ cả hai yêu cầu."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:6e5f46d05fa20fad:hierarchical:0:18a7db5bee0a"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:6e5f46d05fa20fad:hierarchical:0:18a7db5bee0a"
+        ],
+        [
+          "phapdien:c7290f27835e:6e5f46d05fa20fad:hierarchical:0:18a7db5bee0a"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD007",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo văn bản 80/2017/NĐ-CP, các thuật ngữ được nêu trong điều khoản giải thích từ ngữ được hiểu như thế nào?",
+      "question_after": "Theo văn bản 80/2017/NĐ-CP, các thuật ngữ được nêu trong điều khoản giải thích từ ngữ được hiểu như thế nào?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 4
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 5
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Môi trường giáo dục là tất cả các điều kiện vật chất và tinh thần có ảnh hưởng đến hoạt động giáo dục, học tập, rèn luyện và phát triển của người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Môi trường giáo dục an toàn là môi trường mà người học được bảo vệ, không bị tổn hại về thể chất và tinh thần.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Môi trường giáo dục lành mạnh là môi trường không có tệ nạn xã hội, không bạo lực; người học, cán bộ quản lý, giáo viên, nhân viên có lối sống lành mạnh và ứng xử văn hóa.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Môi trường giáo dục thân thiện là môi trường mà người học được tôn trọng, đối xử công bằng, bình đẳng, nhân ái; được phát huy dân chủ và tạo điều kiện phát triển phẩm chất, năng lực.",
+          "evidence_indices": [
+            3
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Bạo lực học đường là hành vi hành hạ, ngược đãi, đánh đập, xâm hại thân thể hoặc sức khỏe, lăng mạ, xúc phạm danh dự hoặc nhân phẩm, cô lập, xua đuổi và hành vi cố ý khác gây tổn hại thể chất, tinh thần của người học xảy ra trong cơ sở giáo dục hoặc lớp độc lập.",
+          "evidence_indices": [
+            4
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:34a4880f5255cc33:hierarchical:0:09dcb0ba8f89"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:34a4880f5255cc33:hierarchical:0:09dcb0ba8f89"
+        ],
+        [
+          "phapdien:c7290f27835e:34a4880f5255cc33:hierarchical:0:09dcb0ba8f89"
+        ],
+        [
+          "phapdien:c7290f27835e:34a4880f5255cc33:hierarchical:0:09dcb0ba8f89"
+        ],
+        [
+          "phapdien:c7290f27835e:34a4880f5255cc33:hierarchical:0:09dcb0ba8f89"
+        ],
+        [
+          "phapdien:c7290f27835e:34a4880f5255cc33:hierarchical:0:09dcb0ba8f89"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD008",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Yêu cầu về địa điểm, cơ sở vật chất, thiết bị dạy học, đồ dùng, đồ chơi trẻ em” của văn bản 80/2017/NĐ-CP quy định những nội dung gì?",
+      "question_after": "Điều khoản “Yêu cầu về địa điểm, cơ sở vật chất, thiết bị dạy học, đồ dùng, đồ chơi trẻ em” của văn bản 80/2017/NĐ-CP quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 7,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Địa điểm đặt cơ sở giáo dục, lớp độc lập không được vi phạm khoản 13 Điều 6 Luật trẻ em và không nằm trong vùng cảnh báo nguy hiểm.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Cơ sở giáo dục phải có khuôn viên, cổng trường, biển tên, tường rào, hàng rào, sân vườn, cây xanh bảo đảm an toàn, vệ sinh và phù hợp cảnh quan, môi trường thân thiện.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Cơ sở giáo dục phải có sân chơi, bãi tập, khu để xe phù hợp và thân thiện với người học.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Cơ sở giáo dục phải có phòng học, phòng học bộ môn, phòng phục vụ học tập đủ ánh sáng, thoáng mát và bàn ghế phù hợp với người học.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Cơ sở giáo dục tổ chức bán trú, nội trú phải có khu nhà ăn, nhà nghỉ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Công trình vệ sinh, nước sạch và công trình xây dựng khác của cơ sở giáo dục phải an toàn, thân thiện, dễ tiếp cận và phù hợp nhu cầu đa dạng của người sử dụng.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Thiết bị dạy học, đồ dùng, đồ chơi trẻ em của cơ sở giáo dục, lớp độc lập phải phù hợp đặc điểm tâm sinh lý lứa tuổi người học, được sắp xếp và sử dụng an toàn, hợp lý, dễ tiếp cận.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:eafd3ef206ca82b1:hierarchical:0:43d29a9d3ac7"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:eafd3ef206ca82b1:hierarchical:0:43d29a9d3ac7"
+        ],
+        [
+          "phapdien:c7290f27835e:eafd3ef206ca82b1:hierarchical:0:43d29a9d3ac7"
+        ],
+        [
+          "phapdien:c7290f27835e:eafd3ef206ca82b1:hierarchical:0:43d29a9d3ac7"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD009",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Yêu cầu về tài liệu, học liệu giảng dạy” của văn bản 80/2017/NĐ-CP quy định những nội dung gì?",
+      "question_after": "Điều khoản “Yêu cầu về tài liệu, học liệu giảng dạy” của văn bản 80/2017/NĐ-CP quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Tài liệu, học liệu giảng dạy và học tập của cơ sở giáo dục phải phù hợp mục tiêu, nội dung chương trình giáo dục và đặc điểm tâm sinh lý người học, bảo đảm tính khoa học, sư phạm, nhân văn và thẩm mỹ.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Tài liệu, học liệu của cơ sở giáo dục không được chứa yếu tố kích động bạo lực, khiêu dâm, trái văn hóa hoặc lịch sử Việt Nam, định kiến giới hay phân biệt đối xử.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Cơ sở giáo dục phải có tài liệu, học liệu về giáo dục đạo đức, lối sống, kỹ năng sống, ý thức chấp hành pháp luật, giới tính, phòng chống tai nạn thương tích và phòng chống xâm hại.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Cơ sở giáo dục phải có hệ thống công nghệ thông tin kết nối Internet và website đáp ứng yêu cầu dạy, học, được kiểm soát chặt chẽ để bảo đảm nội dung an toàn, lành mạnh và phù hợp độ tuổi người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Lớp độc lập tối thiểu phải đáp ứng các yêu cầu về tài liệu, học liệu tại điểm a khoản 1 điều về yêu cầu tài liệu, học liệu giảng dạy của Nghị định số 80/2017/NĐ-CP.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:fbd493ca218d3c6c:hierarchical:0:267cf39af677"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:fbd493ca218d3c6c:hierarchical:0:267cf39af677"
+        ],
+        [
+          "phapdien:c7290f27835e:fbd493ca218d3c6c:hierarchical:0:267cf39af677"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD010",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Hoạt động bảo đảm môi trường giáo dục an toàn, lành mạnh, thân thiện” của văn bản 80/2017/NĐ-CP quy định những nội dung gì?",
+      "question_after": "Điều khoản “Hoạt động bảo đảm môi trường giáo dục an toàn, lành mạnh, thân thiện” của văn bản 80/2017/NĐ-CP quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 7,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Cơ sở giáo dục phải bảo đảm an ninh trật tự, an toàn vệ sinh thực phẩm, an toàn phòng chống tai nạn, thương tích, cháy nổ, thảm họa và thiên tai.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Cơ sở giáo dục phải xây dựng, công khai và thực hiện nghiêm túc bộ quy tắc ứng xử văn hóa có sự tham gia của người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Cơ sở giáo dục phải thiết lập kênh thông tin như hộp thư góp ý, đường dây nóng hoặc hình thức khác để tiếp nhận, xử lý thông tin của người học và bảo mật cho người cung cấp thông tin.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Cơ sở giáo dục phải tổ chức hoạt động trải nghiệm sáng tạo, kỹ năng sống, ngoài giờ chính khóa, xã hội, từ thiện, vui chơi, giải trí, văn hóa, thể thao an toàn, lành mạnh, thân thiện, bình đẳng và phù hợp độ tuổi, đặc điểm sinh lý, tâm lý người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Cơ sở giáo dục phải thực hiện công tác y tế trường học, tư vấn và trợ giúp người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Cơ sở giáo dục phải thường xuyên trao đổi thông tin với gia đình người học và cộng đồng để bảo đảm an toàn tính mạng, thân thể, nhân phẩm, danh dự và bí mật đời sống riêng tư của người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Lớp độc lập tối thiểu phải bảo đảm các yêu cầu an toàn tại điểm a và trao đổi thông tin tại điểm e khoản 1 điều về hoạt động bảo đảm môi trường giáo dục an toàn, lành mạnh, thân thiện của Nghị định số 80/2017/NĐ-CP.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:5aff184fce92fe46:hierarchical:0:3a81d87af8df"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:5aff184fce92fe46:hierarchical:0:3a81d87af8df"
+        ],
+        [
+          "phapdien:c7290f27835e:5aff184fce92fe46:hierarchical:0:3a81d87af8df"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD011",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo văn bản 116/2020/NĐ-CP, những nội dung nào thuộc phạm vi điều chỉnh?",
+      "question_after": "Theo văn bản 116/2020/NĐ-CP, chính sách nào được quy định, áp dụng cho những đối tượng nào và loại trừ trường hợp nào?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 6,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Nghị định số 116/2020/NĐ-CP quy định chính sách hỗ trợ tiền đóng học phí và chi phí sinh hoạt cho sinh viên học ngành đào tạo giáo viên tại đại học, học viện, trường đại học, trường cao đẳng được phép đào tạo giáo viên, theo phương thức giao nhiệm vụ, đặt hàng hoặc đấu thầu và đào tạo theo nhu cầu xã hội.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Nghị định số 116/2020/NĐ-CP áp dụng đối với sinh viên học trình độ đại học, cao đẳng ngành đào tạo giáo viên theo hình thức chính quy hoặc liên thông chính quy.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Nghị định số 116/2020/NĐ-CP áp dụng đối với sinh viên học văn bằng thứ hai chính quy trình độ đại học, cao đẳng ngành đào tạo giáo viên có kết quả học lực văn bằng thứ nhất đạt loại giỏi.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Nghị định số 116/2020/NĐ-CP áp dụng đối với Ủy ban nhân dân cấp tỉnh hoặc cơ quan trực thuộc được ủy quyền giao nhiệm vụ, đặt hàng hoặc đấu thầu đào tạo sinh viên sư phạm.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Nghị định số 116/2020/NĐ-CP áp dụng đối với cơ sở đào tạo giáo viên và tổ chức, cá nhân có nhu cầu đào tạo.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Nghị định số 116/2020/NĐ-CP không áp dụng đối với giáo viên được cử đi đào tạo, bồi dưỡng để nâng trình độ chuẩn được đào tạo theo Nghị định số 71/2020/NĐ-CP.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Câu hỏi cũ chỉ hỏi phạm vi nhưng đáp án chứa đối tượng và trường hợp loại trừ; nêu rõ cả ba yêu cầu."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:267b97a8fadb896d:hierarchical:0:c274a0e5fdcd"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:267b97a8fadb896d:hierarchical:0:c274a0e5fdcd"
+        ],
+        [
+          "phapdien:c7290f27835e:267b97a8fadb896d:hierarchical:0:c274a0e5fdcd"
+        ],
+        [
+          "phapdien:c7290f27835e:267b97a8fadb896d:hierarchical:0:c274a0e5fdcd"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD012",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Theo văn bản 116/2020/NĐ-CP, các thuật ngữ được nêu trong điều khoản giải thích từ ngữ được hiểu như thế nào?",
+      "question_after": "Theo văn bản 116/2020/NĐ-CP, số tháng làm việc trong ngành giáo dục được làm tròn thế nào, công tác trong ngành giáo dục sau tốt nghiệp gồm những công việc nào và ai có thẩm quyền xác nhận thời gian làm việc?",
+      "question_changed": true,
+      "claim_count_before": 1,
+      "claim_count_after": 4,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Khi tính thời gian làm việc trong ngành giáo dục theo Nghị định số 116/2020/NĐ-CP, số ngày làm việc trong tháng từ 15 ngày trở lên được tính là một tháng.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Công tác trong ngành giáo dục sau tốt nghiệp bao gồm làm giáo viên, giảng viên giảng dạy, nghiên cứu hoặc chuyên môn, hoặc viên chức quản lý trong cơ sở giáo dục thuộc hệ thống giáo dục quốc dân, cơ sở giáo dục khác được cấp có thẩm quyền cho phép thành lập và cơ quan nghiên cứu khoa học về giáo dục, đào tạo.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Công tác trong ngành giáo dục sau tốt nghiệp bao gồm làm công chức, viên chức tại cơ quan quản lý nhà nước về giáo dục theo Nghị định quy định trách nhiệm quản lý nhà nước về giáo dục.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Thủ trưởng các cơ quan, đơn vị tại khoản 2 điều giải thích từ ngữ của Nghị định số 116/2020/NĐ-CP có thẩm quyền xác nhận thời gian làm việc trong ngành giáo dục.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Điều giải thích từ ngữ chứa cả quy tắc tính tháng và thẩm quyền xác nhận; gọi rõ các nội dung cần trả lời."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:f5fdfdef47ea182f:hierarchical:0:d576bfc21c8a"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:f5fdfdef47ea182f:hierarchical:0:d576bfc21c8a"
+        ],
+        [
+          "phapdien:c7290f27835e:f5fdfdef47ea182f:hierarchical:0:d576bfc21c8a"
+        ],
+        [
+          "phapdien:c7290f27835e:f5fdfdef47ea182f:hierarchical:0:d576bfc21c8a"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD013",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Điều khoản “Chi phí bồi hoàn và cách tính chi phí bồi hoàn” của văn bản 116/2020/NĐ-CP quy định những nội dung gì?",
+      "question_after": "Điều khoản “Chi phí bồi hoàn và cách tính chi phí bồi hoàn” của văn bản 116/2020/NĐ-CP quy định những nội dung gì?",
+      "question_changed": false,
+      "claim_count_before": 1,
+      "claim_count_after": 7,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 1
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 2
+        },
+        {
+          "source_evidence_index": 0,
+          "textual_clause": 3
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Chi phí bồi hoàn gồm kinh phí hỗ trợ tiền đóng học phí và chi phí sinh hoạt đã được ngân sách nhà nước hỗ trợ cho người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Sinh viên sư phạm thuộc điểm a hoặc điểm c khoản 1 Điều 6 Nghị định số 116/2020/NĐ-CP phải bồi hoàn toàn bộ kinh phí đã được ngân sách nhà nước hỗ trợ.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Sinh viên sư phạm thuộc điểm b khoản 1 Điều 6 Nghị định số 116/2020/NĐ-CP phải bồi hoàn một phần kinh phí hỗ trợ theo công thức S = (F / T1) x (T1 - T2).",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Trong công thức bồi hoàn của Nghị định số 116/2020/NĐ-CP, S là chi phí bồi hoàn.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Trong công thức bồi hoàn của Nghị định số 116/2020/NĐ-CP, F là khoản học phí và chi phí sinh hoạt được Nhà nước hỗ trợ.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Trong công thức bồi hoàn của Nghị định số 116/2020/NĐ-CP, T1 là tổng thời gian làm việc trong ngành giáo dục theo quy định, tính bằng số tháng làm tròn.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Trong công thức bồi hoàn của Nghị định số 116/2020/NĐ-CP, T2 là thời gian đã làm việc trong ngành giáo dục, tính bằng số tháng làm tròn.",
+          "evidence_indices": [
+            2
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:a18c4c77ac9a4aac:hierarchical:0:000760f21566"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:a18c4c77ac9a4aac:hierarchical:0:000760f21566"
+        ],
+        [
+          "phapdien:c7290f27835e:a18c4c77ac9a4aac:hierarchical:0:000760f21566"
+        ],
+        [
+          "phapdien:c7290f27835e:a18c4c77ac9a4aac:hierarchical:0:000760f21566"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD014",
+      "changed_fields": [
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Luật Giáo dục 43/2019/QH14 điều chỉnh những nội dung nào, và Nghị định 116/2020/NĐ-CP tập trung vào chính sách gì?",
+      "question_after": "Luật Giáo dục 43/2019/QH14 điều chỉnh những nội dung nào, và Nghị định 116/2020/NĐ-CP tập trung vào chính sách gì?",
+      "question_changed": false,
+      "claim_count_before": 2,
+      "claim_count_after": 5,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": 1
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định về hệ thống giáo dục quốc dân.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định về cơ sở giáo dục, nhà giáo và người học.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định về quản lý nhà nước về giáo dục.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Luật Giáo dục số 43/2019/QH14 quy định quyền và trách nhiệm của cơ quan, tổ chức, cá nhân liên quan đến hoạt động giáo dục.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Nghị định số 116/2020/NĐ-CP quy định chính sách hỗ trợ tiền đóng học phí và chi phí sinh hoạt cho sinh viên học ngành đào tạo giáo viên tại đại học, học viện, trường đại học, trường cao đẳng được phép đào tạo giáo viên, theo phương thức giao nhiệm vụ, đặt hàng hoặc đấu thầu và đào tạo theo nhu cầu xã hội.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Chỉ giữ khoản 1 của Nghị định trong evidence vì câu hỏi so sánh phạm vi/chính sách, không hỏi toàn bộ đối tượng và loại trừ."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:267b97a8fadb896d:hierarchical:0:c274a0e5fdcd",
+        "phapdien:c7290f27835e:3f710c352164b34d:hierarchical:0:0a1bd206405f"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:3f710c352164b34d:hierarchical:0:0a1bd206405f"
+        ],
+        [
+          "phapdien:c7290f27835e:267b97a8fadb896d:hierarchical:0:c274a0e5fdcd"
+        ]
+      ]
+    },
+    {
+      "question_id": "GD015",
+      "changed_fields": [
+        "question",
+        "reference_answer",
+        "reference_claims",
+        "evidence",
+        "split"
+      ],
+      "question_before": "Luật Giáo dục 43/2019/QH14 nêu mục tiêu giáo dục ra sao, và Nghị định 80/2017/NĐ-CP yêu cầu cơ sở giáo dục làm gì để bảo đảm môi trường an toàn?",
+      "question_after": "Luật Giáo dục 43/2019/QH14 nêu những mục tiêu giáo dục nào; Nghị định 80/2017/NĐ-CP yêu cầu cơ sở giáo dục thực hiện những hoạt động gì để bảo đảm môi trường giáo dục an toàn, lành mạnh, thân thiện?",
+      "question_changed": true,
+      "claim_count_before": 2,
+      "claim_count_after": 11,
+      "evidence_origins": [
+        {
+          "source_evidence_index": 0,
+          "textual_clause": null
+        },
+        {
+          "source_evidence_index": 1,
+          "textual_clause": 1
+        }
+      ],
+      "claim_support": [
+        {
+          "claim_index": 0,
+          "claim": "Mục tiêu giáo dục là phát triển toàn diện con người Việt Nam có đạo đức, tri thức, văn hóa, sức khỏe, thẩm mỹ và nghề nghiệp.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 1,
+          "claim": "Mục tiêu giáo dục bao gồm phát triển con người có phẩm chất, năng lực và ý thức công dân.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 2,
+          "claim": "Mục tiêu giáo dục bao gồm phát triển con người có lòng yêu nước, tinh thần dân tộc, trung thành với lý tưởng độc lập dân tộc và chủ nghĩa xã hội.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 3,
+          "claim": "Mục tiêu giáo dục bao gồm phát huy tiềm năng, khả năng sáng tạo của mỗi cá nhân.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 4,
+          "claim": "Mục tiêu giáo dục bao gồm nâng cao dân trí, phát triển nguồn nhân lực, bồi dưỡng nhân tài, đáp ứng yêu cầu xây dựng, bảo vệ Tổ quốc và hội nhập quốc tế.",
+          "evidence_indices": [
+            0
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 5,
+          "claim": "Cơ sở giáo dục phải bảo đảm an ninh trật tự, an toàn vệ sinh thực phẩm, an toàn phòng chống tai nạn, thương tích, cháy nổ, thảm họa và thiên tai.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 6,
+          "claim": "Cơ sở giáo dục phải xây dựng, công khai và thực hiện nghiêm túc bộ quy tắc ứng xử văn hóa có sự tham gia của người học.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 7,
+          "claim": "Cơ sở giáo dục phải thiết lập kênh thông tin như hộp thư góp ý, đường dây nóng hoặc hình thức khác để tiếp nhận, xử lý thông tin của người học và bảo mật cho người cung cấp thông tin.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 8,
+          "claim": "Cơ sở giáo dục phải tổ chức hoạt động trải nghiệm sáng tạo, kỹ năng sống, ngoài giờ chính khóa, xã hội, từ thiện, vui chơi, giải trí, văn hóa, thể thao an toàn, lành mạnh, thân thiện, bình đẳng và phù hợp độ tuổi, đặc điểm sinh lý, tâm lý người học.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 9,
+          "claim": "Cơ sở giáo dục phải thực hiện công tác y tế trường học, tư vấn và trợ giúp người học.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        },
+        {
+          "claim_index": 10,
+          "claim": "Cơ sở giáo dục phải thường xuyên trao đổi thông tin với gia đình người học và cộng đồng để bảo đảm an toàn tính mạng, thân thể, nhân phẩm, danh dự và bí mật đời sống riêng tư của người học.",
+          "evidence_indices": [
+            1
+          ],
+          "review_basis": "curated_against_cited_snapshot_text"
+        }
+      ],
+      "notes": [
+        "Nêu đủ an toàn, lành mạnh, thân thiện để khớp các hoạt động tại nguồn; đáp án bổ sung các mục tiêu giáo dục cũ bỏ sót."
+      ],
+      "relevant_chunk_ids": [
+        "phapdien:c7290f27835e:0d3eaa0018fe8e7e:hierarchical:0:87054d8ed0c0",
+        "phapdien:c7290f27835e:5aff184fce92fe46:hierarchical:0:3a81d87af8df"
+      ],
+      "resolved_evidence": [
+        [
+          "phapdien:c7290f27835e:0d3eaa0018fe8e7e:hierarchical:0:87054d8ed0c0"
+        ],
+        [
+          "phapdien:c7290f27835e:5aff184fce92fe46:hierarchical:0:3a81d87af8df"
+        ]
+      ]
+    }
+  ]
+}

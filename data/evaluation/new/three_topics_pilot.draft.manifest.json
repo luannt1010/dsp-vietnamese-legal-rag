@@ -1,0 +1,46 @@
+{
+  "dataset_file": "three_topics_pilot.draft.jsonl",
+  "status": "draft_unreviewed",
+  "source_dataset": "tmquan/phapdien-moj-gov-vn",
+  "source_config": "documents",
+  "source_split": "train",
+  "source_revision": "a1b6860c821b7142ffe2385178af4e4bb6f86aff",
+  "prepared_corpus_id": "4d70694000eb63e3",
+  "record_count": 45,
+  "topic_counts": {
+    "Giao thông, vận tải": 15,
+    "Khoa học, công nghệ": 15,
+    "Giáo dục, đào tạo": 15
+  },
+  "selected_document_numbers": {
+    "Giao thông, vận tải": [
+      "23/2004/QH11",
+      "110/2014/NĐ-CP",
+      "48/2019/NĐ-CP"
+    ],
+    "Khoa học, công nghệ": [
+      "07/2017/QH14",
+      "21/2008/QH12",
+      "76/2018/NĐ-CP"
+    ],
+    "Giáo dục, đào tạo": [
+      "43/2019/QH14",
+      "80/2017/NĐ-CP",
+      "116/2020/NĐ-CP"
+    ]
+  },
+  "sha256": "24e5850a79f284b66db4792beefb3b1a06960a87ed7b066d2839661589da704a",
+  "notes": [
+    "Candidate pilot only; reference answers and claims have not received independent legal review.",
+    "Reference claims currently mirror the cited provision; reviewers should split compound provisions into atomic claims and verify completeness, amendments, and legal validity.",
+    "No development/test split or unanswerable examples are assigned.",
+    "Science and technology follows the selected PhapDien topic taxonomy, which includes product-quality and technology-transfer instruments; review topical fit before approval.",
+    "The draft includes lookup, multi-clause, multi-document, and comparison questions; it still has no unanswerable examples or development/test split."
+  ],
+  "question_type_counts": {
+    "lookup": 12,
+    "multi_clause": 27,
+    "comparison": 3,
+    "multi_document": 3
+  }
+}

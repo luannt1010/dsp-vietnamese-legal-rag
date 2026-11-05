@@ -48,7 +48,10 @@ qua các vòng feedback, phù hợp orchestration hiện tại.
 - Context: tối đa 4096 token, prompt reserve 1024; cùng cách mở rộng parent,
   khử trùng lặp, giữ nguyên đoạn nguồn và đóng gói.
 - Answer generator: qwen3.5:4b, context window 8192, output tối đa 2048 token.
-- Query analyzer / retrieval evaluator / citation verifier: qwen3.5:2b.
+- Query analyzer / citation verifier: qwen3.5:2b.
+- Retrieval evaluator: qwen3.5:4b, prompt v2, sau đợt sửa ngày 2026-11-05.
+  Cấu hình 2b cũ đã cho phép nhầm căn cứ cùng chủ đề trong kiểm thử bỏ nguồn;
+  cần dùng cùng evaluator mới cho toàn bộ B0–B4 và thư mục output mới.
 - Temperature=0, think=false, prompt version v1; ghi digest model và hash prompt.
 - Timeout: pipeline 240 giây, retrieval mỗi vòng 60 giây; cấu hình retry như demo.
 - Giữ nguyên các giá trị giữa thí nghiệm; tuning chỉ trên development set.
