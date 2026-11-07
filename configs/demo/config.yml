@@ -4,6 +4,7 @@ api:
   host: 127.0.0.1
   port: 8000
   cors_origins: []
+  max_concurrent_requests: 1
 logging:
   level: INFO
   format: text

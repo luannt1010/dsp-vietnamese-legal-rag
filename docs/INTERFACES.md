@@ -269,3 +269,9 @@ context, số trùng hoặc citation fields do model tự cung cấp; tạo cita
 từ metadata/nội dung nguồn được giữ. Confidence chưa hiệu chuẩn bằng 0 và
 disclaimer do code quản lý. Citation verifier tiếp tục kiểm tra nguồn và
 claim support; không sửa trích dẫn sai hoặc nới phép so khớp nguyên văn.
+
+FastAPI trong `src/api` tái sử dụng `QueryRequest`, `LegalAnswer`,
+`RetrievedChunk` và `PipelineStatus`. HTTP request bổ sung giới hạn 4.000 ký tự
+và chỉ nhận `conversation_id=null` vì chưa có memory. Public response là phép
+chiếu của `PipelineResult`, không trả draft/analysis/reasoning; xem [API.md](API.md).
+Không đổi chữ ký của orchestrator hoặc các retriever cho tầng HTTP.

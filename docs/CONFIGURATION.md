@@ -9,6 +9,11 @@ Profile chạy demo thật: `load_settings("configs/demo")`, hoặc dùng
 Xem [DEMO.md](DEMO.md) cho setup và các tham số lựa chọn phương pháp.
 Profile phát triển `configs` tiếp tục giữ các lựa chọn cần nhóm cấu hình.
 
+API dùng cùng profile/loader qua `python -m src.api`; xem [API.md](API.md).
+`api.max_concurrent_requests` giới hạn inference mỗi worker (mặc định 1),
+vượt giới hạn trả 503. `api.cors_origins` là danh sách origin cho frontend.
+API luôn tắt auto-prepare trên bản sao settings; chuẩn bị index bằng CLI trước.
+
 Các field tích hợp mới: `embedding.provider=ollama`, `base_url`, tokenizer
 model/revision; mỗi LLM role có tokenizer model/revision và overhead budget;
 role thứ tư là `llm.citation_verifier`. `llm.keep_alive`/`think` được truyền

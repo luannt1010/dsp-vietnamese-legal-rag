@@ -35,6 +35,7 @@ class APISettings(ConfigModel):
     host: NonEmptyString = "127.0.0.1"
     port: Annotated[int, Field(strict=True, ge=1, le=65535)] = 8000
     cors_origins: tuple[str, ...] = ()
+    max_concurrent_requests: PositiveInt = 1
 
 
 class LoggingSettings(ConfigModel):

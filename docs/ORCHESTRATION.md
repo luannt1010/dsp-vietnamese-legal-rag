@@ -115,7 +115,8 @@ thread nền để giả lập hủy hoặc hứa hard timeout cho call không h
 Composition root thật nằm ở `src/runtime.py`: ghép Ollama cho bốn vai trò,
 embedding, pgvector, Neo4j, tokenizer và reranker vào factory hiện có. CLI ở
 `scripts/demo.py`; xem [DEMO.md](DEMO.md) để chạy. Factory vẫn nhận dependency
-được inject và không âm thầm thay bằng mock. Chưa thêm API.
+được inject và không âm thầm thay bằng mock. FastAPI trong `src/api` dùng lại
+runtime/factory này; xem [HTTP contract và cách chạy](API.md).
 
 ## Kết quả kiểm thử
 

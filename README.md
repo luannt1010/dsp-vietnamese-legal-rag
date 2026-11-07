@@ -1,5 +1,9 @@
 # Hướng dẫn chạy demo Vietnamese Legal RAG
 
+Backend FastAPI nằm trong `src/api`. Sau khi chuẩn bị dữ liệu, chạy
+`python -m src.api`; Swagger tại `http://127.0.0.1:8000/docs`.
+Xem [hướng dẫn API và HTTP contract](docs/API.md).
+
 Các lệnh chạy trên **Windows PowerShell**, từ thư mục gốc project.
 Demo dùng Ollama, PostgreSQL/pgvector và Neo4j.
 
