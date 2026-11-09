@@ -122,7 +122,7 @@ def test_api_settings_reuse_yaml_env_precedence_without_environment_mutation(mon
         "RAG__DATABASE__VECTOR__PASSWORD=file-secret\nRAG__API__PORT=8123\n", encoding="utf-8-sig",
     )
     monkeypatch.setenv("RAG_ENV_FILE", str(env_file))
-    monkeypatch.setenv("RAG_CONFIG_DIR", "configs/demo")
+    monkeypatch.setenv("RAG_CONFIG_DIR", "configs")
     monkeypatch.setenv("RAG__API__PORT", "8456")
     monkeypatch.delenv("RAG__DATABASE__VECTOR__PASSWORD", raising=False)
     settings = load_api_settings()

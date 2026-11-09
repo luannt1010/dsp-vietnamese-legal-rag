@@ -33,7 +33,7 @@ def question(chunks):
 
 @pytest.fixture
 def settings():
-    return load_settings("configs/demo", environ={})
+    return load_settings("configs", environ={})
 
 
 @pytest.fixture

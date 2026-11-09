@@ -350,7 +350,8 @@ class CrossEncoderTests(unittest.TestCase):
 
 class RouterAndServiceTests(unittest.TestCase):
     def test_router_respects_defaults_and_explicit_intent_policies(self):
-        settings = load_settings(environ={}).retrieval
+        # Keep the policy fixture independent of the live profile's graph switch.
+        settings = load_settings(environ={}).retrieval.model_copy(update={"use_graph": False})
         router = RetrievalRouter(settings, intent_overrides={"relationships": {"use_graph": True}})
         baseline = router.route(RetrievalRouteRequest(query="q", intent="unknown", entities=["a"]))
         self.assertFalse(baseline.use_graph)

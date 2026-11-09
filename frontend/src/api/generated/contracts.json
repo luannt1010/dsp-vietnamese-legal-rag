@@ -1,0 +1,463 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://legal-rag.local/contracts",
+  "$defs": {
+    "CorpusResponse": {
+      "properties": {
+        "corpus_id": {
+          "type": "string",
+          "title": "Corpus Id"
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "json",
+            "huggingface"
+          ],
+          "title": "Source Type"
+        },
+        "dataset": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dataset"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Revision"
+        },
+        "topics": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Topics"
+        },
+        "subjects": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Subjects"
+        },
+        "document_count": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Document Count"
+        },
+        "chunk_count": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Chunk Count"
+        },
+        "parent_chunk_count": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Parent Chunk Count"
+        },
+        "relation_count": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Relation Count"
+        },
+        "unresolved_reference_count": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Unresolved Reference Count"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "corpus_id",
+        "source_type",
+        "topics",
+        "subjects",
+        "document_count",
+        "chunk_count",
+        "parent_chunk_count",
+        "relation_count",
+        "unresolved_reference_count"
+      ],
+      "title": "CorpusResponse"
+    },
+    "ErrorDetail": {
+      "properties": {
+        "code": {
+          "type": "string",
+          "title": "Code"
+        },
+        "message": {
+          "type": "string",
+          "title": "Message"
+        },
+        "issues": {
+          "items": {
+            "$ref": "#/$defs/ValidationIssue"
+          },
+          "type": "array",
+          "title": "Issues"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail"
+    },
+    "ErrorResponse": {
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "title": "Request Id"
+        },
+        "error": {
+          "$ref": "#/$defs/ErrorDetail"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "request_id",
+        "error"
+      ],
+      "title": "ErrorResponse"
+    },
+    "FailureInfo": {
+      "properties": {
+        "stage": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stage"
+        },
+        "code": {
+          "type": "string",
+          "title": "Code"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "title": "FailureInfo",
+      "description": "Safe diagnostic codes, without provider messages or model reasoning."
+    },
+    "HealthResponse": {
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "alive",
+            "ready"
+          ],
+          "title": "Status"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "title": "HealthResponse"
+    },
+    "JsonValue": {},
+    "LegalAnswer": {
+      "properties": {
+        "answer": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Answer"
+        },
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/LegalCitation"
+          },
+          "type": "array",
+          "title": "Citations"
+        },
+        "confidence": {
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence"
+        },
+        "disclaimer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Disclaimer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "answer",
+        "confidence"
+      ],
+      "title": "LegalAnswer",
+      "description": "Answer confidence is independent of retrieval and evaluation scores."
+    },
+    "LegalCitation": {
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Document Id"
+        },
+        "document_number": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Document Number"
+        },
+        "article": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Article"
+        },
+        "clause": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Clause"
+        },
+        "point": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Point"
+        },
+        "quoted_text": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Quoted Text"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Url"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "document_id",
+        "document_number",
+        "quoted_text"
+      ],
+      "title": "LegalCitation",
+      "description": "Source-backed quotation; the verifier resolves it against context chunks."
+    },
+    "QuestionRequest": {
+      "properties": {
+        "query": {
+          "type": "string",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Query"
+        },
+        "conversation_id": {
+          "type": "null",
+          "title": "Conversation Id"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "query"
+      ],
+      "title": "QuestionRequest",
+      "description": "Each question is independent; conversational memory is not implemented."
+    },
+    "QuestionResponse": {
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "title": "Request Id"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "completed",
+            "insufficient_evidence",
+            "failed",
+            "timed_out"
+          ],
+          "title": "Status"
+        },
+        "answer": {
+          "$ref": "#/$defs/LegalAnswer"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/RetrievedChunk"
+          },
+          "type": "array",
+          "title": "Sources"
+        },
+        "corpus_id": {
+          "type": "string",
+          "title": "Corpus Id"
+        },
+        "rounds": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Rounds"
+        },
+        "duration_ms": {
+          "type": "number",
+          "minimum": 0,
+          "title": "Duration Ms"
+        },
+        "failure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FailureInfo"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "request_id",
+        "status",
+        "answer",
+        "corpus_id",
+        "rounds",
+        "duration_ms"
+      ],
+      "title": "QuestionResponse"
+    },
+    "RetrievedChunk": {
+      "properties": {
+        "chunk_id": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Chunk Id"
+        },
+        "document_id": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Document Id"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Content"
+        },
+        "score": {
+          "type": "number",
+          "title": "Score"
+        },
+        "retrieval_method": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Retrieval Method"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "type": "object",
+          "title": "Metadata"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "chunk_id",
+        "document_id",
+        "content",
+        "score",
+        "retrieval_method"
+      ],
+      "title": "RetrievedChunk",
+      "description": "Search hit; score is finite but has a method-specific scale.\n\nmetadata contains serialized LegalMetadata and available chunk location\nfields (chapter/article/clause/point/parent_id/source_url)."
+    },
+    "ValidationIssue": {
+      "properties": {
+        "location": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "type": "array",
+          "title": "Location"
+        },
+        "code": {
+          "type": "string",
+          "title": "Code"
+        },
+        "message": {
+          "type": "string",
+          "title": "Message"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "location",
+        "code",
+        "message"
+      ],
+      "title": "ValidationIssue"
+    }
+  }
+}

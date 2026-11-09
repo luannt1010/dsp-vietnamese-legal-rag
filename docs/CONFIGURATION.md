@@ -4,15 +4,25 @@
 ở startup/factory, sau đó truyền section phù hợp vào constructor từng module.
 Schema request/response không đọc file hoặc biến môi trường khi import.
 
-Profile chạy demo thật: `load_settings("configs/demo")`, hoặc dùng
-`python -m scripts.demo` để tự load profile và file credentials local.
-Xem [DEMO.md](DEMO.md) cho setup và các tham số lựa chọn phương pháp.
-Profile phát triển `configs` tiếp tục giữ các lựa chọn cần nhóm cấu hình.
+Profile hiện tại: `load_settings("configs")`. Runtime dùng root `.env` để cung cấp
+credentials. API chọn rõ hai biến sau trước khi khởi động:
 
-API dùng cùng profile/loader qua `python -m src.api`; xem [API.md](API.md).
-`api.max_concurrent_requests` giới hạn inference mỗi worker (mặc định 1),
-vượt giới hạn trả 503. `api.cors_origins` là danh sách origin cho frontend.
-API luôn tắt auto-prepare trên bản sao settings; chuẩn bị index bằng CLI trước.
+```powershell
+$env:RAG_CONFIG_DIR = (Resolve-Path .\configs).Path
+$env:RAG_ENV_FILE = (Resolve-Path .\.env).Path
+python -m src.api
+```
+
+`load_settings()` không tự đọc dotenv. API đọc file được chọn bởi `RAG_ENV_FILE`;
+prepare bằng Python cần gọi `load_dotenv()` trước như [README](../README.md).
+CLI utility dùng `python -m scripts.demo --config-dir configs --env-file .env ...`.
+Các tham số này tránh đường dẫn mặc định legacy không còn tồn tại.
+
+API dùng cùng loader; `api.max_concurrent_requests` giới hạn inference mỗi worker
+(mặc định 1), vượt giới hạn trả 503. `api.cors_origins` quy định origin được phép.
+API tắt auto-prepare trên bản sao settings; chuẩn bị index trước khi phục vụ.
+Launcher database dùng PostgreSQL port 15432 và vẫn quản lý credentials riêng ở
+`.runtime/demo.env`. Root `.env` phải khớp database đang dùng.
 
 Các field tích hợp mới: `embedding.provider=ollama`, `base_url`, tokenizer
 model/revision; mỗi LLM role có tokenizer model/revision và overhead budget;
@@ -21,8 +31,8 @@ sang Ollama chat API. `retrieval.reranker.backend` chọn `onnx` hoặc
 `sentence_transformers`, ONNX có `file_name`. Vector có backend, index_type
 và các tham số HNSW/IVFFlat; graph có backend và namespace. Data pipeline có
 source_chunks_file, relations_file, index_dir và ba chunking strategy
-fixed/legal/hierarchical. Các path tương đối vẫn tính từ parent config_dir;
-profile lồng `configs/demo` dùng `../data/...` để trỏ về data của repository.
+fixed/legal/hierarchical. Các path tương đối tính từ parent của `config_dir`; với root `configs/`,
+dùng `data/...` để trỏ về dữ liệu của repository.
 
 `data_pipeline.source` chọn `json` hoặc `huggingface`. Nguồn Hugging Face có
 dataset/config/split/revision, topics, subjects và read_batch_size; selector

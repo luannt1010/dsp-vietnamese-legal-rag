@@ -5,7 +5,7 @@ import shutil
 import tempfile
 import unittest
 
-from core.config import load_settings
+from core.config import Settings, load_settings
 from core.config.loader import CONFIG_FILES
 from core.exceptions import ConfigurationError
 from core.schemas import RetrievalStrategy
@@ -68,6 +68,7 @@ class ConfigurationTests(unittest.TestCase):
         self.assertEqual(env, {"RAG__RETRIEVAL__TOP_K": "8"})
 
     def test_unknown_options_and_wrong_limits_fail_early(self):
+        invalid_provider_timeout = str(self.load().pipeline.timeout_s + 1)
         invalid = (
             {"RAG__RETRIEVAL__TOPK": "8"},
             {"RAG__RETRIEVAL__TOP_K": "0"},
@@ -78,8 +79,8 @@ class ConfigurationTests(unittest.TestCase):
             {"RAG__DATA_PIPELINE__CHUNKING__OVERLAP_TOKENS": "512"},
             {"RAG__PIPELINE__MAX_ITERATIONS": "0"},
             {"RAG__RETRIEVAL__GRAPH__MAX_DEPTH": "0"},
-            {"RAG__LLM__TIMEOUT_S": "91"},
-            {"RAG__EMBEDDING__TIMEOUT_S": "91"},
+            {"RAG__LLM__TIMEOUT_S": invalid_provider_timeout},
+            {"RAG__EMBEDDING__TIMEOUT_S": invalid_provider_timeout},
             {"RAG__LLM__TIMEOUT_S": '"NaN"'},
             {"RAG__API__PORT": "70000"},
             {"RAG__LOGGING__LEVEL": "verbose"},
@@ -155,7 +156,7 @@ class ConfigurationTests(unittest.TestCase):
             self.load()
 
     def test_sample_loads_for_mocks_but_real_runtime_requires_model_choices(self):
-        settings = self.load()
+        settings = Settings()
         with self.assertRaises(ConfigurationError) as raised:
             settings.validate_runtime()
         self.assertIn("embedding.dimension", str(raised.exception))

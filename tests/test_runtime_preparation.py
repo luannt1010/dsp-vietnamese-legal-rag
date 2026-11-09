@@ -46,7 +46,7 @@ def prepared_stores(monkeypatch):
     monkeypatch.setattr(runtime, "Neo4jStore", Graph)
     monkeypatch.setattr(runtime, "open_stores", stores)
     monkeypatch.setattr(runtime, "prepare_corpus", Mock(return_value=corpus))
-    return load_settings("configs/demo", environ={}), corpus, vector, graph
+    return load_settings("configs", environ={}), corpus, vector, graph
 
 
 @pytest.mark.parametrize("state,vector_writes,graph_writes", [
@@ -100,7 +100,7 @@ def test_rerun_after_interrupted_graph_does_not_rewrite_ready_vector(prepared_st
 def test_demo_reports_interrupt_without_traceback(monkeypatch, capsys):
     from scripts import demo
     monkeypatch.setattr("sys.argv", ["demo", "prepare"])
-    monkeypatch.setattr(demo, "load_demo_settings", lambda _: load_settings("configs/demo", environ={}))
+    monkeypatch.setattr(demo, "load_demo_settings", lambda _: load_settings("configs", environ={}))
     monkeypatch.setattr(demo, "prepare_indexes", Mock(side_effect=KeyboardInterrupt))
     assert demo.main() == 130
     error = capsys.readouterr().err

@@ -1,5 +1,7 @@
 # Chạy demo pipeline với pgvector và Neo4j
 
+> Cấu hình hiện tại dùng `configs/` và root `.env`; xem [README](../README.md) để chạy full web application. Các ví dụ bên dưới mô tả workflow CLI trước khi di chuyển config. Khi dùng utility CLI, truyền `--config-dir configs --env-file .env`; không tạo lại thư mục config cũ.
+
 ## 1. Chuẩn bị
 
 Chạy các lệnh từ thư mục gốc repository, dùng Python >= 3.10, Docker Desktop
@@ -21,7 +23,7 @@ cục bộ, dùng volume riêng, không thay container của dự án khác:
 
 | Dịch vụ | Container | Địa chỉ |
 | --- | --- | --- |
-| PostgreSQL + pgvector | `legalrag-pgvector` | `127.0.0.1:55433` |
+| PostgreSQL + pgvector | `legalrag-pgvector` | `127.0.0.1:15432` |
 | Neo4j Bolt | `legalrag-neo4j` | `bolt://127.0.0.1:17687` |
 | Neo4j Browser | cùng container | `http://127.0.0.1:17474` |
 | Ollama | cài trên máy | `http://127.0.0.1:11434` |
@@ -30,6 +32,43 @@ Mật khẩu ngẫu nhiên được lưu trong `.runtime/demo.env`, được CLI
 Biến môi trường đã export được ưu tiên hơn file này. Không xóa file credentials
 khi còn dùng các volume đã tạo: mật khẩu mới không tự cập nhật database cũ.
 Đây là script khởi động phụ thuộc cho demo local, không phải cấu hình triển khai.
+
+Script dùng lại port đã lưu trong `.runtime/demo.env`. Có thể chọn port khác:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start_demo_databases.ps1 -PostgresPort 15432 -RecreateStoppedContainers
+```
+
+Nếu Windows chặn port cũ `55433`, kiểm tra bằng
+`netsh interface ipv4 show excludedportrange protocol=tcp`, rồi chọn port có thể
+bind. Script kiểm tra bind trước khi đổi container. Với container đang dừng,
+switch trên giữ container cũ dưới tên `*-port-backup-*`, tạo container mới dùng
+nguyên named volume và credentials, cập nhật port vào `demo.env` sau khi PostgreSQL
+khởi động thành công. Không xóa volume và không tự dừng container đang chạy.
+Không khởi động đồng thời container backup và container mới dùng chung data volume.
+Chỉ đổi YAML hoặc `docker start` không đổi được port publishing của container cũ.
+
+## Chọn đúng profile khi chạy CLI và API
+
+Tên `demo` không có nghĩa là mock: profile này dùng Ollama, pgvector, Neo4j và dữ
+liệu thật. `configs/` là baseline phát triển, còn các field model/embedding chưa
+chọn đầy đủ; không phải profile production sẵn chạy. Đừng dùng hai profile khác
+nhau cho prepare và API.
+
+Để chọn tường minh cùng profile và credentials, chạy tại root repository:
+
+```powershell
+python -m scripts.demo --config-dir .\configs\demo --env-file .\.runtime\demo.env doctor
+python -m scripts.demo --config-dir .\configs\demo --env-file .\.runtime\demo.env prepare
+$env:RAG_CONFIG_DIR = (Resolve-Path .\configs\demo).Path
+$env:RAG_ENV_FILE = (Resolve-Path .\.runtime\demo.env).Path
+python -m src.api
+```
+
+Biến `RAG__...` đã đặt trong process ưu tiên hơn file env và YAML. Nếu từng đặt
+port cũ, cập nhật `$env:RAG__DATABASE__VECTOR__PORT = '15432'` hoặc xóa override
+đó trước khi khởi động lại CLI/API. CLI nhận `--config-dir` tường minh, còn API
+chọn profile qua `RAG_CONFIG_DIR`.
 
 Nếu đã có database riêng, tạo file env với các biến sau rồi truyền
 `--env-file đường_dẫn`. Không ghi mật khẩu vào YAML:

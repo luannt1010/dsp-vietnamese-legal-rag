@@ -24,8 +24,8 @@ pytestmark = pytest.mark.skipif(os.environ.get("RAG_RUN_DB_TESTS") != "1", reaso
 @pytest.fixture
 def settings():
     root = Path(__file__).resolve().parents[2]
-    load_dotenv(root / ".runtime/demo.env", override=False, encoding="utf-8-sig")
-    return load_settings(root / "configs/demo")
+    load_dotenv(root / ".env", override=False, encoding="utf-8-sig")
+    return load_settings(root / "configs")
 
 
 def corpus():

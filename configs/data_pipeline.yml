@@ -12,12 +12,12 @@ data_pipeline:
     subjects: []
     read_batch_size: 512
   auto_prepare: true
-  raw_dir: ../data/raw
-  processed_dir: ../data/processed
-  chunks_dir: ../data/chunks
-  source_chunks_file: ../data/chunks/phapdien_chunks.json
-  relations_file: ../data/processed/phapdien_relations.json
-  index_dir: ../data/runtime
+  raw_dir: data/raw
+  processed_dir: data/processed
+  chunks_dir: data/chunks
+  source_chunks_file: data/chunks/phapdien_chunks.json
+  relations_file: data/processed/phapdien_relations.json
+  index_dir: data/runtime
   indexing_batch_size: 8
   chunking:
     strategy: hierarchical

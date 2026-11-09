@@ -74,7 +74,7 @@ def test_vector_construction_settings_change_index_but_query_settings_do_not(mon
     from core.schemas import LegalChunk, LegalMetadata
     from src.data_pipeline.preparation import PreparedCorpus
     from src.knowledge_graph import GraphBuilder
-    settings = load_settings("configs/demo", environ={})
+    settings = load_settings("configs", environ={})
     settings = settings.model_copy(update={"database": settings.database.model_copy(update={
         "graph": settings.database.graph.model_copy(update={"backend": "in_memory"}),
     })})

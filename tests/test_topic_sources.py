@@ -255,7 +255,7 @@ def test_runtime_prepares_missing_indexes_only_when_enabled(dataset, monkeypatch
     monkeypatch.setattr(runtime, "create_pipeline", Mock())
     monkeypatch.setattr(runtime, "OllamaEmbedding", Mock(return_value=Mock(dimension=1024)))
     vector.dimension = 1024
-    settings = load_settings(Path(__file__).resolve().parents[1] / "configs/demo", environ={})
+    settings = load_settings(Path(__file__).resolve().parents[1] / "configs", environ={})
     settings = settings.model_copy(update={
         "data_pipeline": config.model_copy(update={"auto_prepare": auto_prepare}),
         "retrieval": settings.retrieval.model_copy(update={"use_rerank": False}),

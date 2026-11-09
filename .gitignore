@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
 parts/
 sdist/
@@ -68,19 +68,6 @@ Thumbs.db
 .runtime/
 data/runtime/
 
-# Local LaTeX build intermediates; keep authored sources and vector figure PDFs.
-/reports/**/*.aux
-/reports/**/*.bbl
-/reports/**/*.blg
-/reports/**/*.fdb_latexmk
-/reports/**/*.fls
-/reports/**/*.lof
-/reports/**/*.log
-/reports/**/*.lot
-/reports/**/*.out
-/reports/**/*.synctex.gz
-/reports/**/*.toc
-/reports/**/*.xdv
-/reports/latex/Report_dsp.pdf
-/reports/overleaf-single/main.pdf
-/reports/overleaf-pdflatex/main.pdf
+/final_report_slide
+/output
+/reports

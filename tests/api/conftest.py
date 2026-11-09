@@ -24,7 +24,7 @@ def anyio_backend():
 
 @pytest.fixture
 def settings():
-    original = load_settings("configs/demo", environ={})
+    original = load_settings("configs", environ={})
     data = original.model_dump()
     data["api"]["cors_origins"] = ["http://localhost:5173"]
     return Settings.model_validate(data)

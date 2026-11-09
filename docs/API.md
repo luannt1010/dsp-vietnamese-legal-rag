@@ -14,14 +14,15 @@ kích hoạt theo [README](../README.md):
 
 ```powershell
 python -m pip install -e ".[dev]"
-powershell -ExecutionPolicy Bypass -File .\scripts\start_demo_databases.ps1
-python -m scripts.demo doctor
-python -m scripts.demo prepare
+$env:RAG_CONFIG_DIR = (Resolve-Path .\configs).Path
+$env:RAG_ENV_FILE = (Resolve-Path .\.env).Path
+python -c "from dotenv import load_dotenv; load_dotenv('.env', encoding='utf-8-sig'); from core.config import load_settings; from src.runtime import prepare_indexes; prepare_indexes(load_settings('configs'))"
 python -m src.api
 ```
 
-Ollama và model cần sẵn sàng theo hướng dẫn demo. API mặc định dùng
-`configs/demo`, đọc credentials từ `.runtime/demo.env`, lắng nghe
+Ollama, database và root `.env` cần sẵn sàng theo [README](../README.md).
+Các lệnh trên chọn `configs/` và `.env` rõ ràng; entry point vẫn giữ mặc định
+legacy nên cần các selector này. API lắng nghe
 `http://127.0.0.1:8000`. Swagger: `http://127.0.0.1:8000/docs`, ReDoc:
 `http://127.0.0.1:8000/redoc`, contract: `http://127.0.0.1:8000/openapi.json`.
 

@@ -1,5 +1,7 @@
 # Chạy benchmark từ bản clone mới
 
+> Cấu hình hiện tại dùng `configs/` và root `.env`; xem [README](../README.md) để chạy full web application. Các ví dụ bên dưới mô tả workflow CLI trước khi di chuyển config. Khi dùng utility CLI, truyền `--config-dir configs --env-file .env`; không tạo lại thư mục config cũ.
+
 Các lệnh dưới đây dùng Windows PowerShell và chạy từ thư mục gốc repo.
 Không cần copy `.runtime`, credentials, model cache hoặc kết quả từ máy khác.
 Đọc [thiết kế và metric definitions](BENCHMARK.md) khi mở rộng thí nghiệm.
@@ -35,7 +37,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\start_demo_databases.ps1
 
 Nếu Ollama app chưa phục vụ kết nối, chạy `ollama serve` ở terminal khác.
 Script database tạo credentials riêng trong `.runtime/demo.env`; CLI demo và
-benchmark tự đọc file này. PostgreSQL dùng port 55433, Neo4j Bolt dùng 17687.
+benchmark tự đọc file này. PostgreSQL mặc định dùng port 15432, Neo4j Bolt dùng 17687.
 Giữ file credentials khi tái sử dụng volumes cũ; không commit file này.
 
 Dataset đi kèm thuộc **An ninh quốc gia**. Đặt các override sau trong **cùng

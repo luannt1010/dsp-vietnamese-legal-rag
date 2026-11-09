@@ -1,169 +1,150 @@
-# Hướng dẫn chạy demo Vietnamese Legal RAG
+# Vietnamese Legal RAG — Full Web Application
 
-Backend FastAPI nằm trong `src/api`. Sau khi chuẩn bị dữ liệu, chạy
-`python -m src.api`; Swagger tại `http://127.0.0.1:8000/docs`.
-Xem [hướng dẫn API và HTTP contract](docs/API.md).
+Ứng dụng hỏi đáp pháp luật tiếng Việt chạy đầy đủ từ React frontend qua
+FastAPI tới pipeline RAG, Ollama, PostgreSQL/pgvector và Neo4j. Frontend hiển thị
+câu trả lời, trích dẫn và nguồn; mỗi câu hỏi được xử lý độc lập.
 
-Các lệnh chạy trên **Windows PowerShell**, từ thư mục gốc project.
-Demo dùng Ollama, PostgreSQL/pgvector và Neo4j.
+Cấu hình đang dùng nằm trong **`configs/`**, credentials nằm trong **`.env`
+tại root**. Bốn online LLM roles dùng `qwen3.5:2b`; embedding dùng BGE-M3.
 
-## 1. Chuẩn bị
+## 1. Chuẩn bị môi trường
 
-Cài Git, Python >= 3.10 (khuyến nghị 3.12), Docker Desktop và Ollama.
-Nếu chọn Conda, dùng Miniconda/Anaconda thay cho Python riêng.
-Mở Docker Desktop và Ollama. Máy nên có ít nhất 16 GB RAM; lần đầu cần
-Internet để tải model và dữ liệu.
+Cần Git, Python >=3.10 (khuyến nghị 3.12), Docker Desktop, Ollama và
+Node.js >=22.18. Chạy lệnh PowerShell từ root repository.
 
 ```powershell
 git clone https://github.com/luannt1010/dsp-vietnamese-legal-rag.git
 cd dsp-vietnamese-legal-rag
-```
-
-Nếu đã clone, mở terminal tại project. Chọn **một** trong hai môi trường sau.
-
-## 2A. Python venv
-
-```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -e "."
-```
-
-Nếu PowerShell chặn script, chạy lệnh sau trong terminal hiện tại rồi kích
-hoạt lại môi trường:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-
-## 2B. Conda
-
-Mở Anaconda PowerShell Prompt hoặc PowerShell đã khởi tạo Conda:
-
-```powershell
-conda create -n legal-rag python=3.12 -y
-conda activate legal-rag
-python -m pip install --upgrade pip
-python -m pip install -e "."
-```
-
-Các bước tiếp theo dùng chung. Giữ môi trường đã chọn được kích hoạt khi
-chạy lệnh `python`.
-
-## 3. Tải model và khởi động database
-
-```powershell
+python -m pip install -e ".[dev]"
 ollama pull bge-m3
 ollama pull qwen3.5:2b
-ollama pull qwen3.5:4b
-powershell -ExecutionPolicy Bypass -File .\scripts\start_demo_databases.ps1
 ```
 
-Nếu Ollama chưa phục vụ kết nối, chạy `ollama serve` trong terminal riêng.
-Đợi database khởi động rồi kiểm tra:
+Có thể dùng Conda thay venv. Giữ môi trường Python đã kích hoạt khi chạy API
+hoặc chuẩn bị index. Nếu Ollama chưa phục vụ, mở `ollama serve` ở terminal riêng.
 
-```powershell
-python -m scripts.demo doctor
-```
+## 2. Database và credentials
 
-PostgreSQL dùng port `55433`, Neo4j Bolt dùng port `17687`, Neo4j Browser tại
-`http://127.0.0.1:17474`. Credentials tự tạo trong `.runtime/demo.env`, CLI
-tự đọc file này. Giữ file khi dùng lại database cũ. Nếu kiểm tra kết nối lỗi,
-kiểm tra Docker Desktop/Ollama đang chạy rồi thử lại.
-
-## 4. Chọn topic dữ liệu
-
-Chỉnh `data_pipeline.source.topics` trong `configs/demo/data_pipeline.yml`.
-Cấu hình hiện tại:
-
-```yaml
-topics:
-  - Giao thông, vận tải
-  - Khoa học, công nghệ
-  - Giáo dục, đào tạo
-subjects: []
-```
-
-Tra tên/ID topic và đề mục:
-
-```powershell
-python -m scripts.demo list-topics
-python -m scripts.demo list-subjects
-```
-
-Để chỉ chọn đề mục, đặt `topics: []` và điền tên/ID vào `subjects`. Sau khi
-đổi cấu hình, thoát chat cũ rồi chuẩn bị dữ liệu và mở chat mới.
-
-## 5. Chuẩn bị dữ liệu và hỏi đáp
-
-```powershell
-python -m scripts.demo prepare
-python -m scripts.demo chat
-```
-
-Lần đầu sẽ tải dữ liệu Hugging Face, tokenizer/reranker, tạo embedding và ghi
-index vào pgvector/Neo4j nên có thể mất nhiều thời gian. Những lần sau dùng
-lại cache. Với `auto_prepare: true`, `chat` cũng tự chuẩn bị index còn thiếu.
-
-Nhập thử:
-
-```text
-Luật Giao thông đường thủy nội địa số 23/2004/QH11 điều chỉnh những hoạt động nào?
-Người học có những quyền gì theo Luật Giáo dục?
-```
-
-Gõ `/exit` để thoát. Mỗi câu hỏi được xử lý độc lập. Hoặc hỏi trực tiếp:
-
-```powershell
-python -m scripts.demo ask --question "Phương tiện thủy nội địa phải đáp ứng những điều kiện gì để được hoạt động?"
-```
-
-Xem chi tiết khi có lỗi:
-
-```powershell
-python -m scripts.demo --debug ask --question "Câu hỏi của bạn"
-```
-
-## 6. Chạy lại ở lần sau
-
-Mở terminal tại project và kích hoạt môi trường đã tạo: dùng
-`.\.venv\Scripts\Activate.ps1` với venv hoặc `conda activate legal-rag` với Conda.
-Mở Docker Desktop/Ollama rồi chạy:
+Mở Docker Desktop rồi chạy utility tạo/khởi động database hiện có:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\start_demo_databases.ps1
-python -m scripts.demo chat
+if (-not (Test-Path .\.env)) {
+    Copy-Item .\.runtime\demo.env .\.env
+}
 ```
 
-## 7. Benchmark
+Tên script được giữ để tương thích. Ứng dụng sử dụng root `configs/` và `.env`.
+Script tạo credentials ngẫu nhiên ở `.runtime/demo.env` khi thiết lập lần đầu.
+Khi dùng lại database, giữ đúng mật khẩu đã gắn với volume và không ghi đè
+`.env` hiện có.
 
-Benchmark B0–B4 đo retrieval, context, câu trả lời và inference latency bằng
-cấu hình riêng. Thành viên mới bắt đầu tại
-[benchmark quickstart](docs/BENCHMARK_QUICKSTART.md): cài môi trường, tải model,
-chuẩn bị corpus An ninh quốc gia và chạy bộ smoke 3 câu × B0–B4 có sẵn trong repo.
+| Dịch vụ | Container | Địa chỉ local |
+| --- | --- | --- |
+| PostgreSQL + pgvector | `legalrag-pgvector` | `127.0.0.1:15432` |
+| Neo4j Bolt | `legalrag-neo4j` | `bolt://127.0.0.1:17687` |
+| Neo4j Browser | cùng container | `http://127.0.0.1:17474` |
+| Ollama | ứng dụng trên máy | `http://127.0.0.1:11434` |
 
-Xem thêm [metric definitions và vận hành](docs/BENCHMARK.md),
-[thiết kế thí nghiệm](docs/BENCHMARK_PLAN.md) và
-[trạng thái dataset pilot](data/evaluation/README.md). Judge tự động hiện cần
-hiệu chuẩn; chạy smoke thành công không thay thế benchmark chất lượng đã duyệt.
+Nếu container cũ đang dừng còn dùng port bị Windows chặn, đổi port bằng
+`-PostgresPort 15432 -RecreateStoppedContainers`. Utility giữ container cũ làm
+backup và dùng lại named volume. Đồng bộ port tương ứng trong root `.env`.
 
-Bộ **development ba chủ đề, 45 câu** và lệnh Windows CMD/Conda nằm trong
-[hướng dẫn bộ câu hỏi đã chuẩn hóa](data/evaluation/new/README.md). Bộ này đã dùng
-để phát triển pipeline, chưa phải tập test độc lập và còn chờ rà soát pháp lý.
+## 3. Chọn dữ liệu và chuẩn bị index
 
-## 8. Báo cáo học thuật và Overleaf
+Chọn `data_pipeline.source.topics` / `subjects` trong
+`configs/data_pipeline.yml`. Cấu hình hiện tại gồm giao thông, vận tải;
+khoa học, công nghệ; giáo dục, đào tạo.
 
-Bản dùng **pdfLaTeX** gom các chương, bảng và tài liệu tham khảo vào một
-[main.tex](reports/overleaf-pdflatex/main.tex). Các hình PDF vector dựng sẵn nằm
-trong `figures/` đi kèm để giảm thời gian compile.
+```powershell
+$env:RAG_CONFIG_DIR = (Resolve-Path .\configs).Path
+$env:RAG_ENV_FILE = (Resolve-Path .\.env).Path
+python -c "from dotenv import load_dotenv; load_dotenv('.env', encoding='utf-8-sig'); from core.config import load_settings; from src.runtime import prepare_indexes; prepare_indexes(load_settings('configs'))"
+```
 
-- [ZIP để upload thành project Overleaf mới](output/Report_dsp_pdflatex.zip).
-- [PDF báo cáo đã biên dịch](output/pdf/Report_dsp_pdflatex.pdf).
-- [Hướng dẫn pdfLaTeX](reports/overleaf-pdflatex/README.md).
-- [Nguồn tác giả nhiều file, dữ liệu biểu đồ và công cụ tái tạo](reports/latex/README.md).
+Lần đầu cần tải dữ liệu/model/tokenizer và tạo embeddings, indexes. Các lần
+sau tái sử dụng cache tương thích. API phục vụ các index đã chuẩn bị.
 
-Trên Overleaf, chọn **Compiler: pdfLaTeX**, **Main document: main.tex**, giữ
-thư mục `figures/`, rồi Recompile. Không cần chạy benchmark để biên dịch báo cáo.
-Báo cáo phân biệt completion với correctness và nêu rõ giới hạn của development
-pilot, nhãn evidence và judge; chưa khẳng định một cấu hình vượt trội.
+## 4. Chạy backend và frontend
+
+Terminal backend tại root, với môi trường Python đã kích hoạt:
+
+```powershell
+$env:RAG_CONFIG_DIR = (Resolve-Path .\configs).Path
+$env:RAG_ENV_FILE = (Resolve-Path .\.env).Path
+python -m src.api
+```
+
+API: `http://127.0.0.1:8000`, Swagger: `http://127.0.0.1:8000/docs`.
+Các selector được truyền rõ ràng vì entry point API còn giữ mặc định legacy.
+
+Terminal frontend:
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+Mở **http://127.0.0.1:5173**. Vite proxy `/api` và `/health` tới FastAPI.
+Không cần đưa credentials backend vào frontend hoặc thay đổi API contract.
+
+## 5. Build và truy cập qua ngrok
+
+Giữ backend chạy. Từ thư mục `frontend`:
+
+```powershell
+npm run build
+npm run preview -- --host 127.0.0.1
+```
+
+Mở terminal khác để truy cập từ xa:
+
+```powershell
+ngrok http 4173
+```
+
+Nếu Vite yêu cầu cho phép hostname tunnel, thêm hostname của bạn qua biến
+`__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS` trước khi khởi động preview. Ví dụ:
+`$env:__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS = 'your-host.ngrok-free.app'`.
+Máy local, backend, database, Ollama và tunnel cần tiếp tục hoạt động.
+
+## 6. Kiểm tra
+
+Tại root, chọn cùng `RAG_CONFIG_DIR` / `RAG_ENV_FILE` như khi mở API:
+
+```powershell
+python -m pytest -q
+powershell -ExecutionPolicy Bypass -File .\tests\test_database_launcher.ps1
+npm --prefix frontend test
+npm --prefix frontend run build
+npm --prefix frontend run api:check
+npm --prefix frontend run format:check
+```
+
+Tests thông thường dùng fixture, không cần chạy inference hoặc database thật.
+Database integration tests chỉ chạy khi đặt `RAG_RUN_DB_TESTS=1`.
+
+## 7. Benchmark và tài liệu
+
+Bộ development ba chủ đề có 45 câu hỏi tại
+`data/evaluation/new/three_topics_pilot.development.v1.jsonl`. Khi chạy benchmark,
+truyền rõ `--config-dir configs --env-file .env` cho `run` và `score`.
+`score --retrieval-only` không gọi quality judge. Judge 2B mặc định không thể
+chấm generator 2B nếu `allow_same_model=false`; cần chọn judge khác trước khi
+chấm semantic quality.
+
+Kết quả lịch sử dùng cấu hình online 2B/4B, khác cấu hình web hiện tại toàn 2B.
+Development set chưa phải held-out test; completion không đồng nghĩa đúng pháp lý.
+
+- [Frontend: kiến trúc và cấu hình](docs/WEB_APP.md)
+- [Báo cáo triển khai frontend](docs/WEB_APP_IMPLEMENTATION_REPORT.md)
+- [API và HTTP contract](docs/API.md)
+- [Config loader và overrides](docs/CONFIGURATION.md)
+- [Metric definitions và vận hành benchmark](docs/BENCHMARK.md)
+- [Bộ câu hỏi development](data/evaluation/new/README.md)
+
+Theo `.gitignore`, báo cáo/slide local (`final_report_slide/`, `reports/`),
+artifact xuất (`output/`), credentials và runtime/cache không được push lên GitHub.
