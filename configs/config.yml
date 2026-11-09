@@ -1,26 +1,18 @@
-# Shared runtime defaults. Individual modules receive their settings via constructor.
 app:
   environment: development
-
 api:
   host: 127.0.0.1
   port: 8000
   cors_origins: []
   max_concurrent_requests: 1
-
 logging:
   level: INFO
   format: text
   log_query_text: false
   log_context_text: false
-
 pipeline:
-  # Total retrieval/evaluation rounds, including the initial round.
   max_iterations: 3
-  # Overall deadline; retries must share this budget.
-  timeout_s: 90
-
+  timeout_s: 240
 context:
   max_context_tokens: 4096
-  # Instructions, question, citation labels and other input overhead.
   prompt_reserve_tokens: 1024

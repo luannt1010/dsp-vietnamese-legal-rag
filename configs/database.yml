@@ -1,19 +1,26 @@
 database:
   vector:
-    host: localhost
-    port: 5432
+    backend: pgvector
+    index_type: hnsw
+    host: 127.0.0.1
+    port: 15432
     database: legal_rag
     username: rag
     schema_name: public
     table_name: legal_chunks
     distance_metric: cosine
-    pool_size: 5
-    connect_timeout_s: 5
-    # RAG__DATABASE__VECTOR__PASSWORD
+    pool_size: 3
+    connect_timeout_s: 10
+    ef_search: 100
+    hnsw_m: 16
+    ef_construction: 128
+    ivfflat_lists: 10
+    ivfflat_probes: 3
   graph:
-    uri: bolt://localhost:7687
+    backend: neo4j
+    namespace: legal_rag
+    uri: bolt://127.0.0.1:17687
     database: neo4j
     username: neo4j
-    pool_size: 5
-    connect_timeout_s: 5
-    # RAG__DATABASE__GRAPH__PASSWORD
+    pool_size: 3
+    connect_timeout_s: 10

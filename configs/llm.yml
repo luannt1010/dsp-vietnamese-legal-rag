@@ -1,24 +1,33 @@
 llm:
   provider: ollama
-  base_url: null
-  timeout_s: 30
-  max_retries: 2
+  base_url: http://127.0.0.1:11434
+  timeout_s: 90
+  max_retries: 1
   retry_backoff_s: 1
+  keep_alive: 1m
+  think: false
   query_analyzer:
-    model: null
-    context_window_tokens: null
-    temperature: 0
+    model: qwen3.5:2b
+    context_window_tokens: 8192
     max_output_tokens: 512
-    prompt_version: v1
+    tokenizer_model: Qwen/Qwen3.5-2B
+    tokenizer_revision: 15852e8c16360a2fea060d615a32b45270f8a8fc
   retrieval_evaluator:
-    model: null
-    context_window_tokens: null
-    temperature: 0
+    model: qwen3.5:4b
+    prompt_version: v2
+    context_window_tokens: 8192
     max_output_tokens: 768
-    prompt_version: v1
+    tokenizer_model: Qwen/Qwen3.5-4B
+    tokenizer_revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
   answer_generator:
-    model: qwen2.5:7b
-    context_window_tokens: null
-    temperature: 0
+    model: qwen3.5:4b
+    context_window_tokens: 8192
     max_output_tokens: 2048
-    prompt_version: v1
+    tokenizer_model: Qwen/Qwen3.5-4B
+    tokenizer_revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+  citation_verifier:
+    model: qwen3.5:2b
+    context_window_tokens: 8192
+    max_output_tokens: 512
+    tokenizer_model: Qwen/Qwen3.5-2B
+    tokenizer_revision: 15852e8c16360a2fea060d615a32b45270f8a8fc

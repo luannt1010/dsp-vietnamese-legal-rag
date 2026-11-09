@@ -1,12 +1,27 @@
 data_pipeline:
-  # Relative paths resolve against the directory containing configs/.
-  raw_dir: data/raw
-  processed_dir: data/processed
-  chunks_dir: data/chunks
-  indexing_batch_size: 100
+  source:
+    type: huggingface
+    dataset: tmquan/phapdien-moj-gov-vn
+    config: documents
+    split: train
+    revision: main
+    topics:
+      - Giao thông, vận tải
+      - Khoa học, công nghệ
+      - Giáo dục, đào tạo
+    subjects: []
+    read_batch_size: 512
+  auto_prepare: true
+  raw_dir: ../data/raw
+  processed_dir: ../data/processed
+  chunks_dir: ../data/chunks
+  source_chunks_file: ../data/chunks/phapdien_chunks.json
+  relations_file: ../data/processed/phapdien_relations.json
+  index_dir: ../data/runtime
+  indexing_batch_size: 8
   chunking:
     strategy: hierarchical
-    # Pin a tokenizer before ingestion; sizes below are tokens, not characters.
-    tokenizer_model: null
+    tokenizer_model: BAAI/bge-m3
+    tokenizer_revision: 5617a9f61b028005a4858fdac845db406aefb181
     target_tokens: 512
     overlap_tokens: 64

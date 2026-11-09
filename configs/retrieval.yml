@@ -1,30 +1,28 @@
-# Initial experiment values; tune using the shared evaluation dataset.
 retrieval:
   use_bm25: true
   use_vector: true
-  use_graph: false
+  use_graph: true
   use_rerank: true
   top_k: 5
   candidate_k: 20
-  # Hard bounds for router decisions and evaluator overrides.
   max_top_k: 20
   max_candidate_k: 100
-  timeout_s: 10
+  timeout_s: 60
   bm25:
     k1: 1.2
     b: 0.75
-    # Baseline only; replace after evaluating Vietnamese tokenization.
-    tokenizer: whitespace
+    tokenizer: word
     lowercase: true
   rrf:
     rank_constant: 60
   reranker:
-    # Team must select a cross-encoder before enabling real adapters.
-    model: null
-    revision: null
-    batch_size: 16
+    backend: onnx
+    model: cross-encoder/mmarco-mMiniLMv2-L12-H384-v1
+    revision: 1427fd652930e4ba29e8149678df786c240d8825
+    file_name: onnx/model_quint8_avx2.onnx
+    batch_size: 4
     max_input_tokens: 512
-    device: auto
+    device: cpu
   graph:
     max_depth: 2
     max_nodes: 100
